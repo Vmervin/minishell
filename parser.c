@@ -593,7 +593,7 @@ void expand(char *string)
 		dollar_sign_token_search(&tokens, '$', string);
 		ft_list_sort(&tokens, compare_tokens);
 		// string = expand_for_real(tokens, string);
-		// ft_lstclear(&tokens, ft_lstdelone);
+		ft_lstclear(&tokens, free);
 	}
 }
 
