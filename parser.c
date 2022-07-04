@@ -639,7 +639,7 @@ int main (void)
 	one_simbol_token_search(&tokens, '|', string);
 	one_simbol_token_search(&tokens, '>', string);
 	one_simbol_token_search(&tokens, '<', string);
-	many_simbol_token_search(&tokens, "\t\n ", string);
+	space_token_search(&tokens, "\t\n ", string);
 	word_token_search(&tokens, string);
 	// знаки "=" имеют смысл только в словах и только если перед знаком "=" стоит ИМЯ
 	equal_token_search(&tokens, string);
