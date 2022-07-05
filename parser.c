@@ -621,7 +621,7 @@ char *expand_for_real(t_list *lst, char *str)
 		// джойнить значение переменной и плюсовать индекс на длину имени переменной,
 		// индекс должен быть только один в старой строке, а новая добавляется вслепую
 		// str2 = substr(0, begin), strjoin(res, str2), free(str2), str2 = substr(begin+1, end-1)
-		// 
+		//  
 		ft_strtrim();
 		lst = lst->next;
 	}
