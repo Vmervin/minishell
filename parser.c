@@ -242,9 +242,9 @@ int	dollar_sign_search(t_list **lst, int i, char type, char *str)
 	if (str[i] == '$' && !is_quoted_word(*lst, i, type))
 		tmp_begin = i;
 	i++;
-	if (str[i] && ft_strchr("\n\t ", str[i]))
+	if (str[i] && !(ft_isalpha(str[i]) || str[i] == '_'))
 		return (i);
-	while (str[i] && !is_token(*lst, i, type) && !ft_strchr("\n\t ", str[i]))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
 	i--;
 	if (str[i] && tmp_begin >= 0)
