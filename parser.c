@@ -554,32 +554,83 @@ t_cmd *simple_command_parser(t_list *lst, char *str)
 	return (scmds);
 }
 
-// char *expand_for_real(t_list *lst, char *str)
-// {
-// 	int begin;
-// 	int end;
-// 	char *newstr;
+char *val_search(t_token *token, char *str)
+{
+	char *val;
+	char *name;
+	int i;
 
-// 	while (lst)
-// 	{
-// 		if (((t_token *)lst->content)->tokentype == '$')
-// 			ft_substr(str, begin, end - begin + 1);
-// 		ft_strnstr();// нужно найти слово, найти для него замену,
-// 		//  потом убрать кавычки, и в конце найти слово еще раз и заменить
-// 		// вот только это не сработает в случае с '$USER'$USER
-// 		// то же самое будет и если сначала убрать кавычки
-// 		// нужно джойнить куски старой строки в новую по очереди,
-// 		// пропускать кавычки, проверяя индекс в старой строке,
-// 		// джойнить значение переменной и плюсовать индекс на длину имени переменной,
-// 		// индекс должен быть только один в старой строке, а новая добавляется вслепую
-// 		// str2 = substr(0, begin), strjoin(res, str2), free(str2), str2 = substr(begin+1, end-1)
-// 		// 
-// 		ft_strtrim();
-// 		lst = lst->next;
-// 	}
-// 	free(str);
-// 	return (newstr);
-// }
+	i = 0;
+	name = ft_substr(str, token->begin, token->end - token->begin + 1);
+	while (env[i])// env это массив строк переменных окружения
+	{
+		if(!ft_strncmp(env[i], name, ft_strlen(name)))
+			val = ft_substr(env[i], ft_strlen(name) + 1, ft_strlen(env[i])); // большие значения длины автоматически корректрируются
+		i++;
+	}
+	free(name); // или вернуть имя тоже?
+	return (val);
+}
+
+char **extract_value(t_list *lst, char *str)
+{
+	t_list *tmp;
+	char **val;
+	int count;
+	int i;
+
+	i = 0;
+	count = 0;
+	tmp = lst;
+	while (lst)
+	{
+		if (((t_token *)lst->content)->tokentype == '$')
+			count++;
+		lst = lst->next;
+	}
+	val = malloc(sizeof(char *) * count + 1);
+	lst = tmp;
+	while (lst)
+	{
+		if (((t_token *)lst->content)->tokentype == '$')
+			val[i++] = val_search(((t_token *)lst->content), str);
+		lst = lst->next;
+	}
+	val[i] = NULL;
+	return (val);
+}
+
+char *expand_for_real(t_list *lst, char *str)
+{
+	char *newstr;
+	char **val;
+	int i;
+
+	i = 0;
+	val = extract_value(lst, str);
+	while (lst)
+	{
+		newstr = ft_strjoin(newstr, ft_substr());// нужны значения begin и end
+	
+		ft_strnstr();// нужно найти слово, найти для него замену,
+		//  потом убрать кавычки, и в конце найти слово еще раз и заменить
+		// вот только это не сработает в случае с '$USER'$USER
+		// то же самое будет и если сначала убрать кавычки
+		// нужно джойнить куски старой строки в новую по очереди,
+		// пропускать кавычки, проверяя индекс в старой строке,
+		// джойнить значение переменной и плюсовать индекс на длину имени переменной,
+		// индекс должен быть только один в старой строке, а новая добавляется вслепую
+		// str2 = substr(0, begin), strjoin(res, str2), free(str2), str2 = substr(begin+1, end-1)
+		// 
+		ft_strtrim();
+		lst = lst->next;
+	}
+	while (val[i])
+		free(val[i++]);
+	free(val);
+	free(str);
+	return (newstr);
+}
 
 void expand(char *string)
 {
