@@ -33,7 +33,7 @@ typedef	struct	s_cmd
 	t_list *outfiles;
 	t_list *infiles;
 	t_list *vars;
-	t_list *command; 
+	t_list *command;
 }	t_cmd;
 
 typedef struct s_token
@@ -632,7 +632,7 @@ char *expand_for_real(t_list *lst, char *str)
 	return (newstr);
 }
 
-void expand(char *string)
+char *expand(char *string)
 {
 	t_list *tokens;
 
@@ -643,9 +643,10 @@ void expand(char *string)
 		quote_token_search(&tokens, '\"', string);
 		dollar_sign_token_search(&tokens, '$', string);
 		ft_list_sort(&tokens, compare_tokens);
-		// string = expand_for_real(tokens, string);
+		string = expand_for_real(tokens, string);
 		ft_lstclear(&tokens, free);
 	}
+	return (string);
 }
 
 void parse_word(t_list *lst, int vars)
@@ -653,9 +654,9 @@ void parse_word(t_list *lst, int vars)
 	while (lst)
 	{
 		if (vars)
-			expand(((t_file *)(lst->content))->value);
+			((t_file *)(lst->content))->value = expand(((t_file *)(lst->content))->value);
 		else
-			expand(((t_file *)(lst->content))->name);
+			((t_file *)(lst->content))->name = expand(((t_file *)(lst->content))->name);
 		lst = lst->next;
 	}
 }
