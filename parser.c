@@ -15,7 +15,7 @@
 // #include <term.h>
 // #include <readline/readline.h>
 // #include <readline/history.h>
-#include "./libft/libft.h"
+#include "./libft.h"
 
 typedef struct	s_file
 {
@@ -33,7 +33,7 @@ typedef	struct	s_cmd
 	t_list *outfiles;
 	t_list *infiles;
 	t_list *vars;
-	t_list *command;
+	t_list *command; 
 }	t_cmd;
 
 typedef struct s_token
@@ -42,6 +42,8 @@ typedef struct s_token
 	int begin;
 	int end;
 }	t_token;
+
+char **g_env;
 
 void	lstprint(t_list *lst)
 {
@@ -55,6 +57,22 @@ void	lstprint(t_list *lst)
 	ft_printf("list = %d ", ((t_token *)lst->content)->begin);
 	ft_printf("%d ", ((t_token *)lst->content)->end);
 	ft_printf("%c\n", ((t_token *)lst->content)->tokentype);
+}
+
+void	lstprint2(t_list *lst)
+{
+	if (!lst)
+		return ;
+	while (lst->next)
+	{
+		ft_printf("name = (%s) ", ((t_file *)lst->content)->name);
+		ft_printf("value = (%s) ", ((t_file *)lst->content)->value);
+		ft_printf("append = %d\n", ((t_file *)lst->content)->append);
+		lst = lst->next;
+	}
+	ft_printf("name = (%s) ", ((t_file *)lst->content)->name);
+	ft_printf("value = (%s) ", ((t_file *)lst->content)->value);
+	ft_printf("append = %d\n\n", ((t_file *)lst->content)->append);
 }
 
 int compare_tokens(void *content1, void *content2)
@@ -118,13 +136,14 @@ size_t quote_search(t_list **lst, int i, char type, char *str)
 	int tmp_begin;
 
 	tmp_begin = -1;
-	if (!str[i])
-		return (++i);
 	while (str[i] && str[i] != type)
 		i++;
+	if (!str[i])
+		return (i);
 	if (str[i] && str[i] == type)
 		tmp_begin = i;
 	i++;
+	// printf("quote_begin = %d\n", tmp_begin);
 	while (str[i] && str[i] != type)
 		i++;
 	if (str[i] && str[i] == type && tmp_begin >= 0)
@@ -132,7 +151,7 @@ size_t quote_search(t_list **lst, int i, char type, char *str)
 	if (tmp_begin > 0 && !str[i])
 		perror("Error: Unclosed quotes\n");// освобождение памяти и завершение обработки команды
 	return (++i);
-	// сообщение об ошибке если начало есть а конца нет
+	// нужно запилить сообщение об ошибке если начало есть а конца нет
 }
 
 void	quote_token_search(t_list **lst, char type, char *str)
@@ -145,10 +164,17 @@ void	quote_token_search(t_list **lst, char type, char *str)
 	len = ft_strlen(str);
 	quotes[0] = '\'';
 	quotes[1] = '\"';
-	while (i <= len)
+	while (i < len)
 	{
-		i = quote_search(lst, i, quotes[!(ft_strchr(str, '\'') < ft_strchr(str, '\"'))], str);
-		i = quote_search(lst, i, quotes[(ft_strchr(str, '\'') < ft_strchr(str, '\"'))], str);
+		if (!ft_strchr(str, '\'') && ft_strchr(str, '\"'))
+			i = quote_search(lst, i, '\"', str);
+		else if (ft_strchr(str, '\'') && !ft_strchr(str, '\"'))
+			i = quote_search(lst, i, '\'', str);
+		else
+		{
+			i = quote_search(lst, i, quotes[!(ft_strchr(str, '\'') < ft_strchr(str, '\"'))], str);
+			i = quote_search(lst, i, quotes[(ft_strchr(str, '\'') < ft_strchr(str, '\"'))], str);
+		}
 	}
 }
 
@@ -231,17 +257,18 @@ void is_word(t_list *lst, int i, char *str)
 }
 
 int	dollar_sign_search(t_list **lst, int i, char type, char *str)
-{// аргумент type лишний, можно заменить на $
+{// аргумент type лишний 
 	int tmp_begin;
 
 	tmp_begin = -1;
-	if (!str[i])
-		return (++i);
 	while (str[i] && str[i] != '$')
 		i++;
+	if (!str[i])
+		return (i);
 	if (str[i] == '$' && !is_quoted_word(*lst, i, type))
 		tmp_begin = i;
 	i++;
+	// printf("$_begin = %d\n", tmp_begin);
 	if (str[i] && !(ft_isalpha(str[i]) || str[i] == '_'))
 		return (i);
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
@@ -259,7 +286,7 @@ void	dollar_sign_token_search(t_list **lst, char type, char *str)
 
 	i = 0;
 	len = ft_strlen(str);
-	while (i <= len)
+	while (i < len)
 		i = dollar_sign_search(lst, i, type, str);
 }
 
@@ -298,7 +325,7 @@ size_t	many_simbol_search(t_list **lst, int i, char *type, char *str)
 }
 
 void	space_token_search(t_list **lst, char *type, char *str)
-{
+{// переименовать в space_token_search если не найдется другого применения
 	int i;
 	int len;
 
@@ -478,7 +505,7 @@ void analize_syntax(t_cmd *cmd, t_list *lst, char *str)
 		else if (((t_token *)lst->content)->tokentype != ' ')
 		{	
 			lst = add_command(cmd, lst, str);// впоследствии можно убрать флажок и использовать 
-			x = 1;// delim из структуры t_cmd если места не будет хватать
+			x = 1;// delim/kek из структуры t_cmd если места не будет хватать
 		}
 		else
 			lst = lst->next;
@@ -561,14 +588,18 @@ char *val_search(t_token *token, char *str)
 	int i;
 
 	i = 0;
-	name = ft_substr(str, token->begin, token->end - token->begin + 1);
-	while (env[i])// env это массив строк переменных окружения
+	name = ft_substr(str, token->begin + 1, token->end - token->begin);
+	val = ft_strdup("");
+	printf("env: (%s) name: (%s) len %d\n", g_env[i], name, ft_strlen(name));
+	while (g_env[i])// env это массив строк переменных окружения
 	{
-		if(!ft_strncmp(env[i], name, ft_strlen(name)))
-			val = ft_substr(env[i], ft_strlen(name) + 1, ft_strlen(env[i])); // большие значения длины автоматически корректрируются
+		printf("env: (%s) name: (%s)\n", g_env[i], name);
+		if(!ft_strncmp(g_env[i], name, ft_strlen(name)))
+			val = ft_substr(g_env[i], ft_strlen(name) + 1, ft_strlen(g_env[i])); // большие значения длины автоматически корректрируются
 		i++;
 	}
 	free(name); // или вернуть имя тоже?
+	printf("------------------------------%s\n", val);
 	return (val);
 }
 
@@ -577,57 +608,126 @@ char **extract_value(t_list *lst, char *str)
 	t_list *tmp;
 	char **val;
 	int count;
-	int i;
 
-	i = 0;
 	count = 0;
 	tmp = lst;
+	// printf("str=%s\n", str);
 	while (lst)
 	{
 		if (((t_token *)lst->content)->tokentype == '$')
 			count++;
 		lst = lst->next;
 	}
-	val = malloc(sizeof(char *) * count + 1);
+	val = malloc(sizeof(char *) * (count + 1));
 	lst = tmp;
+	count = 0;
 	while (lst)
 	{
 		if (((t_token *)lst->content)->tokentype == '$')
-			val[i++] = val_search(((t_token *)lst->content), str);
+			val[count++] = val_search(((t_token *)lst->content), str);
 		lst = lst->next;
 	}
-	val[i] = NULL;
+	val[count] = NULL;
 	return (val);
 }
 
-char *expand_for_real(t_list *lst, char *str)
+char *ft_strjoin_free(const char *s1, const char *s2)
+{
+	char *res;
+
+	res = ft_strjoin(s1, s2);
+	if (s1)
+		free((char *)s1);
+	if (s2)
+		free((char *)s2);
+	return (res);
+}
+
+void index_plus(t_token *expansion, t_list *tmp, size_t len)
+{
+	int len2;
+	int diff;
+
+	len2 = expansion->end - expansion->begin + 1;
+	diff = len - len2;
+	while (((t_token *)tmp->content)->end < expansion->begin)
+		tmp = tmp->next;
+	if (((t_token *)tmp->content)->begin < expansion->begin)
+	{
+		((t_token *)tmp->content)->end += diff;
+		tmp = tmp->next;
+	}
+	while (tmp)
+	{
+		if (((t_token *)tmp->content)->tokentype != '$')
+		{
+			((t_token *)tmp->content)->begin += diff;
+			((t_token *)tmp->content)->end += diff;
+		}
+		tmp = tmp->next;
+	}
+}
+
+char *expand_for_real(t_list *lst, char *str, char **val)
 {
 	char *newstr;
-	char **val;
-	int i;
+	int begin;
+	int end;
+	t_list *tmp;
 
-	i = 0;
-	val = extract_value(lst, str);
+	begin = 0;
+	newstr = NULL;
+	tmp = lst;
+	if (!lst || !val)
+		return (str);
 	while (lst)
 	{
-		newstr = ft_strjoin(newstr, ft_substr());// нужны значения begin и end
-	
-		ft_strnstr();// нужно найти слово, найти для него замену,
-		//  потом убрать кавычки, и в конце найти слово еще раз и заменить
-		// вот только это не сработает в случае с '$USER'$USER
-		// то же самое будет и если сначала убрать кавычки
-		// нужно джойнить куски старой строки в новую по очереди,
-		// пропускать кавычки, проверяя индекс в старой строке,
-		// джойнить значение переменной и плюсовать индекс на длину имени переменной,
-		// индекс должен быть только один в старой строке, а новая добавляется вслепую
-		// str2 = substr(0, begin), strjoin(res, str2), free(str2), str2 = substr(begin+1, end-1)
-		//  
-		ft_strtrim();
+		if (((t_token *)lst->content)->tokentype == '$')
+		{
+			end = ((t_token *)lst->content)->begin;
+			newstr = ft_strjoin_free(newstr, ft_substr(str, begin, end - begin));
+			printf("newstr = (%s) len = %d\n", newstr, ft_strlen(*val));
+			index_plus(lst->content, tmp, ft_strlen(*val));
+			newstr = ft_strjoin_free(newstr, *val++);
+			printf("begin = %d end = %d\n", begin, end);
+			begin = ((t_token *)lst->content)->end + 1;
+		}
 		lst = lst->next;
 	}
-	while (val[i])
-		free(val[i++]);
-	free(val);
+	newstr = ft_strjoin_free(newstr, ft_substr(str, begin, ft_strlen(str)));
+	free(str);
+	return (newstr);
+}
+
+char *remove_quotes(t_list *lst, char *str)
+{
+	char *newstr;
+	int begin;
+	int end;
+
+	begin = 0;
+	newstr = NULL;
+	if (!lst)
+		return (str);
+	while (lst)
+	{
+		if (((t_token *)lst->content)->tokentype != '$')
+		{
+			end = ((t_token *)lst->content)->begin;
+			newstr = ft_strjoin_free(newstr, ft_substr(str, begin, end - begin));
+			printf("before quotes = (%s)\n", newstr);
+			begin = end + 1;
+			end = ((t_token *)lst->content)->end;
+			newstr = ft_strjoin_free(newstr, ft_substr(str, begin, end - begin));
+			printf("begin = %d end = %d\n", begin, end);
+			begin = ((t_token *)lst->content)->end + 1;
+			printf("in quotes = (%s)\n", newstr);
+		}
+		lst = lst->next;
+	}
+	if (ft_strlen(str) > begin)
+		newstr = ft_strjoin_free(newstr, ft_substr(str, begin, ft_strlen(str) - begin));
+	printf("after quotes = (%s)\n", newstr);
 	free(str);
 	return (newstr);
 }
@@ -635,16 +735,29 @@ char *expand_for_real(t_list *lst, char *str)
 char *expand(char *string)
 {
 	t_list *tokens;
+	char **val;
+	int i;
 
+	i = 0;
 	tokens = NULL;
-	if (ft_strchr(string, '\'') || ft_strchr(string, '\"'
-		|| ft_strchr(string, '$')))
+	val = NULL;
+	// printf("----++------%s\n", string);
+	if (ft_strchr(string, '$') || ft_strchr(string, '\'')
+		|| ft_strchr(string, '\"'))
 	{
 		quote_token_search(&tokens, '\"', string);
 		dollar_sign_token_search(&tokens, '$', string);
+		printf("\ntokushki\n");
+		lstprint(tokens);
+		printf("\n");
 		ft_list_sort(&tokens, compare_tokens);
-		string = expand_for_real(tokens, string);
+		val = extract_value(tokens, string);
+		string = expand_for_real(tokens, string, val);
+		printf("expanded = (%s)\n", string);
+		string = remove_quotes(tokens, string);
 		ft_lstclear(&tokens, free);
+		if (val)
+			free(val);
 	}
 	return (string);
 }
@@ -654,7 +767,9 @@ void parse_word(t_list *lst, int vars)
 	while (lst)
 	{
 		if (vars)
+		{
 			((t_file *)(lst->content))->value = expand(((t_file *)(lst->content))->value);
+		}
 		else
 			((t_file *)(lst->content))->name = expand(((t_file *)(lst->content))->name);
 		lst = lst->next;
@@ -669,13 +784,39 @@ void pathname_expansion(t_cmd *simpcmds)
 	{
 		// по очереди смотреть все списки, искать для каждой строки кавычки, $, все заменять,
 		// старые строки освобождать, новые создавать
+		// lstprint2(simpcmds[i].infiles);
+		// lstprint2(simpcmds[i].outfiles);
+		// lstprint2(simpcmds[i].command);
+		lstprint2(simpcmds[i].vars);
 		// 
-		parse_word(simpcmds->infiles, 0);
-		parse_word(simpcmds->outfiles, 0);
-		parse_word(simpcmds->command, 0);
-		parse_word(simpcmds->vars, 1);
+		parse_word(simpcmds[i].infiles, 0);
+		parse_word(simpcmds[i].outfiles, 0);
+		parse_word(simpcmds[i].command, 0);
+		parse_word(simpcmds[i].vars, 1);
+		//
+		// lstprint2(simpcmds[i].infiles);
+		// lstprint2(simpcmds[i].outfiles);
+		// lstprint2(simpcmds[i].command);
+		lstprint2(simpcmds[i].vars);
 		i++;
 	}
+}
+
+void grammatic(t_list **tokens, char *string)
+{
+	// чтобы два раза не искать $ нужно сделать это
+	// в конце, на отдельных кусочках
+	// тогда там же придется еще раз искать одинарные кавычки
+	quote_token_search(tokens, '\"', string);
+	one_simbol_token_search(tokens, '|', string);
+	one_simbol_token_search(tokens, '>', string);
+	one_simbol_token_search(tokens, '<', string);
+	space_token_search(tokens, "\t\n ", string);
+	word_token_search(tokens, string);
+	// знаки "=" имеют смысл только в словах и только если перед знаком "=" стоит ИМЯ
+	equal_token_search(tokens, string);
+	word_token_search(tokens, string);
+	ft_list_sort(tokens, compare_tokens);
 }
 
 int main (void)
@@ -684,30 +825,27 @@ int main (void)
 	t_list *tokens;
 	t_cmd *simplcmds;
 
+	g_env = ft_split("ololo eskeetit=ololo ololo", ' ');
 	tokens = NULL;
-	// string = "echo \" $ $eskeetit  \" | grep \'\"|kek\"\' | wc -l > \" \'Proctor&Gamble\'\"";
-	string = "< hhhh ec'ho\" d\"dd=dd=$eskeetit | grep kek | wc -l > Proctor&Gamble";
-	quote_token_search(&tokens, '\"', string);
-	one_simbol_token_search(&tokens, '|', string);
-	one_simbol_token_search(&tokens, '>', string);
-	one_simbol_token_search(&tokens, '<', string);
-	space_token_search(&tokens, "\t\n ", string);
-	word_token_search(&tokens, string);
-	// знаки "=" имеют смысл только в словах и только если перед знаком "=" стоит ИМЯ
-	equal_token_search(&tokens, string);
-	word_token_search(&tokens, string);
-	ft_list_sort(&tokens, compare_tokens);
+	// string = "echo \" $ $eskeetit  7\" | grep \'\"|kek\"\' | wc -l > \" \'proctor&gamble\'\"";
+	string = "< hhhh dd=dd=$eskeetit ec'h'o\" d\" dd=dd=$eskeetit | grep kek | wc -l > proctor&gamble";
+	// модуль грамматического анализа
+// /*
+	grammatic(&tokens, string);
+// */
 	// модуль синтаксического анализа
 // /* 
 	simplcmds = simple_command_parser(tokens, string);
 // */
 	// следующие действия уже после группировки токенов и синтаксического анализа
 	// field_spliting();// не нужно, они уже и так разделены
-	// pathname_expansion(simplcmds);
+	pathname_expansion(simplcmds);
 	// в присвоениях и перенаправлениях раскрытие $ происходит тоже
 	// quote_removal();
 	lstprint(tokens);
 	printf("\n%s\n", ((t_file *)simplcmds[2].outfiles->content)->name);
-	printf("\n%s\n", ((t_file *)simplcmds[0].command->next->content)->name);
+	// printf("\n%s\n", ((t_file *)simplcmds[0].command->next->content)->name);
+	printf("%s\n", string);
+	ft_lstclear(&tokens, free);
 	return (0);
 }
