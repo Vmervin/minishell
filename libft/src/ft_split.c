@@ -22,6 +22,8 @@ char	**ft_split(char const *s, char c)
 	char	**x;
 	char	*str;
 
+	if (!s)
+		return (NULL);
 	str = ft_split_trim(s, c);
 	x = ft_split_counter(str, c);
 	if (!x)
