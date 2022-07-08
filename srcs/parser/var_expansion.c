@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 16:18:03 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/08 02:22:39 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	**extract_value(t_list *lst, char *str)
 			val[count++] = val_search(((t_token *)lst->content), str);
 		lst = lst->next;
 	}
-	// val[count] = NULL;
 	return (val);
 }
 
@@ -114,8 +113,6 @@ char	*expand_for_real(t_list *lst, char *str, char **val)
 	begin = 0;
 	newstr = NULL;
 	tmp = lst;
-	// if (!lst || !val)
-	// 	return (str);
 	while (lst)
 	{
 		if (((t_token *)lst->content)->tokentype == '$')

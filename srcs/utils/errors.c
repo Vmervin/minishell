@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:02 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 13:35:03 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/08 01:55:02 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,5 @@ int	syntax_error(int error)
 		ft_putchar_fd(error, 2);
 		ft_putstr_fd("'\n", 2);
 	}
-	g_var.error = error;
 	return (error);
 }
