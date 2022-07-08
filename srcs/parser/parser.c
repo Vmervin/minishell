@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 03:50:15 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/08 20:25:08 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_cmd	*parser(char *string)
+t_cmd	*parser(char *string, int *error)
 {
 	t_parser	service;
 	t_cmd		*simplcmds;
@@ -26,6 +26,7 @@ t_cmd	*parser(char *string)
 	simplcmds = simple_command_parser(&service);
 	pathname_expansion(simplcmds);
 	ft_lstclear(&service.tokens, free);
+	*error = service.error;
 	return (simplcmds);
 }
 

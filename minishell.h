@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
+/*   Updated: 2022/07/08 20:33:36 by vmervin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 // #include <string.h>
 #include <stdlib.h>
@@ -58,7 +70,7 @@ typedef struct s_global
 t_global	g_var;
 
 // parser
-t_cmd	*parser(char *string);
+t_cmd	*parser(char *string, int *error);
 
 // tokens
 void	add_list(t_list **lst, int begin, int end, char type);
