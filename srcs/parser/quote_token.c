@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 13:46:43 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/08 01:26:26 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,35 @@ void	add_list(t_list **lst, int begin, int end, char type)
 	ft_lstadd_back(lst, ft_lstnew(content));
 }
 
-void	quote_token_search(t_list **lst, char type, char *str)
+void	quote_token_search(t_parser *serv)
 {
 	int	i;
 	int	len;
 	int	quotes[2];
 
 	i = 0;
-	len = ft_strlen(str);
+	len = ft_strlen(serv->string);
 	quotes[0] = '\'';
 	quotes[1] = '\"';
 	while (i < len)
 	{
-		if (!ft_strchr(str, '\'') && ft_strchr(str, '\"'))
-			i = quote_search(lst, i, '\"', str);
-		else if (ft_strchr(str, '\'') && !ft_strchr(str, '\"'))
-			i = quote_search(lst, i, '\'', str);
+		if (!ft_strchr(serv->string, '\'')
+			&& ft_strchr(serv->string, '\"'))
+			i = quote_search(serv, i, '\"', serv->string);
+		else if (ft_strchr(serv->string, '\'')
+			&& !ft_strchr(serv->string, '\"'))
+			i = quote_search(serv, i, '\'', serv->string);
 		else
 		{
-			i = quote_search(lst, i, quotes[!(ft_strchr(str, '\'')
-						< ft_strchr(str, '\"'))], str);
-			i = quote_search(lst, i, quotes[(ft_strchr(str, '\'')
-						< ft_strchr(str, '\"'))], str);
+			i = quote_search(serv, i, quotes[!(ft_strchr(serv->string, '\'')
+						< ft_strchr(serv->string, '\"'))], serv->string);
+			i = quote_search(serv, i, quotes[(ft_strchr(serv->string, '\'')
+						< ft_strchr(serv->string, '\"'))], serv->string);
 		}
 	}
 }
 
-size_t	quote_search(t_list **lst, int i, char type, char *str)
+size_t	quote_search(t_parser *service, int i, char type, char *str)
 {
 	int	tmp_begin;
 
@@ -64,8 +66,8 @@ size_t	quote_search(t_list **lst, int i, char type, char *str)
 	while (str[i] && str[i] != type)
 		i++;
 	if (str[i] && str[i] == type && tmp_begin >= 0)
-		add_list(lst, tmp_begin, i, type);
+		add_list(&service->tokens, tmp_begin, i, type);
 	if (tmp_begin > 0 && !str[i])
-		syntax_error(1);
+		service->error = syntax_error(1);
 	return (++i);
 }

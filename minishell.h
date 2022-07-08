@@ -21,14 +21,13 @@ typedef struct	s_file
 {
 	char	*name;
 	char	*value;
-	int		append;	
+	int		append;
 }	t_file;
 
-// output > записываем в последний, но открываем или создаем все по порядка
+// output > записываем в последний, но открываем или создаем все по порядку
 // input <
 typedef	struct	s_cmd
 {
-	int		delim;
 	int		empty;
 	t_list *outfiles;
 	t_list *infiles;
@@ -43,10 +42,17 @@ typedef struct s_token
 	int end;
 }	t_token;
 
+typedef struct s_parser
+{
+	char	*string;
+	t_list	*tokens;
+	int		error;
+}	t_parser;
+
 typedef struct s_global
 {
 	char **env;
-	int error;
+	// int error;
 }	t_global;
 
 t_global	g_var;
@@ -56,8 +62,8 @@ t_cmd	*parser(char *string);
 
 // tokens
 void	add_list(t_list **lst, int begin, int end, char type);
-size_t	quote_search(t_list **lst, int i, char type, char *str);
-void	quote_token_search(t_list **lst, char type, char *str);
+size_t	quote_search(t_parser *service, int i, char type, char *str);
+void	quote_token_search(t_parser *serv);
 int		is_quoted_word(t_list *lst, int i, char type);
 int		is_token(t_list *lst, int i, char type);
 int		is_name(t_token *token, int i, char *str);
@@ -70,24 +76,25 @@ void	space_token_search(t_list **lst, char *type, char *str);
 size_t	word_search(t_list **lst, int i, char *str);
 void	word_token_search(t_list **lst, char *str);
 void	equal_token_search(t_list **lst, char *str);
-void	grammatic(t_list **tokens, char *string);
+void	grammatic(t_parser *service);
 
 // syntax
 void	add_list_file(t_list **lst, int append, char *name, char *value);
-t_list	*add_outfile(t_cmd *cmd, t_list *lst, char *str);
-t_list	*add_infile(t_cmd *cmd, t_list *lst, char *str);
-t_list	*add_var_declare(t_cmd *cmd, t_list *lst, char *str);
-t_list	*add_command(t_cmd *cmd, t_list *lst, char *str);
-void	analize_syntax(t_cmd *cmd, t_list *lst, char *str);
-int		init_commands(t_cmd *cmd, t_list *lst, char *str, int i);
+t_list	*add_outfile(t_cmd *cmd, t_list *lst, t_parser *service);
+t_list	*add_infile(t_cmd *cmd, t_list *lst, t_parser *service);
+t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service);
+t_list	*add_command(t_cmd *cmd, t_list *lst, t_parser *service);
+void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service);
+int		init_commands(t_cmd *cmd, t_parser *service, int i);
 int		search_pipes(t_list *lst);
-t_cmd	*simple_command_parser(t_list *lst, char *str);
+t_cmd	*simple_command_parser(t_parser *service);
 char	*val_search(t_token *token, char *str);
 char	**extract_value(t_list *lst, char *str);
 char	*ft_strjoin_free(const char *s1, const char *s2);
 void	index_plus(t_token *expansion, t_list *tmp, size_t len);
 char	*expand_for_real(t_list *lst, char *str, char **val);
 char	*remove_quotes(t_list *lst, char *str);
+char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok);
 char	*expand(char *string);
 void	parse_word(t_list *lst, int vars);
 void	pathname_expansion(t_cmd *simpcmds);

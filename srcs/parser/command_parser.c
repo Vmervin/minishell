@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:57 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 13:40:49 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/08 02:19:05 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	analize_syntax(t_cmd *cmd, t_list *lst, char *str)
+void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service)
 {
 	int	x;
 
@@ -20,14 +20,14 @@ void	analize_syntax(t_cmd *cmd, t_list *lst, char *str)
 	while (lst && ((t_token *)lst->content)->tokentype != '|')
 	{
 		if (((t_token *)lst->content)->tokentype == '>')
-			lst = add_outfile(cmd, lst->next, str);
+			lst = add_outfile(cmd, lst->next, service);
 		else if (((t_token *)lst->content)->tokentype == '<')
-			lst = add_infile(cmd, lst->next, str);
+			lst = add_infile(cmd, lst->next, service);
 		else if (!x && ((t_token *)lst->content)->tokentype == '=')
-			lst = add_var_declare(cmd, lst, str);
+			lst = add_var_declare(cmd, lst, service);
 		else if (((t_token *)lst->content)->tokentype != ' ')
 		{	
-			lst = add_command(cmd, lst, str);
+			lst = add_command(cmd, lst, service);
 			x = 1;
 		}
 		else
@@ -35,15 +35,20 @@ void	analize_syntax(t_cmd *cmd, t_list *lst, char *str)
 	}
 }
 
-int	init_commands(t_cmd *cmd, t_list *lst, char *str, int i)
+int	init_commands(t_cmd *cmd, t_parser *service, int i)
 {
+	t_list	*lst;
+
+	if (!service)
+		lst = NULL;
+	else
+		lst = service->tokens;
 	cmd->outfiles = NULL;
 	cmd->infiles = NULL;
 	cmd->vars = NULL;
 	cmd->command = NULL;
-	cmd->delim = 0;
 	cmd->empty = 0;
-	if (!lst && !str)
+	if (!service)
 		cmd->empty = 1;
 	while (lst && (i > 0))
 	{
@@ -51,7 +56,7 @@ int	init_commands(t_cmd *cmd, t_list *lst, char *str, int i)
 			i--;
 		lst = lst->next;
 	}
-	analize_syntax(cmd, lst, str);
+	analize_syntax(cmd, lst, service);
 	return (0);
 }
 
