@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 18:26:41 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 22:14:15 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	pathname_expansion(t_cmd *simpcmds)
 		return ;
 	while (!simpcmds[i].empty)
 	{
-		parse_word(simpcmds[i].infiles, 0);
+		parse_word(simpcmds[i].infiles, -1);
 		parse_word(simpcmds[i].outfiles, 0);
 		parse_word(simpcmds[i].command, 0);
 		parse_word(simpcmds[i].vars, 1);

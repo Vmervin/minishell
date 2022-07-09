@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 19:03:47 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 21:08:28 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ char	*expand_for_real(t_list *lst, char *str, char **val)
 	begin = 0;
 	newstr = NULL;
 	tmp = lst;
-	while (lst)
+	while (lst && val && *val)
 	{
 		if (((t_token *)lst->content)->tokentype == '$')
 		{

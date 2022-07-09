@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:01 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 21:34:48 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	dollar_sign_search(t_list **lst, int i, char type, char *str)
 	i--;
 	if (str[i] && tmp_begin >= 0)
 		add_list(lst, tmp_begin, i, '$');
-	return (i += 2);
+	return (++i);
 }
 
 void	dollar_sign_token_search(t_list **lst, char type, char *str)

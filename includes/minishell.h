@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 18:44:49 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 22:35:05 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 // #include <sys/ioctl.h>
 // #include <curses.h>
 // #include <term.h>
-// #include <readline/readline.h>
-// #include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "./libft/libft.h"
 
 typedef struct s_file
@@ -80,6 +80,11 @@ void	remove_vars(char *name);
 void	env_to_list(char **env);
 char	*get_name(char *str);
 
+// herdoc
+void	heredoc(char *eof, int fd, int append);
+char	*expand_heredoc(char *string, int append);
+int		is_eof(char *line, char *eof);
+
 // tokens
 void	add_list(t_list **lst, int begin, int end, char type);
 size_t	quote_search(t_parser *service, int i, char type, char *str);
@@ -115,7 +120,7 @@ void	index_plus(t_token *expansion, t_list *tmp, size_t len);
 char	*expand_for_real(t_list *lst, char *str, char **val);
 char	*remove_quotes(t_list *lst, char *str);
 char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok);
-char	*expand(char *string);
+char	*expand(char *string, int herdoc);
 void	parse_word(t_list *lst, int vars);
 void	pathname_expansion(t_cmd *simpcmds);
 void	var_free(t_list *lst);
