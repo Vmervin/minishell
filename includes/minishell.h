@@ -30,7 +30,7 @@
 // #include <term.h>
 // #include <readline/readline.h>
 // #include <readline/history.h>
-# include "./libft/libft.h"
+# include "./../libft/libft.h"
 # define ERR_MALLOC0 0
 # define ERR_PIPE_INIT 1
 # define ERR_FORK_INIT 2
@@ -39,7 +39,7 @@
 # define ERR_FILE_OPEN 5
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct s_file
 {
@@ -152,6 +152,7 @@ void	change_vars(char *name, char *val);
 void	var_free(t_list *lst);
 
 // utils
+void	var_process(t_cmd *simplcmds);
 void	memfree(t_list *lst);
 void	command_memfree(t_cmd *simplcmds);
 int		syntax_error(int error);

@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "includes/minishell.h"
 
 // void	free_appropriate_struct(t_store *st)
 // {

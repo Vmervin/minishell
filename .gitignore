@@ -1,1 +1,9 @@
 test_file.txt
+*.o
+*.d
+*.a
+*.out
+test.c
+test/
+testfile1
+testfile2
