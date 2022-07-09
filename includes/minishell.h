@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:08:42 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 18:44:49 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_parser
 
 typedef struct s_global
 {
-	char	**env;
+	t_list	*env;
 	// int error;
 }	t_global;
 
@@ -73,6 +73,12 @@ t_global	g_var;
 
 // parser
 t_cmd	*parser(char *string, int *error);
+
+// environment
+char	*get_var(char *name);
+void	remove_vars(char *name);
+void	env_to_list(char **env);
+char	*get_name(char *str);
 
 // tokens
 void	add_list(t_list **lst, int begin, int end, char type);
@@ -112,6 +118,10 @@ char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok);
 char	*expand(char *string);
 void	parse_word(t_list *lst, int vars);
 void	pathname_expansion(t_cmd *simpcmds);
+void	var_free(t_list *lst);
+void	add_vars(t_list *lst);
+void	change_vars(char *name, char *val);
+void	var_free(t_list *lst);
 
 // utils
 void	memfree(t_list *lst);
@@ -119,6 +129,8 @@ void	command_memfree(t_cmd *simplcmds);
 int		syntax_error(int error);
 void	lstprint(t_list *lst);
 void	lstprint2(t_list *lst);
+int		is_strs_equal(char *str1, char *str2);
+int		compare_names(void *content1, void *content2);
 int		compare_tokens(void *content1, void *content2);
 void	ft_swap_data(t_list *a, t_list *b);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());

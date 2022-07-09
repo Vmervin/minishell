@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:13 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 18:26:41 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_cmd	*parser(char *string, int *error)
 		simplcmds = simple_command_parser(&service);
 	if (!service.error)
 		pathname_expansion(simplcmds);
+	var_process(simplcmds);
 	ft_lstclear(&service.tokens, free);
 	*error = service.error;
 	return (simplcmds);

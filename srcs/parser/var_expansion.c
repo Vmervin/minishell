@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:36 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 18:17:03 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,22 @@ char	*val_search(t_token *token, char *str)
 {
 	char	*val;
 	char	*name;
-	int		i;
+	t_list	*lst;
 
-	i = 0;
+	lst = g_var.env;
 	name = ft_substr(str, token->begin + 1, token->end - token->begin);
 	if (!ft_strncmp("?", name, ft_strlen(name)))
 		val = ft_itoa(0);// число нужно где-то взять
 	else
 		val = ft_strdup("");
-	while (g_var.env[i])
+	while (lst)
 	{
-		if (!ft_strncmp(g_var.env[i], name, ft_strlen(name)))
+		if(is_strs_equal(((t_file *)lst->content)->name, name))
 		{
 			free(val);
-			val = ft_substr(g_var.env[i], ft_strlen(name) + 1,
-					ft_strlen(g_var.env[i]));
+			val = ft_strdup(((t_file *)lst->content)->value);
 		}
-		i++;
+		lst = lst->next;
 	}
 	free(name);
 	return (val);
