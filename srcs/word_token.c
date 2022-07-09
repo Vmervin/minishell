@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:12 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:42 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 00:46:41 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ size_t	word_search(t_list **lst, int i, char *str)
 		i++;
 	}
 	i--;
-	if (str[i] && tmp_begin >= 0)
+	if (i >= 0 && str[i] && tmp_begin >= 0)
 		add_list(lst, tmp_begin, i, 'w');
 	return (i += 2);
 }
@@ -58,6 +58,6 @@ void	word_token_search(t_list **lst, char *str)
 
 	i = 0;
 	len = ft_strlen(str);
-	while (i <= len)
+	while (i >= 0 && i <= len)
 		i = word_search(lst, i, str);
 }

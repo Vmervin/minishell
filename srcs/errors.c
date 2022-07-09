@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:02 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:53 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 00:49:43 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int	syntax_error(int error)
 {
 	if (error == 1)
 		ft_putstr_fd("Error: Unclosed quotes\n", 2);
+	else if (!error)
+	{
+		ft_putstr_fd("Syntax error near unexpected token 'newline'\n", 2);
+		return (999);
+	}
 	else
 	{
 		ft_putstr_fd("Syntax error near unexpected token '", 2);

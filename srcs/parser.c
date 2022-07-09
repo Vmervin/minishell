@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 22:14:15 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 00:51:54 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	grammatic(t_parser *service)
 	one_simbol_token_search(&service->tokens, '|', service->string);
 	one_simbol_token_search(&service->tokens, '>', service->string);
 	one_simbol_token_search(&service->tokens, '<', service->string);
-	space_token_search(&service->tokens, "\t\n ", service->string);
+	space_token_search(&service->tokens, "\t ", service->string);
 	word_token_search(&service->tokens, service->string);
 	equal_token_search(&service->tokens, service->string);
 	word_token_search(&service->tokens, service->string);

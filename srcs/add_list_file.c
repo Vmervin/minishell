@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:36:03 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:28:53 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 00:48:09 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type)
 	{
 		*append = 1;
 		lst = lst->next;
+	}
+	if (!lst)
+	{
+		service->error = syntax_error('\0');
+		return (lst);
 	}
 	while (lst && ((t_token *)lst->content)->tokentype == ' ')
 		lst = lst->next;
