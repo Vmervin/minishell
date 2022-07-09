@@ -1,10 +1,11 @@
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 // void	free_appropriate_struct(t_store *st)
 // {
 	
 // }
 
+t_global g_var;
 
 int	mini_err(t_store *st, int err)
 {

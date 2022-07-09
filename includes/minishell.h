@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 22:35:05 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 01:09:20 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct s_store
 	//char	***ouf; // outfiles
 }	t_store;
 
-t_global	g_var;
+extern t_global	g_var;
 
 // parser
 t_cmd	*parser(char *string, int *error);
