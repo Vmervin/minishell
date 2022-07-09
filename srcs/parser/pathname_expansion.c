@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 03:40:18 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 22:36:30 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok)
 {
@@ -44,20 +44,18 @@ char	*remove_quotes(t_list *lst, char *str)
 					((t_token *)lst->content));
 		lst = lst->next;
 	}
-	if (ft_strlen(str) > begin)
+	if (ft_strlen(str) > (size_t)begin)
 		newstr = ft_strjoin_free(newstr, ft_substr(str, begin,
 					ft_strlen(str) - begin));
 	free(str);
 	return (newstr);
 }
 
-char	*expand(char *string)
+char	*expand(char *string, int herdoc)
 {
 	t_parser	service;
 	char		**val;
-	int			i;
 
-	i = 0;
 	service.tokens = NULL;
 	service.string = string;
 	service.error = 0;
@@ -68,9 +66,12 @@ char	*expand(char *string)
 		quote_token_search(&service);
 		dollar_sign_token_search(&service.tokens, '$', string);
 		ft_list_sort(&service.tokens, compare_tokens);
-		val = extract_value(service.tokens, string);
-		if (service.tokens && val)
-			string = expand_for_real(service.tokens, string, val);
+		if (!herdoc)
+		{
+			val = extract_value(service.tokens, string);
+			if (service.tokens && val)
+				string = expand_for_real(service.tokens, string, val);
+		}
 		string = remove_quotes(service.tokens, string);
 		ft_lstclear(&service.tokens, free);
 		if (val)
@@ -83,14 +84,22 @@ void	parse_word(t_list *lst, int vars)
 {
 	while (lst)
 	{
-		if (vars)
+		if (vars > 0)
 		{
 			((t_file *)(lst->content))->value
-				= expand(((t_file *)(lst->content))->value);
+				= expand(((t_file *)(lst->content))->value, 0);
+		}
+		else if (vars < 0 && ((t_file *)(lst->content))->append)
+		{
+			if (ft_strchr(((t_file *)(lst->content))->name, '\'')
+			|| ft_strchr(((t_file *)(lst->content))->name, '\''))
+				((t_file *)(lst->content))->append = 2;
+			((t_file *)(lst->content))->name
+				= expand(((t_file *)(lst->content))->name, 1);
 		}
 		else
 			((t_file *)(lst->content))->name
-				= expand(((t_file *)(lst->content))->name);
+				= expand(((t_file *)(lst->content))->name, 0);
 		lst = lst->next;
 	}
 }

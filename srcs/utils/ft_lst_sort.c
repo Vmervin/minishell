@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:34:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 13:34:54 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:29:58 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 int	compare_tokens(void *content1, void *content2)
 {

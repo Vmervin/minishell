@@ -6,23 +6,26 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:57 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 02:19:05 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:28:33 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service)
 {
 	int	x;
 
 	x = 0;
-	while (lst && ((t_token *)lst->content)->tokentype != '|')
+	if (!service)
+		return ;
+	while (lst && ((t_token *)lst->content)->tokentype != '|'
+		&& !service->error)
 	{
 		if (((t_token *)lst->content)->tokentype == '>')
-			lst = add_outfile(cmd, lst->next, service);
+			lst = add_iofile(&cmd->outfiles, lst->next, service, '>');
 		else if (((t_token *)lst->content)->tokentype == '<')
-			lst = add_infile(cmd, lst->next, service);
+			lst = add_iofile(&cmd->infiles, lst->next, service, '<');
 		else if (!x && ((t_token *)lst->content)->tokentype == '=')
 			lst = add_var_declare(cmd, lst, service);
 		else if (((t_token *)lst->content)->tokentype != ' ')

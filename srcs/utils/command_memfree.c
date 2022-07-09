@@ -6,16 +6,18 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:08 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 13:35:09 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:29:48 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 void	memfree(t_list *lst)
 {
 	t_list	*tmp;
 
+	if (!lst)
+		return ;
 	tmp = lst;
 	while (tmp)
 	{

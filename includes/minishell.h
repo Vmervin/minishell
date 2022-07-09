@@ -6,19 +6,21 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 20:33:36 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 22:35:05 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <editline/readline.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <editline/readline.h>
+# include <stdio.h>
 // #include <string.h>
-#include <stdlib.h>
+# include <stdlib.h>
 // #include <termios.h>
-#include <unistd.h>
+# include <unistd.h>
 // #include <sys/types.h>
 // #include <sys/stat.h>
-#include <fcntl.h>
+# include <fcntl.h>
 // #include <sys/wait.h>
 // #include <signal.h>
 // #include <dirent.h>
@@ -28,15 +30,18 @@
 // #include <term.h>
 // #include <readline/readline.h>
 // #include <readline/history.h>
-#include "./libft/libft.h"
-#define ERR_MALLOC0 0
-#define ERR_PIPE_INIT 1
-#define ERR_FORK_INIT 2
-#define ERR_SUB_PRCCESS 3
-#define ERR_FOR_SUBFUNC 4
-#define ERR_FILE_OPEN 5
+# include "./libft/libft.h"
+# define ERR_MALLOC0 0
+# define ERR_PIPE_INIT 1
+# define ERR_FORK_INIT 2
+# define ERR_SUB_PRCCESS 3
+# define ERR_FOR_SUBFUNC 4
+# define ERR_FILE_OPEN 5
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "./libft/libft.h"
 
-typedef struct	s_file
+typedef struct s_file
 {
 	char	*name;
 	char	*value;
@@ -45,20 +50,20 @@ typedef struct	s_file
 
 // output > записываем в последний, но открываем или создаем все по порядку
 // input <
-typedef	struct	s_cmd
+typedef struct s_cmd
 {
 	int		empty;
-	t_list *outfiles;
-	t_list *infiles;
-	t_list *vars;
-	t_list *command; 
+	t_list	*outfiles;
+	t_list	*infiles;
+	t_list	*vars;
+	t_list	*command;
 }	t_cmd;
 
 typedef struct s_token
 {
-	int tokentype;
-	int begin;
-	int end;
+	int	tokentype;
+	int	begin;
+	int	end;
 }	t_token;
 
 typedef struct s_parser
@@ -70,7 +75,7 @@ typedef struct s_parser
 
 typedef struct s_global
 {
-	char **env;
+	t_list	*env;
 	// int error;
 }	t_global;
 
@@ -92,6 +97,17 @@ t_global	g_var;
 // parser
 t_cmd	*parser(char *string, int *error);
 
+// environment
+char	*get_var(char *name);
+void	remove_vars(char *name);
+void	env_to_list(char **env);
+char	*get_name(char *str);
+
+// herdoc
+void	heredoc(char *eof, int fd, int append);
+char	*expand_heredoc(char *string, int append);
+int		is_eof(char *line, char *eof);
+
 // tokens
 void	add_list(t_list **lst, int begin, int end, char type);
 size_t	quote_search(t_parser *service, int i, char type, char *str);
@@ -111,9 +127,9 @@ void	equal_token_search(t_list **lst, char *str);
 void	grammatic(t_parser *service);
 
 // syntax
-void	add_list_file(t_list **lst, int append, char *name, char *value);
-t_list	*add_outfile(t_cmd *cmd, t_list *lst, t_parser *service);
-t_list	*add_infile(t_cmd *cmd, t_list *lst, t_parser *service);
+int		add_list_file(t_list **lst, int append, char *name, char *value);
+t_list	*add_iofile(t_list **cmd, t_list *lst, t_parser *service, char type);
+t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type);
 t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service);
 t_list	*add_command(t_cmd *cmd, t_list *lst, t_parser *service);
 void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service);
@@ -127,9 +143,13 @@ void	index_plus(t_token *expansion, t_list *tmp, size_t len);
 char	*expand_for_real(t_list *lst, char *str, char **val);
 char	*remove_quotes(t_list *lst, char *str);
 char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok);
-char	*expand(char *string);
+char	*expand(char *string, int herdoc);
 void	parse_word(t_list *lst, int vars);
 void	pathname_expansion(t_cmd *simpcmds);
+void	var_free(t_list *lst);
+void	add_vars(t_list *lst);
+void	change_vars(char *name, char *val);
+void	var_free(t_list *lst);
 
 // utils
 void	memfree(t_list *lst);
@@ -137,6 +157,10 @@ void	command_memfree(t_cmd *simplcmds);
 int		syntax_error(int error);
 void	lstprint(t_list *lst);
 void	lstprint2(t_list *lst);
+int		is_strs_equal(char *str1, char *str2);
+int		compare_names(void *content1, void *content2);
 int		compare_tokens(void *content1, void *content2);
 void	ft_swap_data(t_list *a, t_list *b);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());
+
+#endif

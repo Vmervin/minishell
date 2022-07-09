@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_lst_sort2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 13:35:02 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:53 by vmervin          ###   ########.fr       */
+/*   Created: 2022/07/09 18:13:17 by vmervin           #+#    #+#             */
+/*   Updated: 2022/07/09 19:04:33 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	syntax_error(int error)
+int	compare_names(void *content1, void *content2)
 {
-	if (error == 1)
-		ft_putstr_fd("Error: Unclosed quotes\n", 2);
-	else
-	{
-		ft_putstr_fd("Syntax error near unexpected token '", 2);
-		ft_putchar_fd(error, 2);
-		ft_putstr_fd("'\n", 2);
-	}
-	return (error);
+	return (ft_strncmp(((t_file *)content1)->name,
+			((t_file *)content2)->name,
+			ft_strlen(((t_file *)content1)->name)));
+}
+
+int	is_strs_equal(char *str1, char *str2)
+{
+	return (!ft_strncmp(str1, str2, ft_strlen(str1))
+		&& (ft_strlen(str1) == ft_strlen(str2)));
 }

@@ -6,17 +6,19 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 01:26:26 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:29:27 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 void	add_list(t_list **lst, int begin, int end, char type)
 {
 	t_token	*content;
 
 	content = malloc(sizeof(t_token));
+	if (!content)
+		return ;
 	content->begin = begin;
 	content->end = end;
 	content->tokentype = (int)type;
