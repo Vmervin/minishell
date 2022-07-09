@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 18:48:05 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 19:05:36 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ char	*get_var(char *name)
 
 void	remove_vars(char *name)
 {
-	t_list *lst;
-	t_list *tmp;
+	t_list	*lst;
+	t_list	*tmp;
 
 	lst = g_var.env;
 	if (is_strs_equal(((t_file *)lst->content)->name, name))
@@ -77,7 +77,7 @@ void	remove_vars(char *name)
 		{
 			tmp->next = lst->next;
 			var_free(lst);
-			return ;		
+			return ;
 		}
 		tmp = lst;
 		lst = lst->next;

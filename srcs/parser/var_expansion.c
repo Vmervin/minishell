@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 18:17:03 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 19:03:47 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*val_search(t_token *token, char *str)
 		val = ft_strdup("");
 	while (lst)
 	{
-		if(is_strs_equal(((t_file *)lst->content)->name, name))
+		if (is_strs_equal(((t_file *)lst->content)->name, name))
 		{
 			free(val);
 			val = ft_strdup(((t_file *)lst->content)->value);

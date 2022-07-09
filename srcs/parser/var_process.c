@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:20:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 18:45:34 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 19:06:20 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	change_vars(char *name, char *val)
 		{
 			free(((t_file *)lst->content)->value);
 			((t_file *)lst->content)->value = val;
-			return ;		
+			return ;
 		}
 		lst = lst->next;
 	}
@@ -63,7 +63,7 @@ void	var_process(t_cmd *simplcmds)
 	else if (!simplcmds[0].command)
 		add_vars(simplcmds[0].vars);
 	else if (is_strs_equal(((t_file *)(simplcmds[0].command->content))->name,
-			"export"))
+		"export"))
 		add_vars(simplcmds[0].command);
 	else
 		return ;
