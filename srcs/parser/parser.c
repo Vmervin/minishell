@@ -20,7 +20,7 @@ t_cmd	*parser(char *string, int *error)
 	service.string = string;
 	service.tokens = NULL;
 	service.error = 0;
-	if (string == "\n")
+	if (*string == '\n')
 		return (NULL);
 	grammatic(&service);
 	simplcmds = simple_command_parser(&service);

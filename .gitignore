@@ -1,9 +1,1 @@
-
-test
-*.out
-test.c
-*.o
-*.d
-
-.vscode/
-libft.a
+test_file.txt

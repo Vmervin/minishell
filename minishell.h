@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <editline/readline.h>
 // #include <string.h>
 #include <stdlib.h>
 // #include <termios.h>
@@ -28,12 +29,18 @@
 // #include <readline/readline.h>
 // #include <readline/history.h>
 #include "./libft/libft.h"
+#define ERR_MALLOC0 0
+#define ERR_PIPE_INIT 1
+#define ERR_FORK_INIT 2
+#define ERR_SUB_PRCCESS 3
+#define ERR_FOR_SUBFUNC 4
+#define ERR_FILE_OPEN 5
 
 typedef struct	s_file
 {
 	char	*name;
 	char	*value;
-	int		append;
+	int		append; // append == 1 => ">>" 0 нормальный файл, 1 хердок без ковычек, 2 хердок с ковычками
 }	t_file;
 
 // output > записываем в последний, но открываем или создаем все по порядку
@@ -66,6 +73,19 @@ typedef struct s_global
 	char **env;
 	// int error;
 }	t_global;
+
+typedef struct s_store
+{
+	char	**env;
+	char	**path;
+	int		size;
+	int		**pip;
+	int		last_result;
+	char	**com; // commands
+	char	***par;// params (arr of arr of strings)
+	//char	***inf; // infiles
+	//char	***ouf; // outfiles
+}	t_store;
 
 t_global	g_var;
 
