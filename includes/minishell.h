@@ -6,15 +6,17 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 20:33:36 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:08:42 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <stdio.h>
 // #include <string.h>
-#include <stdlib.h>
+# include <stdlib.h>
 // #include <termios.h>
-#include <unistd.h>
+# include <unistd.h>
 // #include <sys/types.h>
 // #include <sys/stat.h>
 // #include <fcntl.h>
@@ -27,9 +29,9 @@
 // #include <term.h>
 // #include <readline/readline.h>
 // #include <readline/history.h>
-#include "./libft/libft.h"
+# include "./libft/libft.h"
 
-typedef struct	s_file
+typedef struct s_file
 {
 	char	*name;
 	char	*value;
@@ -38,20 +40,20 @@ typedef struct	s_file
 
 // output > записываем в последний, но открываем или создаем все по порядку
 // input <
-typedef	struct	s_cmd
+typedef struct s_cmd
 {
 	int		empty;
-	t_list *outfiles;
-	t_list *infiles;
-	t_list *vars;
-	t_list *command; 
+	t_list	*outfiles;
+	t_list	*infiles;
+	t_list	*vars;
+	t_list	*command;
 }	t_cmd;
 
 typedef struct s_token
 {
-	int tokentype;
-	int begin;
-	int end;
+	int	tokentype;
+	int	begin;
+	int	end;
 }	t_token;
 
 typedef struct s_parser
@@ -63,7 +65,7 @@ typedef struct s_parser
 
 typedef struct s_global
 {
-	char **env;
+	char	**env;
 	// int error;
 }	t_global;
 
@@ -91,9 +93,9 @@ void	equal_token_search(t_list **lst, char *str);
 void	grammatic(t_parser *service);
 
 // syntax
-void	add_list_file(t_list **lst, int append, char *name, char *value);
-t_list	*add_outfile(t_cmd *cmd, t_list *lst, t_parser *service);
-t_list	*add_infile(t_cmd *cmd, t_list *lst, t_parser *service);
+int		add_list_file(t_list **lst, int append, char *name, char *value);
+t_list	*add_iofile(t_list **cmd, t_list *lst, t_parser *service, char type);
+t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type);
 t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service);
 t_list	*add_command(t_cmd *cmd, t_list *lst, t_parser *service);
 void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service);
@@ -120,3 +122,5 @@ void	lstprint2(t_list *lst);
 int		compare_tokens(void *content1, void *content2);
 void	ft_swap_data(t_list *a, t_list *b);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());
+
+#endif

@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 20:25:08 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:29:13 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 t_cmd	*parser(char *string, int *error)
 {
@@ -20,11 +20,13 @@ t_cmd	*parser(char *string, int *error)
 	service.string = string;
 	service.tokens = NULL;
 	service.error = 0;
-	if (string == "\n")
+	if (!ft_strncmp(string, "\n", ft_strlen(string)))
 		return (NULL);
 	grammatic(&service);
-	simplcmds = simple_command_parser(&service);
-	pathname_expansion(simplcmds);
+	if (!service.error)
+		simplcmds = simple_command_parser(&service);
+	if (!service.error)
+		pathname_expansion(simplcmds);
 	ft_lstclear(&service.tokens, free);
 	*error = service.error;
 	return (simplcmds);
@@ -55,8 +57,10 @@ t_cmd	*simple_command_parser(t_parser *service)
 	if (!scmds)
 		return (NULL);
 	i = 0;
-	while (i < count && !service->error)
+	while (i < count)
 	{
+		if (service->error)
+			break ;
 		init_commands(&scmds[i], service, i);
 		i++;
 	}

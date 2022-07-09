@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:02 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/08 01:55:02 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:29:53 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 int	syntax_error(int error)
 {

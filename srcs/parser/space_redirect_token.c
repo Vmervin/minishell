@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:25 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/07 13:47:58 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/09 03:29:32 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 void	one_simbol_token_search(t_list **lst, char type, char *str)
 {
