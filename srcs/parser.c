@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 00:51:54 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 02:32:57 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ t_cmd	*parser(char *string, int *error)
 	service.string = string;
 	service.tokens = NULL;
 	service.error = 0;
-	if (!ft_strncmp(string, "\n", ft_strlen(string)))
-		return (NULL);
+	// if (!ft_strncmp(string, "\n", ft_strlen(string)))
+	// 	return (NULL);
 	grammatic(&service);
 	if (!service.error)
 		simplcmds = simple_command_parser(&service);

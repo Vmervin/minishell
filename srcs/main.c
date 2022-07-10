@@ -83,6 +83,7 @@ int	startup(t_store *st, char **env)
 {
 	int	i;
 
+	env_to_list(env);
 	st->path = path_separate(env);
 	st->env = env;
 	if (!st->path)
@@ -272,7 +273,8 @@ int	main(int args, char **argv, char **env)
 		return (0);
 	while (1)
 	{
-		str = readline("minishell>");
+		// str = readline("minishell>");
+		str = rl_gets();
 		if (!str)
 			continue;
 		cmds = parser(str, &err);
