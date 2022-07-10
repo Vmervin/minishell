@@ -8,6 +8,7 @@
 
 int	mini_err(t_store *st, int err)
 {
+	printf("Err occured: %d", err);
 	if (err == 0)
 	{
 		free(st->com);
@@ -112,8 +113,8 @@ void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 	i = -1;
 	while (++i < st->size)
 	{
-		st->pip = mini_calloc(2, sizeof(int), st);
-		st->par = mini_calloc(get_list_size(cmds->command), sizeof(void *), st);
+		st->pip[i] = mini_calloc(2, sizeof(int), st);
+		st->par[i] = mini_calloc(get_list_size(cmds->command), sizeof(void *), st);
 		cmds++;
 	}
 	i = -1;
@@ -136,15 +137,22 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 	{
 		if (!cmds->command)
 			continue ;
-		st->com[i] = (char *)(cmds->command->content);
-		e = -1;
+		st->com[i] = ((t_file *)cmds->command->content)->name;
+		printf("st->com[%d] %s\n And it has address: %p\n", i, st->com[i], st->com);
+		e = 0;
 		curlist = cmds->command->next;
-		while (cmds->command)
+		// printf("curlist = %p\n", curlist);
+		while (curlist)
 		{
-			st->par[i][++e] = (char *)(cmds->command->content);
+			st->par[i][e] = (char *)curlist->content;
+			// printf("get: %d\n", i);
 			curlist = curlist->next;
+			// printf("get: %d\n", i);
+			e++;
 		}
-		st->com[i][e] = '\n';
+		printf("e = %d\n", e);
+		st->par[i][e] = NULL;
+		// printf("imhere!\n");
 	}
 }
 
@@ -218,8 +226,10 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 {
 	int	status;
 
+	printf("imhere!\n");
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
+	printf("exeve: %s\nAnd it has address: %p\n", st->com[0], st->com);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
@@ -253,6 +263,7 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	int	i;
 
 	malloc_appropriate_struct(st, cmds);
+	// printf("imhere\n");
 	create_appropriate_struct(st, cmds);
 	i = -1;
 	while (++i < st->size)
@@ -277,7 +288,7 @@ int	main(int args, char **argv, char **env)
 		cmds = parser(str, &err);
 		if (err)
 			continue;
-		st.size = 0;
+		st.size = get_cmd_size(cmds);
 		err = main_loop(&st, cmds);
 	}
 }
