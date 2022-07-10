@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:57 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:28:33 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 04:37:50 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service)
 		else if (((t_token *)lst->content)->tokentype == '<')
 			lst = add_iofile(&cmd->infiles, lst->next, service, '<');
 		else if (!x && ((t_token *)lst->content)->tokentype == '=')
-			lst = add_var_declare(cmd, lst, service);
+			lst = add_var_declare(cmd, lst, service, 0);
 		else if (((t_token *)lst->content)->tokentype != ' ')
 		{	
+			if (x && ((t_token *)lst->content)->tokentype == '=')
+				add_var_declare(cmd, lst, service, 1);
 			lst = add_command(cmd, lst, service);
 			x = 1;
 		}

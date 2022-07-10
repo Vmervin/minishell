@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 22:35:05 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 05:12:01 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include <editline/readline.h>
+// # include <editline/readline.h>
 # include <stdio.h>
 // #include <string.h>
 # include <stdlib.h>
@@ -21,7 +21,7 @@
 // #include <sys/types.h>
 // #include <sys/stat.h>
 # include <fcntl.h>
-// #include <sys/wait.h>
+#include <sys/wait.h>
 // #include <signal.h>
 // #include <dirent.h>
 // #include <errno.h>
@@ -92,7 +92,7 @@ typedef struct s_store
 	//char	***ouf; // outfiles
 }	t_store;
 
-t_global	g_var;
+extern t_global	g_var;
 
 // parser
 t_cmd	*parser(char *string, int *error);
@@ -130,7 +130,7 @@ void	grammatic(t_parser *service);
 int		add_list_file(t_list **lst, int append, char *name, char *value);
 t_list	*add_iofile(t_list **cmd, t_list *lst, t_parser *service, char type);
 t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type);
-t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service);
+t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service, int ex);
 t_list	*add_command(t_cmd *cmd, t_list *lst, t_parser *service);
 void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service);
 int		init_commands(t_cmd *cmd, t_parser *service, int i);
@@ -147,12 +147,13 @@ char	*expand(char *string, int herdoc);
 void	parse_word(t_list *lst, int vars);
 void	pathname_expansion(t_cmd *simpcmds);
 void	var_free(t_list *lst);
-void	add_vars(t_list *lst);
+void	add_vars(t_list *lst, int ex);
 void	change_vars(char *name, char *val);
 void	var_free(t_list *lst);
 
 // utils
 void	var_process(t_cmd *simplcmds);
+void	unset_vars(t_list *lst);
 void	memfree(t_list *lst);
 void	command_memfree(t_cmd *simplcmds);
 int		syntax_error(int error);
@@ -163,5 +164,7 @@ int		compare_names(void *content1, void *content2);
 int		compare_tokens(void *content1, void *content2);
 void	ft_swap_data(t_list *a, t_list *b);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());
+char	*prompt_invitation(void);
+char	*rl_gets(void);
 
 #endif

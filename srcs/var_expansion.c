@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 21:08:28 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 05:40:27 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**extract_value(t_list *lst, char *str)
 			count++;
 		lst = lst->next;
 	}
-	val = malloc(sizeof(char *) * (count));
+	val = malloc(sizeof(char *) * (count + 1));
 	if (!val)
 		return (NULL);// отдельная функция для всего что ниже или что выше
 	lst = tmp;
@@ -62,6 +62,7 @@ char	**extract_value(t_list *lst, char *str)
 			val[count++] = val_search(((t_token *)lst->content), str);
 		lst = lst->next;
 	}
+	val[count] = NULL;
 	return (val);
 }
 

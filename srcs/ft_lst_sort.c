@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:34:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:58 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 04:50:06 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ void	lstprint2(t_list *lst)
 		return ;
 	while (lst->next)
 	{
-		ft_printf("name = (%s) ", ((t_file *)lst->content)->name);
-		ft_printf("value = (%s) ", ((t_file *)lst->content)->value);
-		ft_printf("append = %d\n", ((t_file *)lst->content)->append);
+		ft_printf("%s=", ((t_file *)lst->content)->name);
+		ft_printf("%s\n", ((t_file *)lst->content)->value);
+		// ft_printf("append = %d\n", ((t_file *)lst->content)->append);
 		lst = lst->next;
 	}
-	ft_printf("name = (%s) ", ((t_file *)lst->content)->name);
-	ft_printf("value = (%s) ", ((t_file *)lst->content)->value);
-	ft_printf("append = %d\n\n", ((t_file *)lst->content)->append);
+	ft_printf("%s=", ((t_file *)lst->content)->name);
+	ft_printf("%s\n", ((t_file *)lst->content)->value);
+	// ft_printf("append = %d\n\n", ((t_file *)lst->content)->append);
 }

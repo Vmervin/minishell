@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:20:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 19:06:20 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/10 05:50:26 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ void	change_vars(char *name, char *val)
 {
 	t_list	*lst;
 
+	if (!val)
+		return ;
 	lst = g_var.env;
 	while (lst)
 	{
 		if (is_strs_equal(((t_file *)lst->content)->name, name))
 		{
 			free(((t_file *)lst->content)->value);
+			free(name);
 			((t_file *)lst->content)->value = val;
 			return ;
 		}
@@ -41,19 +44,31 @@ void	change_vars(char *name, char *val)
 	add_list_file(&g_var.env, 0, name, val);
 }
 
-void	add_vars(t_list *lst)
+void	add_vars(t_list *lst, int ex)
 {
 	char	*name;
 	char	*val;
 
 	while (lst)
 	{
-		name = ft_strdup(((t_file *)(lst->content))->name);
-		val = ft_strdup(((t_file *)(lst->content))->value);
-		change_vars(name, val);
-		lst = lst->next;
+		if (((t_file *)(lst->content))->append == ex)
+		{
+			name = ft_strdup(((t_file *)(lst->content))->name);
+			val = ft_strdup(((t_file *)(lst->content))->value);
+			change_vars(name, val);
+			lst = lst->next;
+		}
 	}
 	ft_list_sort(&g_var.env, compare_names);
+}
+
+void	unset_vars(t_list *lst)
+{
+	while (lst)
+	{
+		remove_vars(((t_file *)(lst->content))->name);
+		lst = lst->next;
+	}
 }
 
 void	var_process(t_cmd *simplcmds)
@@ -61,10 +76,18 @@ void	var_process(t_cmd *simplcmds)
 	if (!simplcmds[1].empty)
 		return ;
 	else if (!simplcmds[0].command)
-		add_vars(simplcmds[0].vars);
+		add_vars(simplcmds[0].vars, 0);
 	else if (is_strs_equal(((t_file *)(simplcmds[0].command->content))->name,
 		"export"))
-		add_vars(simplcmds[0].command);
+	{
+		if (!simplcmds[0].command->next)
+			return ;
+		add_vars(simplcmds[0].command, 0);
+		add_vars(simplcmds[0].vars, 1);
+	}
+	else if (is_strs_equal(((t_file *)(simplcmds[0].command->content))->name,
+		"unset"))
+		unset_vars(simplcmds[0].command);
 	else
 		return ;
 }
