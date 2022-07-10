@@ -20,6 +20,7 @@ t_cmd	*parser(char *string, int *error)
 	service.string = string;
 	service.tokens = NULL;
 	service.error = 0;
+	simplcmds = NULL;
 	// if (!ft_strncmp(string, "\n", ft_strlen(string)))
 	// 	return (NULL);
 	grammatic(&service);

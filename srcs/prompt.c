@@ -6,7 +6,7 @@ char	*prompt_invitation(void)
 
 	prompt = ft_strjoin("[", get_var("USER"));
 	prompt = ft_strjoin_free(prompt, ft_strdup("@"));
-	prompt = ft_strjoin_free(prompt, ft_strdup(get_var("HOSTNAME")));
+	prompt = ft_strjoin_free(prompt, ft_strdup(get_var("HOST")));
 	// prompt = ft_strjoin_free(prompt, ft_strdup("	"));
 	// prompt = ft_strjoin_free(prompt, ft_strdup(get_var("PWD")));
 	prompt = ft_strjoin_free(prompt, ft_strdup("]$ "));
