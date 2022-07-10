@@ -114,7 +114,7 @@ void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 	while (++i < st->size)
 	{
 		st->pip[i] = mini_calloc(2, sizeof(int), st);
-		st->par[i] = mini_calloc(get_list_size(cmds->command), sizeof(void *), st);
+		st->par[i] = mini_calloc(get_list_size(cmds->command) + 1, sizeof(void *), st);
 		cmds++;
 	}
 	i = -1;
@@ -140,7 +140,7 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 		st->com[i] = ((t_file *)cmds->command->content)->name;
 		printf("st->com[%d] %s\n And it has address: %p\n", i, st->com[i], st->com);
 		e = 0;
-		curlist = cmds->command->next;
+		curlist = cmds->command;
 		// printf("curlist = %p\n", curlist);
 		while (curlist)
 		{
@@ -150,7 +150,6 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 			// printf("get: %d\n", i);
 			e++;
 		}
-		printf("e = %d\n", e);
 		st->par[i][e] = NULL;
 		// printf("imhere!\n");
 	}
@@ -169,10 +168,6 @@ int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
 		if (dup2(st->pip[num - 1][0], 0))
 			mini_err(st, ERR_SUB_PRCCESS);
 		return (0);
-		// temp_fd = open(((t_file *)cmds->infiles->content), O_RDONLY);
-		// if (dup2(temp_fd, 0) == -1)
-		// 	mini_err(st, ERR_SUB_PRCCESS);
-		// return (0);
 	}
 	lst = cmds->infiles;
 	while (lst->next)
@@ -197,9 +192,6 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 		if (dup2(st->pip[num][1], 1))
 			mini_err(st, ERR_SUB_PRCCESS);
 		return (0);
-		// temp_fd = open(((t_file *)lst->content)->name, O_RDWR | O_TRUNC);
-		// if (temp_fd == -1)
-		// 	mini_err(st, ERR_SUB_PRCCESS);
 	}
 	lst = cmds->outfiles;
 	while (lst->next)
@@ -226,13 +218,13 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 {
 	int	status;
 
-	printf("imhere!\n");
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
-	printf("exeve: %s\nAnd it has address: %p\n", st->com[0], st->com);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
+	printf("imhere\n");
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
+	exit(0);
 	return (0);
 }
 
