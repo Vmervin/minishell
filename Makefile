@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+         #
+#    By: vmervin <vmervin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 17:20:35 by vmervin           #+#    #+#              #
-#    Updated: 2022/07/09 03:27:28 by vmervin          ###   ########.fr        #
+#    Updated: 2022/07/10 17:00:41 by vmervin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ OBJ_DIR		= ./obj/
 D_FILES		= ${patsubst %.o,%.d,${OBJECTS}}
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror -I${INCLUDES}
-CFLAGS2		= -L${LIBFTPATH} -lft
+CFLAGS2		= -L${LIBFTPATH} -lft -L~/.brew/Cellar/readline/8.1.2/lib/ -I~/.brew/Cellar/readline/8.1.2/include
 RM 			= rm -f
 
 all:		$(NAME)
