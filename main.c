@@ -143,13 +143,12 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 		// printf("curlist = %p\n", curlist);
 		while (curlist)
 		{
-			printf("imhere\n");
-			st->par[i][e] = (char *)curlist->content;
+			st->par[i][e] = ((t_file *)curlist->content)->name;
+			printf("param: %s\n", st->par[i][e]);
 			// printf("get: %d\n", i);
 			curlist = curlist->next;
 			// printf("get: %d\n", i);
 			e++;
-			printf("e = %d\n", e);
 		}
 		st->par[i][e] = NULL;
 		// printf("imhere!\n");
