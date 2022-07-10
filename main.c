@@ -8,7 +8,7 @@
 
 int	mini_err(t_store *st, int err)
 {
-	printf("Err occured: %d", err);
+	printf("Err occured: %d\n", err);
 	if (err == 0)
 	{
 		free(st->com);
@@ -138,17 +138,18 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 		if (!cmds->command)
 			continue ;
 		st->com[i] = ((t_file *)cmds->command->content)->name;
-		printf("st->com[%d] %s\n And it has address: %p\n", i, st->com[i], st->com);
 		e = 0;
 		curlist = cmds->command;
 		// printf("curlist = %p\n", curlist);
 		while (curlist)
 		{
+			printf("imhere\n");
 			st->par[i][e] = (char *)curlist->content;
 			// printf("get: %d\n", i);
 			curlist = curlist->next;
 			// printf("get: %d\n", i);
 			e++;
+			printf("e = %d\n", e);
 		}
 		st->par[i][e] = NULL;
 		// printf("imhere!\n");
@@ -213,7 +214,6 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
-		// if (((t_file *)cmds->infiles->content)->append)
 int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 {
 	int	status;
@@ -221,11 +221,21 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
-	printf("imhere\n");
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
 	exit(0);
 	return (0);
+}
+
+void test_func(t_store *st, t_cmd *cmds, int num)
+{
+	printf("command: %s\n", st->com[num]);
+	int i = 1;
+	while (st->par[i])
+	{
+		printf("arg[%d]: %s\n", i, st->par[num][i]);
+		i++;
+	}
 }
 
 int	pipe_exec(t_store *st, t_cmd *cmds, int num)
@@ -233,19 +243,17 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 	int	pid;
 	int	status;
 
+	test_func(st, cmds, num);
 	pid = fork();
 	if (pid < 0)
 		mini_err(st, ERR_FORK_INIT);
 	if (pid == 0)
 	{
-		waitpid(pid, &status, 0);
-		status = WEXITSTATUS(status);
-		if (status)
-			mini_err(st, ERR_SUB_PRCCESS);
+		pipe_exec_subfunc(st, cmds, num);
 	}
 	if (pid != 0)
 	{
-		pipe_exec_subfunc(st, cmds, num);
+		waitpid(pid, &status, 0);
 	}
 	return (0);
 }
@@ -255,7 +263,6 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	int	i;
 
 	malloc_appropriate_struct(st, cmds);
-	// printf("imhere\n");
 	create_appropriate_struct(st, cmds);
 	i = -1;
 	while (++i < st->size)
