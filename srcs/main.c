@@ -9,6 +9,7 @@ t_global g_var;
 
 int	mini_err(t_store *st, int err)
 {
+	printf("errno: %d\n", errno);
 	printf("Err occured: %d\n", err);
 	if (err == 0)
 	{
@@ -84,6 +85,10 @@ int	startup(t_store *st, char **env)
 {
 	int	i;
 
+	st->in = dup(0);
+	st->out = dup(1);
+	if (st->in == -1 || st->out == -1)
+		mini_err(st, ERR_MALLOC0);
 	env_to_list(env);
 	st->path = path_separate(env);
 	st->env = env;
@@ -93,16 +98,6 @@ int	startup(t_store *st, char **env)
 	st->com = NULL;
 	st->par = NULL;
 }
-
-// int the_pipe_of_mine(char **commands, char ***params, int **fds_int, int **fds_out)
-// {
-// 	commands = ft_split("cat grep", ' ');
-// 	params = malloc(sizeof(void *) * 2);
-// 	params[0] = ft_split("-l", ' ');
-// 	params[1] = ft_split("-e", ' ');
-// 	fds_in = malloc(sizeof(int *) * 2);
-
-// }
 
 void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 /* That func have inner protection. It's leaks free! */
@@ -139,21 +134,16 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 	{
 		if (!cmds->command)
 			continue ;
-		st->com[i] = ((t_file *)cmds->command->content)->name;
+		st->com[i] = ((t_file *)(cmds + i)->command->content)->name;
 		e = 0;
-		curlist = cmds->command;
-		// printf("curlist = %p\n", curlist);
+		curlist = (cmds + i)->command;
 		while (curlist)
 		{
 			st->par[i][e] = ((t_file *)curlist->content)->name;
-			printf("param: %s\n", st->par[i][e]);
-			// printf("get: %d\n", i);
 			curlist = curlist->next;
-			// printf("get: %d\n", i);
 			e++;
 		}
 		st->par[i][e] = NULL;
-		// printf("imhere!\n");
 	}
 }
 
@@ -167,14 +157,21 @@ int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
 	{
 		if (num == 0)
 			return (0);
-		if (dup2(st->pip[num - 1][0], 0))
+		close(st->pip[num - 1][1]);
+		if (dup2(st->pip[num - 1][0], 0) == -1)
 			mini_err(st, ERR_SUB_PRCCESS);
 		return (0);
 	}
 	lst = cmds->infiles;
 	while (lst->next)
+	{
+		temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_TRUNC | O_CREAT, 0664);
+		if (temp_fd == -1)
+			mini_err(st, ERR_SUB_PRCCESS);
 		lst = lst->next;
-	temp_fd = open(((t_file *)lst->content)->name, O_RDONLY);
+	}
+	if (((t_file *)lst->content)->append == 1)
+		temp_fd = open(((t_file *)lst->content)->name, O_RDONLY);
 	if (temp_fd == -1)
 		mini_err(st, ERR_SUB_PRCCESS);
 	if (dup2(temp_fd, 0) == -1)
@@ -191,23 +188,31 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	{
 		if (num == st->size - 1)
 			return (0);
-		if (dup2(st->pip[num][1], 1))
+
+		if (dup2(st->pip[num][1], 1) == -1)
+		{
+			close(st->pip[num][1]);
 			mini_err(st, ERR_SUB_PRCCESS);
+		}
+		close(st->pip[num][1]);
 		return (0);
 	}
 	lst = cmds->outfiles;
 	while (lst->next)
 	{
-		if (((t_file *)lst->content)->append == 1)
+		if (((t_file *)lst->content)->append == 0)
 		{
-			temp_fd = open(((t_file *)lst->content)->name, O_RDWR | O_TRUNC);
+			temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_TRUNC | O_CREAT, 0664);
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
 			close(temp_fd);
 		}
 		lst = lst->next;
 	}
-	temp_fd = open(((t_file *)lst->content)->name, O_WRONLY);
+	if (((t_file *)lst->content)->append == 1)
+		temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_CREAT | O_APPEND, 0664);
+	else
+		temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (temp_fd == -1)
 		mini_err(st, ERR_SUB_PRCCESS);
 	if (dup2(temp_fd, 1) == -1)
@@ -228,23 +233,24 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
-void test_func(t_store *st, t_cmd *cmds, int num)
-{
-	printf("command: %s\n", st->com[num]);
-	int i = 1;
-	while (st->par[i])
-	{
-		printf("arg[%d]: %s\n", i, st->par[num][i]);
-		i++;
-	}
-}
+// void test_func(t_store *st, t_cmd *cmds, int num)
+// {
+// 	printf("fork start :%d\n", num);
+// 	// printf("%d) command: %s\n", num, st->com[num]);
+// 	// int i = 1;
+// 	// while (st->par[num][i])
+// 	// {
+// 	// 	printf("%d) arg[%d]: %s\n", num, i, st->par[num][i]);
+// 	// 	i++;
+// 	// }
+// }
 
 int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 {
 	int	pid;
 	int	status;
 
-	test_func(st, cmds, num);
+	// test_func(st, cmds, num);
 	pid = fork();
 	if (pid < 0)
 		mini_err(st, ERR_FORK_INIT);
@@ -252,22 +258,29 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 	{
 		pipe_exec_subfunc(st, cmds, num);
 	}
-	if (pid != 0)
-	{
-		waitpid(pid, &status, 0);
-	}
-	return (0);
+	return (pid);
 }
 
 int	main_loop(t_store *st, t_cmd *cmds)
 {
 	int	i;
+	int	e;
+	int	pid;
+	int	status;
 
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
 	i = -1;
 	while (++i < st->size)
-		pipe_exec(st, cmds, i);
+		pid = pipe_exec(st, cmds, i);
+	i = -1;
+	while (++i < st->size - 1)
+	{
+		e = -1;
+		while (++e < 2)
+			close(st->pip[i][e]);
+	}
+	waitpid(pid, &status, 0);
 	return (0);
 }
 
@@ -283,9 +296,8 @@ int	main(int args, char **argv, char **env)
 	g_var.store = &st;
 	while (1)
 	{
-		// str = readline("minishell>");
 		str = rl_gets();
-		if (!str)
+		if (!str || !*str)
 			continue;
 		cmds = parser(str, &err);
 		if (err)
@@ -294,23 +306,3 @@ int	main(int args, char **argv, char **env)
 		err = main_loop(&st, cmds);
 	}
 }
-	// int	p1[2];
-	// int fd = open("test_file.txt", O_CREAT);
-	// char	buf[100];
-
-	// pipe(p1);
-	// int	out = dup(1);
-	// int fk = fork();
-	// if (fk == 0)
-	// {
-	// 	printf("out = %d\n", out);
-	// 	dup2(p1[1], 1);
-	// 	printf("test\n");
-	// 	execve("/bin/ls", argv, env);
-	// 	int size = read(p1[0], buf, 100);
-	// 	write(out, "hello\n", 6);
-	// }
-	// else
-	// {
-	// 	printf("im parent\n");
-	// }

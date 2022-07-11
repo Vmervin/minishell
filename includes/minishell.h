@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 01:09:13 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 04:59:22 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 // #include <dirent.h>
-// #include <errno.h>
+#include <errno.h>
 // #include <sys/ioctl.h>
 // #include <curses.h>
 // #include <term.h>
@@ -75,15 +75,15 @@ typedef struct s_parser
 
 typedef struct s_store
 {
+	int		in;
+	int		out;
 	char	**env;
 	char	**path;
 	int		size;
 	int		**pip;
 	int		last_result;
-	char	**com; // commands
-	char	***par;// params (arr of arr of strings)
-	//char	***inf; // infiles
-	//char	***ouf; // outfiles
+	char	**com;
+	char	***par;
 }	t_store;
 
 typedef struct s_global
