@@ -236,7 +236,7 @@ int	is_command_ok(t_store *st)
 	i = -1;
 	while (++i < st->size)
 	{
-		if (st->com[i])
+		if (built_in_check(st->com[i]))
 			continue ;
 		if (find_file_by_dir(st, st->par[i], i) == 0)
 		{
