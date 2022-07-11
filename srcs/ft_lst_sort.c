@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lst_sort.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:34:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 04:50:06 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 04:01:32 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,8 @@ void	lstprint2(t_list *lst)
 	{
 		ft_printf("%s=", ((t_file *)lst->content)->name);
 		ft_printf("%s\n", ((t_file *)lst->content)->value);
-		// ft_printf("append = %d\n", ((t_file *)lst->content)->append);
 		lst = lst->next;
 	}
 	ft_printf("%s=", ((t_file *)lst->content)->name);
 	ft_printf("%s\n", ((t_file *)lst->content)->value);
-	// ft_printf("append = %d\n\n", ((t_file *)lst->content)->append);
 }

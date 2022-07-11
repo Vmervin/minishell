@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmervin <vmervin@student.42.fr>            +#+  +:+       +#+         #
+#    By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 17:20:35 by vmervin           #+#    #+#              #
-#    Updated: 2022/07/10 18:04:13 by vmervin          ###   ########.fr        #
+#    Updated: 2022/07/11 00:26:51 by vmervin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ INCLUDES 	= ./includes
 OBJECTS		= ${SRCS:.c=.o}
 CC 			= cc
 CFLAGS		= -Wall -Wextra -I${INCLUDES}
-CFLAGS2		= -L${LIBFTPATH} -lft -L~/.brew/Cellar/readline/8.1.2/lib/ -I~/.brew/Cellar/readline/8.1.2/include -lreadline
+CFLAGS2		= -L${LIBFTPATH} -lft -L/Users/vmervin/.brew/Cellar/readline/8.1.2/lib/ -I~/.brew/Cellar/readline/8.1.2/include -lreadline
 RM 			= rm -f
 
 all:		$(NAME)

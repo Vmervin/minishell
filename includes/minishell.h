@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 05:12:01 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 01:09:13 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <stdlib.h>
 // #include <termios.h>
 # include <unistd.h>
-// #include <sys/types.h>
+#include <sys/types.h>
 // #include <sys/stat.h>
 # include <fcntl.h>
 #include <sys/wait.h>
-// #include <signal.h>
+#include <signal.h>
 // #include <dirent.h>
 // #include <errno.h>
 // #include <sys/ioctl.h>
@@ -73,12 +73,6 @@ typedef struct s_parser
 	int		error;
 }	t_parser;
 
-typedef struct s_global
-{
-	t_list	*env;
-	// int error;
-}	t_global;
-
 typedef struct s_store
 {
 	char	**env;
@@ -92,7 +86,16 @@ typedef struct s_store
 	//char	***ouf; // outfiles
 }	t_store;
 
+typedef struct s_global
+{
+	t_list	*env;
+	t_store *store;
+	int		sig;
+}	t_global;
+
 extern t_global	g_var;
+
+void	rl_replace_line(const char *text, int clear_undo);
 
 // parser
 t_cmd	*parser(char *string, int *error);
@@ -166,5 +169,8 @@ void	ft_swap_data(t_list *a, t_list *b);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());
 char	*prompt_invitation(void);
 char	*rl_gets(void);
+
+// executor
+int		mini_err(t_store *st, int err);
 
 #endif

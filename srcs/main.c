@@ -280,6 +280,7 @@ int	main(int args, char **argv, char **env)
 
 	if (startup(&st, env))
 		return (0);
+	g_var.store = &st;
 	while (1)
 	{
 		// str = readline("minishell>");
