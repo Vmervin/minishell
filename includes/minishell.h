@@ -21,7 +21,8 @@
 // #include <sys/types.h>
 // #include <sys/stat.h>
 # include <fcntl.h>
-#include <sys/wait.h>
+# include <sys/wait.h>
+# include <errno.h>
 // #include <signal.h>
 // #include <dirent.h>
 // #include <errno.h>
@@ -81,15 +82,15 @@ typedef struct s_global
 
 typedef struct s_store
 {
+	int		in;
+	int		out;
 	char	**env;
 	char	**path;
 	int		size;
 	int		**pip;
 	int		last_result;
-	char	**com; // commands
-	char	***par;// params (arr of arr of strings)
-	//char	***inf; // infiles
-	//char	***ouf; // outfiles
+	char	**com;
+	char	***par;
 }	t_store;
 
 extern t_global	g_var;
