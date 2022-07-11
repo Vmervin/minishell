@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 05:40:27 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 06:49:10 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*val_search(t_token *token, char *str)
 	lst = g_var.env;
 	name = ft_substr(str, token->begin + 1, token->end - token->begin);
 	if (!ft_strncmp("?", name, ft_strlen(name)))
-		val = ft_itoa(0);// число нужно где-то взять
+		val = ft_itoa(g_var.last_exec);
 	else
 		val = ft_strdup("");
 	while (lst)
@@ -53,7 +53,7 @@ char	**extract_value(t_list *lst, char *str)
 	}
 	val = malloc(sizeof(char *) * (count + 1));
 	if (!val)
-		return (NULL);// отдельная функция для всего что ниже или что выше
+		return (NULL);
 	lst = tmp;
 	count = 0;
 	while (lst && val)
