@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 03:49:26 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 07:11:33 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 08:16:54 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int echo (t_list *lst, int fd)
 		lst = lst->next;
 		n = 1;
 	}
-	while (lst)
+	while (lst->next)
 	{
 		ft_putstr_fd(((t_file *)(lst->content))->name, fd);		
 		lst = lst->next;
@@ -50,7 +50,16 @@ int env(t_list *lst)
 
 int pwd(void)
 {
-	ft_printf("%s\n", getenv("PWD"));
+	char	dir[1024];
+	char	*s;
+	
+	s = getcwd (dir, sizeof(dir) - 1);
+	if (s == 0)
+	{
+		printf ("Error getting pwd: %s\n", dir);
+		return (1);
+    }
+	ft_printf("%s\n", dir);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 04:59:22 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 07:52:44 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 // main
 int		get_list_size(t_list *list);
+int		built_in_check(char *str);
+int		is_built_in(t_list *lst);
 
 // parser
 t_cmd	*parser(char *string, int *error);

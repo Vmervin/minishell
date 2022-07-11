@@ -253,7 +253,7 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
-	if(is_build_in(cmds[num].command))
+	if(!is_built_in(cmds[num].command))
 		exit(0);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
