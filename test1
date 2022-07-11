@@ -1,0 +1,36 @@
+total 368
+-rw-r--r--   1 patchking  staff    1883 10 июл 20:12 Makefile
+-rw-r--r--   1 patchking  staff     727  8 июл 11:50 README.md
+-rwxr-xr-x   1 patchking  staff  108994 10 июл 19:56 a.out
+drwxr-xr-x   3 patchking  staff      96 10 июл 20:12 includes
+drwxr-xr-x   8 patchking  staff     256 10 июл 20:53 libft
+-rwxrwxr-x   1 patchking  staff   56198 10 июл 21:05 minishell
+drwxr-xr-x  40 patchking  staff    1280 10 июл 21:05 srcs
+drwxr-xr-x   4 patchking  staff     128  5 июл 16:58 test
+-rw-r--r--   1 patchking  staff     412  8 июл 20:29 test.c
+-rw-r--r--   1 patchking  staff    2115 10 июл 21:06 test1
+-rw-rw-r--   1 patchking  staff     705 10 июл 21:03 test2
+total 368
+-rw-r--r--   1 patchking  staff    1883 10 июл 20:12 Makefile
+-rw-r--r--   1 patchking  staff     727  8 июл 11:50 README.md
+-rwxr-xr-x   1 patchking  staff  108994 10 июл 19:56 a.out
+drwxr-xr-x   3 patchking  staff      96 10 июл 20:12 includes
+drwxr-xr-x   8 patchking  staff     256 10 июл 20:53 libft
+-rwxrwxr-x   1 patchking  staff   56198 10 июл 21:05 minishell
+drwxr-xr-x  40 patchking  staff    1280 10 июл 21:05 srcs
+drwxr-xr-x   4 patchking  staff     128  5 июл 16:58 test
+-rw-r--r--   1 patchking  staff     412  8 июл 20:29 test.c
+-rw-r--r--   1 patchking  staff     705 10 июл 21:05 test1
+-rw-rw-r--   1 patchking  staff     705 10 июл 21:03 test2
+total 368
+-rw-r--r--   1 patchking  staff    1883 10 июл 20:12 Makefile
+-rw-r--r--   1 patchking  staff     727  8 июл 11:50 README.md
+-rwxr-xr-x   1 patchking  staff  108994 10 июл 19:56 a.out
+drwxr-xr-x   3 patchking  staff      96 10 июл 20:12 includes
+drwxr-xr-x   8 patchking  staff     256 10 июл 20:53 libft
+-rwxrwxr-x   1 patchking  staff   56198 10 июл 21:05 minishell
+drwxr-xr-x  40 patchking  staff    1280 10 июл 21:05 srcs
+drwxr-xr-x   4 patchking  staff     128  5 июл 16:58 test
+-rw-r--r--   1 patchking  staff     412  8 июл 20:29 test.c
+-rw-r--r--   1 patchking  staff    1410 10 июл 21:06 test1
+-rw-rw-r--   1 patchking  staff     705 10 июл 21:03 test2
