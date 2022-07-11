@@ -88,6 +88,7 @@ typedef struct s_store
 typedef struct s_global
 {
 	t_list	*env;
+	int		last_exec;
 	t_store *store;
 	int		sig;
 }	t_global;
@@ -95,6 +96,9 @@ typedef struct s_global
 extern t_global	g_var;
 
 void	rl_replace_line(const char *text, int clear_undo);
+
+// main
+int		get_list_size(t_list *list);
 
 // parser
 t_cmd	*parser(char *string, int *error);
@@ -104,6 +108,7 @@ char	*get_var(char *name);
 void	remove_vars(char *name);
 void	env_to_list(char **env);
 char	*get_name(char *str);
+char	**list_to_env(void);
 
 // herdoc
 void	heredoc(char *eof, int fd, int append);

@@ -79,12 +79,11 @@ int	startup(t_store *st, char **env)
 	int	i;
 
 	env_to_list(env);
+	g_var.last_exec = 0;
 	st->env = env;
-	if (!st->path)
-		return (1);
-	return (0);
 	st->com = NULL;
 	st->par = NULL;
+	return (0);
 }
 
 void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
@@ -184,7 +183,6 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 		close(st->pip[num][1]);
 		return (0);
 	}
-	perror("imhere!\n");
 	lst = cmds->outfiles;
 	while (lst->next)
 	{
@@ -208,18 +206,42 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
-int	try_to_exec(t_store *st, char **par)
+int	find_file_by_dir(t_store *st, char **par, int e)
 {
 	int 	i;
 	char	*str;
 
-	i = 0;
-	while (i < st->path_size)
+	i = -1;
+	while (++i < st->path_size)
 	{
-		str = ft_strjoin(par[0], st->path[i]);
+		str = ft_strjoin(ft_strjoin(st->path[i], "/"), par[0]);
 		if (!str)
-			st->last_result = execve(par[0], par, st->env);
+			mini_err(st, 0);
+		if (access(str, F_OK) == 0)
+		{
+			free(st->com[e]);
+			st->par[e][0] = str;
+			st->path[e] = str;
+			return (1);
+		}
 	}
+	return (0);
+}
+
+int	is_command_ok(t_store *st)
+{
+	int	i;
+
+	i = -1;
+	while (++i < st->size)
+	{
+		if (find_file_by_dir(st, st->par[i], i) == 0)
+		{
+			printf("bash: %s: command not found\n", st->com[i]);
+			return (0);
+		}
+	}
+	return (1);
 }
 
 int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
@@ -273,6 +295,8 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
 	i = -1;
+	if (!is_command_ok(st))
+		return (0);
 	while (++i < st->size)
 		pid = pipe_exec(st, cmds, i);
 	i = -1;
@@ -283,6 +307,7 @@ int	main_loop(t_store *st, t_cmd *cmds)
 			close(st->pip[i][e]);
 	}
 	waitpid(pid, &status, 0);
+	g_var.last_exec = WEXITSTATUS(status);
 	return (0);
 }
 
@@ -304,11 +329,11 @@ int	main(int args, char **argv, char **env)
 		cmds = parser(str, &err);
 		if (err)
 			continue;
-		// st.env = list_to_env(st.env)
+		st.env = list_to_env();
 		st.path = ft_split(get_var("PATH"), ':');
-		if (!st.path)
+		if (!st.path || !st.env)
 			mini_err(&st, 0);
-		st.path_size = get_void_size(st.path);
+		st.path_size = get_void_size((void *)st.path);
 		st.size = get_cmd_size(cmds);
 		err = main_loop(&st, cmds);
 	}
