@@ -235,6 +235,8 @@ int	is_command_ok(t_store *st)
 	i = -1;
 	while (++i < st->size)
 	{
+		if (st->com[i])
+			continue ;
 		if (find_file_by_dir(st, st->par[i], i) == 0)
 		{
 			printf("bash: %s: command not found\n", st->com[i]);
@@ -250,6 +252,8 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
+	if(is_build_in(cmds[num].command))
+		exit(0);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
@@ -295,7 +299,7 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
 	i = -1;
-	if (!is_command_ok(st))
+	if (!is_command_ok(st, cmds))
 		return (0);
 	while (++i < st->size)
 		pid = pipe_exec(st, cmds, i);
