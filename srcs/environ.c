@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 19:05:36 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 05:38:05 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,25 @@ void	remove_vars(char *name)
 		tmp = lst;
 		lst = lst->next;
 	}
+}
+
+char	**list_to_env(void)
+{
+	t_list *tmp;
+	int i;
+	char **env;
+	int j;
+	
+	i = get_list_size(g_var.env);
+	j = 0;
+	tmp = g_var.env;
+	env = malloc(sizeof(char **) * i);
+	while (j <= i)
+	{
+		env[j] = ft_strjoin(((t_file *)(tmp->content))->name, "=");
+		env[j] = ft_strjoin_free(env[j],
+		ft_strdup(((t_file *)(tmp->content))->value));
+		j++;
+	}
+	return (env);
 }

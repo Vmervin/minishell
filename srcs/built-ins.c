@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 03:49:26 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 04:45:26 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/11 05:46:11 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ int export(t_list *lst)
 	return (0);
 }
 
-int unset(t_list *lst)
-{
-	return (0);
-}
-
 int env(t_list *lst)
 {
 	if (!lst)
@@ -53,15 +48,9 @@ int env(t_list *lst)
 	return (0);
 }
 
-int cd(t_list *lst)
+int pwd(void)
 {
-	char *path;
-
-	path = NULL;
-	if (!lst)
-		path = get_var("HOME");
-	if (lst)
-		path = 
+	ft_printf("%s\n", getenv("PWD"));
 	return (0);
 }
 
@@ -74,8 +63,8 @@ int is_built_in(t_list *lst)
 	if (is_strs_equal(((t_file *)(lst->content))->name, "env"))
 		return(env(lst->next));
 	if (is_strs_equal(((t_file *)(lst->content))->name, "unset"))
-		return(unset(lst->next));
+		return(0);
+	if (is_strs_equal(((t_file *)(lst->content))->name, "pwd"))
+		return(pwd());
 	return (1);
 }
-
-
