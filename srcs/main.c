@@ -1,10 +1,5 @@
 #include "../includes/minishell.h"
 
-// void	free_appropriate_struct(t_store *st)
-// {
-	
-// }
-
 t_global g_var;
 
 int	mini_err(t_store *st, int err)
@@ -56,6 +51,16 @@ int	get_list_size(t_list *list)
 	return (i);
 }
 
+int	get_void_size(void **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+		i++;
+	return (i);
+}
+
 char	*get_path_str(char **env)
 {
 	if (!env)
@@ -69,28 +74,11 @@ char	*get_path_str(char **env)
 	return (*env + 5);
 }
 
-char	**path_separate(char **env)
-{
-	char	*path_str;
-	char	**pathes;
-
-	path_str = get_path_str(env);
-	if (!path_str)
-		return (NULL);
-	pathes = ft_split(path_str, ':');
-	return (pathes);
-}
-
 int	startup(t_store *st, char **env)
 {
 	int	i;
 
-	st->in = dup(0);
-	st->out = dup(1);
-	if (st->in == -1 || st->out == -1)
-		mini_err(st, ERR_MALLOC0);
 	env_to_list(env);
-	st->path = path_separate(env);
 	st->env = env;
 	if (!st->path)
 		return (1);
@@ -188,7 +176,6 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	{
 		if (num == st->size - 1)
 			return (0);
-
 		if (dup2(st->pip[num][1], 1) == -1)
 		{
 			close(st->pip[num][1]);
@@ -197,6 +184,7 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 		close(st->pip[num][1]);
 		return (0);
 	}
+	perror("imhere!\n");
 	lst = cmds->outfiles;
 	while (lst->next)
 	{
@@ -218,6 +206,20 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	if (dup2(temp_fd, 1) == -1)
 		mini_err(st, ERR_SUB_PRCCESS);
 	return (0);
+}
+
+int	try_to_exec(t_store *st, char **par)
+{
+	int 	i;
+	char	*str;
+
+	i = 0;
+	while (i < st->path_size)
+	{
+		str = ft_strjoin(par[0], st->path[i]);
+		if (!str)
+			st->last_result = execve(par[0], par, st->env);
+	}
 }
 
 int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
@@ -302,6 +304,11 @@ int	main(int args, char **argv, char **env)
 		cmds = parser(str, &err);
 		if (err)
 			continue;
+		// st.env = list_to_env(st.env)
+		st.path = ft_split(get_var("PATH"), ':');
+		if (!st.path)
+			mini_err(&st, 0);
+		st.path_size = get_void_size(st.path);
 		st.size = get_cmd_size(cmds);
 		err = main_loop(&st, cmds);
 	}

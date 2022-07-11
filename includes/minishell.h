@@ -75,10 +75,9 @@ typedef struct s_parser
 
 typedef struct s_store
 {
-	int		in;
-	int		out;
 	char	**env;
 	char	**path;
+	int		path_size;
 	int		size;
 	int		**pip;
 	int		last_result;
