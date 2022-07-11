@@ -300,7 +300,7 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
 	i = -1;
-	if (!is_command_ok(st, cmds))
+	if (!is_command_ok(st))
 		return (0);
 	while (++i < st->size)
 		pid = pipe_exec(st, cmds, i);
