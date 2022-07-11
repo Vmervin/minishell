@@ -221,7 +221,8 @@ int	find_file_by_dir(t_store *st, char **par, int e)
 		{
 			free(st->com[e]);
 			st->par[e][0] = str;
-			st->path[e] = str;
+			st->com[e] = str;
+			printf("str : %s\n", str);
 			return (1);
 		}
 	}
