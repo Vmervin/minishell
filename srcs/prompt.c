@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 03:14:49 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 18:16:24 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	recieve(int signum)
 
 char	*rl_gets(void)
 {
-	char	*line;
-	char	*prompt;
-	struct 	sigaction	act;
+	char				*line;
+	char				*prompt;
+	struct sigaction	act;
 
 	act.sa_handler = recieve;
 	act.sa_flags = 0;

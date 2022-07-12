@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:36:03 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 04:35:18 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 00:25:50 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	add_list_file(t_list **lst, int append, char *name, char *value)
 {

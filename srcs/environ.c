@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 05:38:05 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 18:24:10 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,50 +57,25 @@ char	*get_var(char *name)
 	return (NULL);
 }
 
-void	remove_vars(char *name)
-{
-	t_list	*lst;
-	t_list	*tmp;
-
-	lst = g_var.env;
-	if (is_strs_equal(((t_file *)lst->content)->name, name))
-	{
-		g_var.env = lst->next;
-		var_free(lst);
-		return ;
-	}
-	tmp = lst;
-	lst = lst->next;
-	while (lst)
-	{
-		if (is_strs_equal(((t_file *)lst->content)->name, name))
-		{
-			tmp->next = lst->next;
-			var_free(lst);
-			return ;
-		}
-		tmp = lst;
-		lst = lst->next;
-	}
-}
-
 char	**list_to_env(void)
 {
-	t_list *tmp;
-	int i;
-	char **env;
-	int j;
-	
-	i = get_list_size(g_var.env);
-	j = 0;
+	t_list	*tmp;
+	int		i;
+	char	**env;
+
+	i = ft_lstsize(g_var.env) + 1;
 	tmp = g_var.env;
 	env = malloc(sizeof(char **) * i);
-	while (j <= i)
+	i = 0;
+	while (tmp)
 	{
-		env[j] = ft_strjoin(((t_file *)(tmp->content))->name, "=");
-		env[j] = ft_strjoin_free(env[j],
-		ft_strdup(((t_file *)(tmp->content))->value));
-		j++;
+		env[i] = ft_strjoin(((t_file *)(tmp->content))->name, "=");
+		if (((t_file *)(tmp->content))->value)
+		env[i] = ft_strjoin_free(env[i],
+					ft_strdup(((t_file *)(tmp->content))->value));
+		tmp = tmp->next;
+		i++;
 	}
+	env[i] = NULL;
 	return (env);
 }

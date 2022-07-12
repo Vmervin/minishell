@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 21:34:48 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 00:25:40 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	dollar_sign_search(t_list **lst, int i, char type, char *str)
 {

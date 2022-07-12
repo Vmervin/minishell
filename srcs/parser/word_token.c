@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:12 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 00:46:41 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 00:24:56 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	is_token(t_list *lst, int i, char type)
 {

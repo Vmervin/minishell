@@ -240,7 +240,7 @@ int	is_command_ok(t_store *st)
 			continue ;
 		if (find_file_by_dir(st, st->par[i], i) == 0)
 		{
-			printf("bash: %s: command not found\n", st->com[i]);
+			printf("minishell: %s: command not found\n", st->com[i]);
 			return (0);
 		}
 	}

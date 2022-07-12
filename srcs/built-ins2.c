@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 05:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 08:15:44 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 18:18:18 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int cd(t_list *lst)
+int	cd(t_list *lst)
 {
-	char *path;
+	char	*path;
 
 	path = NULL;
 	if (!lst)
@@ -35,6 +35,8 @@ int cd(t_list *lst)
 
 int	built_in_check(char *str)
 {
+	if (!str)
+		return (2);
 	if (is_strs_equal(str, "export"))
 		return (1);
 	if (is_strs_equal(str, "echo"))
