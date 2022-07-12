@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:20:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 05:50:26 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 18:00:39 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	add_vars(t_list *lst, int ex)
 
 void	unset_vars(t_list *lst)
 {
-	while (lst)
+	if (lst && g_var.env)
 	{
-		remove_vars(((t_file *)(lst->content))->name);
-		lst = lst->next;
+		while (!delete_node(&g_var.env, ((t_file *)(lst->content))->name))
+			;
 	}
 }
 
@@ -75,8 +75,11 @@ void	var_process(t_cmd *simplcmds)
 {
 	if (!simplcmds[1].empty)
 		return ;
-	else if (!simplcmds[0].command)
+	if (!simplcmds[0].command)
+	{
 		add_vars(simplcmds[0].vars, 0);
+		return ;
+	}
 	else if (is_strs_equal(((t_file *)(simplcmds[0].command->content))->name,
 		"export"))
 	{

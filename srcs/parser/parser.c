@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 02:32:57 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 07:58:15 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_cmd	*parser(char *string, int *error)
 {
@@ -27,10 +27,13 @@ t_cmd	*parser(char *string, int *error)
 	if (!service.error)
 		simplcmds = simple_command_parser(&service);
 	if (!service.error)
-		pathname_expansion(simplcmds);
-	var_process(simplcmds);
+		pathname_expansion(simplcmds, &service.error);
+	if (!service.error)
+		var_process(simplcmds);
 	ft_lstclear(&service.tokens, free);
 	*error = service.error;
+	// lstprint2(cmds[0].command);
+	// lstprint2(cmds[0].vars);
 	return (simplcmds);
 }
 
@@ -70,7 +73,7 @@ t_cmd	*simple_command_parser(t_parser *service)
 	return (scmds);
 }
 
-void	pathname_expansion(t_cmd *simpcmds)
+void	pathname_expansion(t_cmd *simpcmds, int *error)
 {
 	int	i;
 
@@ -83,6 +86,7 @@ void	pathname_expansion(t_cmd *simpcmds)
 		parse_word(simpcmds[i].outfiles, 0);
 		parse_word(simpcmds[i].command, 0);
 		parse_word(simpcmds[i].vars, 1);
+		remove_empty(&simpcmds[i], error);
 		i++;
 	}
 }

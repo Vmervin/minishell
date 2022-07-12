@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:57 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/10 04:37:50 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 00:25:45 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service)
 {
