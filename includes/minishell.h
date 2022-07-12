@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 04:59:22 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 18:27:58 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,37 @@
 # define MINISHELL_H
 // # include <editline/readline.h>
 # include <stdio.h>
-// #include <string.h>
+// # include <string.h>
 # include <stdlib.h>
-// #include <termios.h>
+// # include <termios.h>
 # include <unistd.h>
-#include <sys/types.h>
-// #include <sys/stat.h>
+# include <sys/types.h>
+// # include <sys/stat.h>
 # include <fcntl.h>
-#include <sys/wait.h>
-#include <signal.h>
-// #include <dirent.h>
-#include <errno.h>
-// #include <sys/ioctl.h>
-// #include <curses.h>
-// #include <term.h>
-// #include <readline/readline.h>
-// #include <readline/history.h>
-# include "./../libft/libft.h"
+# include <sys/wait.h>
+# include <signal.h>
+// # include <dirent.h>
+# include <errno.h>
+// # include <sys/ioctl.h>
+// # include <curses.h>
+// # include <term.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "../libft/libft.h"
 # define ERR_MALLOC0 0
 # define ERR_PIPE_INIT 1
 # define ERR_FORK_INIT 2
 # define ERR_SUB_PRCCESS 3
 # define ERR_FOR_SUBFUNC 4
 # define ERR_FILE_OPEN 5
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../libft/libft.h"
 
+// append == 1 => ">>" 0 нормальный файл, 1 хердок без кавычек, 
+// 2 хердок с кавычками
 typedef struct s_file
 {
 	char	*name;
 	char	*value;
-	int		append; // append == 1 => ">>" 0 нормальный файл, 1 хердок без ковычек, 2 хердок с ковычками
+	int		append;
 }	t_file;
 
 // output > записываем в последний, но открываем или создаем все по порядку
@@ -89,7 +88,7 @@ typedef struct s_global
 {
 	t_list	*env;
 	int		last_exec;
-	t_store *store;
+	t_store	*store;
 	int		sig;
 }	t_global;
 
@@ -100,13 +99,15 @@ void	rl_replace_line(const char *text, int clear_undo);
 // main
 int		get_list_size(t_list *list);
 char	*strjoin_char(char *s1, char *s2, char delim);
+int		built_in_check(char *str);
+int		is_built_in(t_list *lst);
 
 // parser
 t_cmd	*parser(char *string, int *error);
 
 // environment
 char	*get_var(char *name);
-void	remove_vars(char *name);
+int		delete_node(t_list **head, char *key);
 void	env_to_list(char **env);
 char	*get_name(char *str);
 char	**list_to_env(void);
@@ -153,11 +154,12 @@ char	*remove_quotes(t_list *lst, char *str);
 char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok);
 char	*expand(char *string, int herdoc);
 void	parse_word(t_list *lst, int vars);
-void	pathname_expansion(t_cmd *simpcmds);
+void	pathname_expansion(t_cmd *simpcmds, int *error);
 void	var_free(t_list *lst);
 void	add_vars(t_list *lst, int ex);
 void	change_vars(char *name, char *val);
 void	var_free(t_list *lst);
+void	remove_empty(t_cmd *cmd, int *error);
 
 // utils
 void	var_process(t_cmd *simplcmds);
@@ -177,5 +179,11 @@ char	*rl_gets(void);
 
 // executor
 int		mini_err(t_store *st, int err);
+
+// built-ins
+int		echo(t_list *lst, int fd);
+int		cd(t_list *lst);
+int		is_built_in(t_list *lst);
+int		built_in_check(char *str);
 
 #endif

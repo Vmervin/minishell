@@ -6,11 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:48 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 03:29:06 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/12 00:25:35 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	equal_token_search(t_list **lst, char *str)
 {

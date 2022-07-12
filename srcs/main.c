@@ -255,9 +255,11 @@ int	is_command_ok(t_store *st)
 	i = -1;
 	while (++i < st->size)
 	{
+		if (built_in_check(st->com[i]))
+			continue ;
 		if (find_file_by_dir(st, st->par[i], i) == 0)
 		{
-			printf("bash: %s: command not found\n", st->par[i][0]);
+			printf("minishell: %s: command not found\n", st->com[i]);
 			return (0);
 		}
 	}
@@ -278,7 +280,9 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 		temp++;
 	}
 	
-	st->last_result = execve(st->par[num][0], st->par[num], st->env);
+	if(!is_built_in(cmds[num].command)) // built-in in progress
+		exit(0);
+	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
 	exit(0);
