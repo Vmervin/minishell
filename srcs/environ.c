@@ -86,21 +86,23 @@ void	remove_vars(char *name)
 
 char	**list_to_env(void)
 {
-	t_list *tmp;
-	int i;
-	char **env;
-	int j;
+	t_list	*tmp;
+	int		i;
+	char	**env;
+	int		j;
 	
 	i = get_list_size(g_var.env);
 	j = 0;
 	tmp = g_var.env;
-	env = malloc(sizeof(char **) * i);
-	while (j <= i)
+	env = malloc(sizeof(void *) * i + 1);
+	while (j < i)
 	{
-		env[j] = ft_strjoin(((t_file *)(tmp->content))->name, "=");
-		env[j] = ft_strjoin_free(env[j],
-		ft_strdup(((t_file *)(tmp->content))->value));
+		env[j] = strjoin_char(((t_file *)tmp->content)->name,
+				((t_file *)tmp->content)->value, '=');
+		if (!env[j])
+			mini_err(g_var.store, ERR_MALLOC0);
 		j++;
 	}
+	env[j] = NULL;
 	return (env);
 }

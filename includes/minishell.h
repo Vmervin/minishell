@@ -99,6 +99,7 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 // main
 int		get_list_size(t_list *list);
+char	*strjoin_char(char *s1, char *s2, char delim);
 
 // parser
 t_cmd	*parser(char *string, int *error);
