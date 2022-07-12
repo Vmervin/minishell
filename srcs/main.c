@@ -8,7 +8,6 @@ int	mini_err(t_store *st, int err)
 	printf("Err occured: %d\n", err);
 	if (err == 0)
 	{
-		free(st->com);
 		free(st->par);
 	}
 	exit(1);
@@ -81,7 +80,6 @@ int	startup(t_store *st, char **env)
 	env_to_list(env);
 	g_var.last_exec = 0;
 	st->env = env;
-	st->com = NULL;
 	st->par = NULL;
 	return (0);
 }
@@ -91,7 +89,6 @@ void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 {
 	int	i;
 
-	st->com = mini_calloc(st->size + 1, sizeof(void *), st);
 	st->par = mini_calloc(st->size + 1, sizeof(void *), st);
 	st->pip = mini_calloc(st->size, sizeof(void *), st);
 	i = -1;
@@ -121,17 +118,39 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 	{
 		if (!cmds->command)
 			continue ;
-		st->com[i] = ((t_file *)(cmds + i)->command->content)->name;
 		e = 0;
 		curlist = (cmds + i)->command;
 		while (curlist)
 		{
 			st->par[i][e] = ((t_file *)curlist->content)->name;
+			// printf("st->par = %s\n", st->par[i][e]);
 			curlist = curlist->next;
 			e++;
 		}
 		st->par[i][e] = NULL;
 	}
+}
+
+char	*strjoin_char(char *s1, char *s2, char delim)
+{
+	char	*out;
+	int		size1;
+	int		size2;
+	int		i;
+
+	size1 = ft_strlen(s1);
+	size2 = ft_strlen(s2);
+	out = malloc(size1 + size2);
+	if (!out)
+		return (NULL);
+	i = -1;
+	while (++i < size1)
+		out[i] = s1[i];
+	out[i++] = delim;
+	size1 = -1;
+	while (++size1 <= size2)
+		out[i++] = s2[size1];
+	return (out);
 }
 
 int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
@@ -214,15 +233,15 @@ int	find_file_by_dir(t_store *st, char **par, int e)
 	i = -1;
 	while (++i < st->path_size)
 	{
-		str = ft_strjoin(ft_strjoin(st->path[i], "/"), par[0]);
+		str = strjoin_char(st->path[i], par[0], '/');
 		if (!str)
 			mini_err(st, 0);
+		printf("!!!%s\n", str);
 		if (access(str, F_OK) == 0)
 		{
-			free(st->com[e]);
-			st->par[e][0] = str;
-			st->com[e] = str;
-			printf("str : %s\n", str);
+			free(par[0]);
+			par[0] = str;
+			// printf("str : %s\n", str);
 			return (1);
 		}
 	}
@@ -238,7 +257,7 @@ int	is_command_ok(t_store *st)
 	{
 		if (find_file_by_dir(st, st->par[i], i) == 0)
 		{
-			printf("bash: %s: command not found\n", st->com[i]);
+			printf("bash: %s: command not found\n", st->par[i][0]);
 			return (0);
 		}
 	}
@@ -251,24 +270,32 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
-	st->last_result = execve(st->com[num], st->par[num], st->env);
+
+	char **temp = st->env;
+	while (temp)
+	{
+		printf("%s\n", *temp);
+		temp++;
+	}
+	
+	st->last_result = execve(st->par[num][0], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
 	exit(0);
 	return (0);
 }
 
-// void test_func(t_store *st, t_cmd *cmds, int num)
-// {
-// 	printf("fork start :%d\n", num);
-// 	// printf("%d) command: %s\n", num, st->com[num]);
-// 	// int i = 1;
-// 	// while (st->par[num][i])
-// 	// {
-// 	// 	printf("%d) arg[%d]: %s\n", num, i, st->par[num][i]);
-// 	// 	i++;
-// 	// }
-// }
+void test_func(t_store *st, t_cmd *cmds, int num)
+{
+	printf("fork start :%d\n", num);
+	printf("%d) command: %s\n", num, st->par[num][0]);
+	int i = 1;
+	while (st->par[num][i])
+	{
+		printf("%d) arg[%d]: %s\n", num, i, st->par[num][i]);
+		i++;
+	}
+}
 
 int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 {
