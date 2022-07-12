@@ -22,7 +22,8 @@ LIBFT		= ${LIBFTPATH}/libft.a
 INCLUDES 	= ./includes
 OBJECTS		= ${SRCS:.c=.o}
 CC 			= cc
-CFLAGS		= -Wall -Wextra -I${INCLUDES}
+DEBUG		= -g
+CFLAGS		= -Wall -Wextra -I${INCLUDES} ${DEBUG}
 CFLAGS2		= -L${LIBFTPATH} -lft -L/opt/homebrew/Cellar/readline/8.1.2/lib/ -I/opt/homebrew/Cellar/readline/8.1.2/include -lreadline
 RM 			= rm -f
 
