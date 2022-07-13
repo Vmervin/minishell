@@ -66,10 +66,10 @@ t_cmd	*simple_command_parser(t_parser *service)
 	{
 		if (service->error)
 			break ;
-		init_commands(&scmds[i], service, i);
+		init_commands(scmds + i, service, i);
 		i++;
 	}
-	init_commands(&scmds[i], NULL, i);
+	init_commands(scmds + i, NULL, i);
 	return (scmds);
 }
 
