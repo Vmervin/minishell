@@ -67,7 +67,7 @@ char	**list_to_env(void)
 	i = get_list_size(g_var.env);
 	j = 0;
 	tmp = g_var.env;
-	env = malloc(sizeof(void *) * i + 1);
+	env = malloc(sizeof(void *) * (i + 1));
 	while (j < i)
 	{
 		env[j] = strjoin_char(((t_file *)tmp->content)->name,

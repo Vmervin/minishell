@@ -2,6 +2,16 @@
 
 t_global g_var;
 
+void	test_print_env(char **temp)
+{
+	int i = -1;
+	while (*temp)
+	{
+		printf("%d) %s\n", ++i, *temp);
+		temp++;
+	}
+}
+
 int	mini_err(t_store *st, int err)
 {
 	printf("errno: %d\n", errno);
@@ -123,7 +133,7 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 		while (curlist)
 		{
 			st->par[i][e] = ((t_file *)curlist->content)->name;
-			// printf("st->par = %s\n", st->par[i][e]);
+			//printf("%d) st->par = %s\n", i, st->par[i][e]);
 			curlist = curlist->next;
 			e++;
 		}
@@ -140,7 +150,7 @@ char	*strjoin_char(char *s1, char *s2, char delim)
 
 	size1 = ft_strlen(s1);
 	size2 = ft_strlen(s2);
-	out = malloc(size1 + size2);
+	out = malloc((size1 + size2 + 2) * sizeof(char));
 	if (!out)
 		return (NULL);
 	i = -1;
@@ -236,14 +246,14 @@ int	find_file_by_dir(t_store *st, char **par, int e)
 		str = strjoin_char(st->path[i], par[0], '/');
 		if (!str)
 			mini_err(st, 0);
-		printf("!!!%s\n", str);
+		// printf("!!!%s\n", str);
 		if (access(str, F_OK) == 0)
 		{
 			free(par[0]);
 			par[0] = str;
-			// printf("str : %s\n", str);
 			return (1);
 		}
+		free(str);
 	}
 	return (0);
 }
@@ -255,11 +265,11 @@ int	is_command_ok(t_store *st)
 	i = -1;
 	while (++i < st->size)
 	{
-		if (built_in_check(st->com[i]))
+		if (built_in_check(st->par[i][0]))
 			continue ;
 		if (find_file_by_dir(st, st->par[i], i) == 0)
 		{
-			printf("minishell: %s: command not found\n", st->com[i]);
+			printf("minishell: %s: command not found\n", st->par[i][0]);
 			return (0);
 		}
 	}
@@ -272,17 +282,9 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
-
-	char **temp = st->env;
-	while (temp)
-	{
-		printf("%s\n", *temp);
-		temp++;
-	}
-	
 	if(!is_built_in(cmds[num].command)) // built-in in progress
 		exit(0);
-	st->last_result = execve(st->com[num], st->par[num], st->env);
+	st->last_result = execve(st->par[num][0], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
 	exit(0);
