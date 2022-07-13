@@ -75,6 +75,7 @@ char	**list_to_env(void)
 		if (!env[j])
 			mini_err(g_var.store, ERR_MALLOC0);
 		j++;
+		tmp = tmp->next;
 	}
 	env[j] = NULL;
 	return (env);
