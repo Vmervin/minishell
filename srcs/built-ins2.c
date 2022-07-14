@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 05:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 18:18:18 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/14 06:13:14 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	cd(t_list *lst)
 		path = get_var("HOME");
 	if (lst)
 		path = ft_strdup(((t_file *)lst->content)->name);
-	if (chdir (path) == -1)
+	printf("%s or %s\n", path, getcwd(NULL, 0));
+	if (chdir(path))
 	{
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd("   No such file or directory\n", 2);
@@ -29,8 +30,16 @@ int	cd(t_list *lst)
 		return (1);
 	}
 	free(path);
+	printf("%s\n", getcwd(NULL, 0));
 	// com_pwd ("");
 	return (0);
+}
+
+int exit_b(void)
+{
+	ft_putstr_fd("exit\n", 2);
+	mini_err(g_var.store, 0);
+	return (1);
 }
 
 int	built_in_check(char *str)

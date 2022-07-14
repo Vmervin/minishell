@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 03:49:26 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 18:28:49 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/14 05:37:59 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,15 @@ int	env(t_list *lst)
 
 int	pwd(void)
 {
-	char	dir[1024];
 	char	*s;
 
-	s = getcwd (dir, sizeof(dir) - 1);
-	if (s == 0)
+	s = getcwd(NULL, 0);
+	if (!s)
 	{
-		ft_putstr_fd("Error getting pwd: ", 2);
-		ft_putstr_fd(dir, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd("Error getting pwd\n", 2);
 		return (1);
 	}
-	ft_printf("%s\n", dir);
+	ft_printf("%s\n", s);
 	return (0);
 }
 
@@ -81,5 +78,7 @@ int	is_built_in(t_list *lst)
 		return (pwd());
 	if (is_strs_equal(((t_file *)(lst->content))->name, "cd"))
 		return (cd(lst->next));
+	if (is_strs_equal(((t_file *)(lst->content))->name, "exit"))
+		return (exit_b());
 	return (1);
 }

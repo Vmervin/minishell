@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 18:27:58 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/14 05:41:06 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // # include <termios.h>
 # include <unistd.h>
 # include <sys/types.h>
-// # include <sys/stat.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
@@ -182,7 +182,6 @@ int		mini_err(t_store *st, int err);
 // built-ins
 int		echo(t_list *lst, int fd);
 int		cd(t_list *lst);
-int		is_built_in(t_list *lst);
-int		built_in_check(char *str);
+int		exit_b(void);
 
 #endif
