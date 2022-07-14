@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:36:03 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 00:25:50 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/14 17:38:51 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	add_list_file(t_list **lst, int append, char *name, char *value)
 
 t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type)
 {
+	if (!lst)
+	{
+		service->error = syntax_error('\0');
+		return (lst);
+	}
 	if (((t_token *)lst->content)->tokentype == type)
 	{
 		*append = 1;
