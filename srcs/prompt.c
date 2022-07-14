@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 05:44:12 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/14 06:16:59 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ char	*prompt_invitation(void)
 
 void	recieve(int signum)
 {
-	if (signum == SIGTERM)
-		exit(0);
 	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", 2);
