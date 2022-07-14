@@ -79,7 +79,9 @@ typedef struct s_store
 	int		path_size;
 	int		size;
 	int		**pip;
+	int		herdoc_pipe[2];
 	int		last_result;
+	char	**com;
 	char	***par;
 }	t_store;
 
@@ -98,6 +100,7 @@ void	rl_replace_line(const char *text, int clear_undo);
 // main
 int		get_list_size(t_list *list);
 char	*strjoin_char(char *s1, char *s2, char delim);
+int		strcat_add(char **s1, char *s2);
 int		built_in_check(char *str);
 int		is_built_in(t_list *lst);
 
