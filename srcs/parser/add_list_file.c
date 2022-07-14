@@ -34,6 +34,11 @@ int	add_list_file(t_list **lst, int append, char *name, char *value)
 
 t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type)
 {
+	if (!lst)
+	{
+		service->error = syntax_error('\0');
+		return (lst);
+	}
 	if (((t_token *)lst->content)->tokentype == type)
 	{
 		*append = 1;
