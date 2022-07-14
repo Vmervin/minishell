@@ -91,6 +91,7 @@ int	startup(t_store *st, char **env)
 	g_var.last_exec = 0;
 	st->env = env;
 	st->par = NULL;
+	st->com = NULL;
 	return (0);
 }
 
@@ -100,6 +101,7 @@ void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 	int	i;
 
 	st->par = mini_calloc(st->size + 1, sizeof(void *), st);
+	st->com = mini_calloc(st->size + 1, sizeof(void *), st);
 	st->pip = mini_calloc(st->size, sizeof(void *), st);
 	i = -1;
 	while (++i < st->size)
@@ -130,10 +132,10 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 			continue ;
 		e = 0;
 		curlist = (cmds + i)->command;
+		st->com[i] = ((t_file *)curlist->content)->name;
 		while (curlist)
 		{
 			st->par[i][e] = ((t_file *)curlist->content)->name;
-			//printf("%d) st->par = %s\n", i, st->par[i][e]);
 			curlist = curlist->next;
 			e++;
 		}
@@ -186,12 +188,14 @@ int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
 			mini_err(st, ERR_SUB_PRCCESS);
 		lst = lst->next;
 	}
-	if (((t_file *)lst->content)->append == 1)
+	if (((t_file *)lst->content)->append == 0)
+	{
 		temp_fd = open(((t_file *)lst->content)->name, O_RDONLY);
-	if (temp_fd == -1)
-		mini_err(st, ERR_SUB_PRCCESS);
-	if (dup2(temp_fd, 0) == -1)
-		mini_err(st, ERR_SUB_PRCCESS);
+		if (temp_fd == -1)
+			mini_err(st, ERR_SUB_PRCCESS);
+		if (dup2(temp_fd, 0) == -1)
+			mini_err(st, ERR_SUB_PRCCESS);
+	}
 	return (0);
 }
 
@@ -235,7 +239,7 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
-int	find_file_by_dir(t_store *st, char **par, int e)
+int	find_file_by_dir(t_store *st, char **com, int e)
 {
 	int 	i;
 	char	*str;
@@ -243,14 +247,12 @@ int	find_file_by_dir(t_store *st, char **par, int e)
 	i = -1;
 	while (++i < st->path_size)
 	{
-		str = strjoin_char(st->path[i], par[0], '/');
+		str = strjoin_char(st->path[i], *st->com, '/');
 		if (!str)
 			mini_err(st, 0);
-		// printf("!!!%s\n", str);
 		if (access(str, F_OK) == 0)
 		{
-			free(par[0]);
-			par[0] = str;
+			*com = str;
 			return (1);
 		}
 		free(str);
@@ -267,7 +269,7 @@ int	is_command_ok(t_store *st)
 	{
 		if (built_in_check(st->par[i][0]))
 			continue ;
-		if (find_file_by_dir(st, st->par[i], i) == 0)
+		if (find_file_by_dir(st, st->com + i, i) == 0)
 		{
 			printf("minishell: %s: command not found\n", st->par[i][0]);
 			return (0);
@@ -284,7 +286,7 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 	get_outfile_fd(st, cmds, num);
 	if(!is_built_in(cmds[num].command)) // built-in in progress
 		exit(0);
-	st->last_result = execve(st->par[num][0], st->par[num], st->env);
+	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
 	exit(0);

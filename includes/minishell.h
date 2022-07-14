@@ -80,6 +80,7 @@ typedef struct s_store
 	int		size;
 	int		**pip;
 	int		last_result;
+	char	**com;
 	char	***par;
 }	t_store;
 
