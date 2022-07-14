@@ -67,7 +67,7 @@ int	is_built_in(t_list *lst)
 	if (!lst)
 		return (1);
 	if (is_strs_equal(((t_file *)(lst->content))->name, "echo"))
-		return (echo(lst->next, 0));
+		return (echo(lst->next, 1));
 	if (is_strs_equal(((t_file *)(lst->content))->name, "export"))
 		return (export(lst->next));
 	if (is_strs_equal(((t_file *)(lst->content))->name, "env"))
