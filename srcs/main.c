@@ -143,6 +143,48 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 	}
 }
 
+unsigned long	strlen_protected(const char *s)
+{
+	unsigned long	size;
+
+	if (!s)
+		return (0);
+	size = 0;
+	while (*s != '\0')
+	{
+		s++;
+		size++;
+	}
+	return (size);
+}
+
+
+int	strcat_add(char **s1, char *s2)
+{
+	char	*out;
+	int		size1;
+	int		size2;
+	int		i;
+
+	if (!(*s1) && !s2)
+		return (0);
+	size1 = strlen_protected((*s1));
+	size2 = strlen_protected(s2);
+	out = malloc((size1 + size2 + 1) * sizeof(char));
+	// printf("size: %d\n", size1 + size2 + 1);
+	if (!out)
+		return (1);
+	i = -1;
+	while (++i < size1)
+		out[i] = (*s1)[i];
+	size1 = -1;
+	while (++size1 <= size2)
+		out[i++] = s2[size1];
+	free((*s1));
+	(*s1) = out;
+	return (0);
+}
+
 char	*strjoin_char(char *s1, char *s2, char delim)
 {
 	char	*out;
@@ -165,21 +207,37 @@ char	*strjoin_char(char *s1, char *s2, char delim)
 	return (out);
 }
 
-int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
+int	herdoc_init(t_store *st, t_file *f)
+{
+	int	pid;
+
+	if (pipe(st->herdoc_pipe))
+		mini_err(st, ERR_PIPE_INIT);
+	pid = fork();
+	if (pid < 0)
+		mini_err(st, ERR_FORK_INIT);
+	if (pid > 0)
+	{
+		close(st->herdoc_pipe[1]);
+		if (dup2(st->herdoc_pipe[0], 0))
+			mini_err(st, ERR_FOR_SUBFUNC);
+		close(st->herdoc_pipe[0]);
+	}
+	else
+	{
+		close(st->herdoc_pipe[0]);
+		heredoc(f->name, st->herdoc_pipe[1], f->append);
+		close(st->herdoc_pipe[1]);
+		exit(0);
+	}
+	return (0);
+}
+
+int	 get_infile_fd2(t_store *st, t_cmd *cmds)
 {
 	t_list	*lst;
 	int		temp_fd;
-	int		fd_out;
 
-	if (cmds->infiles == NULL)
-	{
-		if (num == 0)
-			return (0);
-		close(st->pip[num - 1][1]);
-		if (dup2(st->pip[num - 1][0], 0) == -1)
-			mini_err(st, ERR_SUB_PRCCESS);
-		return (0);
-	}
 	lst = cmds->infiles;
 	while (lst->next)
 	{
@@ -196,26 +254,33 @@ int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
 		if (dup2(temp_fd, 0) == -1)
 			mini_err(st, ERR_SUB_PRCCESS);
 	}
+	else
+		herdoc_init(st, (t_file *)lst->content);
 	return (0);
 }
 
-int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
+int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
+{
+	if (num > 0)
+		close(st->pip[num - 1][1]);
+	if (cmds->infiles == NULL)
+	{
+		if (num == 0)
+			return (0);
+		if (dup2(st->pip[num - 1][0], 0) == -1)
+			mini_err(st, ERR_SUB_PRCCESS);
+		close(st->pip[num - 1][0]);
+		return (0);
+	}
+	get_infile_fd2(st, cmds);
+	return (0);
+}
+
+int	get_outfile_fd2(t_store *st, t_cmd *cmds)
 {
 	t_list	*lst;
 	int		temp_fd;
 
-	if (cmds->outfiles == NULL)
-	{
-		if (num == st->size - 1)
-			return (0);
-		if (dup2(st->pip[num][1], 1) == -1)
-		{
-			close(st->pip[num][1]);
-			mini_err(st, ERR_SUB_PRCCESS);
-		}
-		close(st->pip[num][1]);
-		return (0);
-	}
 	lst = cmds->outfiles;
 	while (lst->next)
 	{
@@ -239,6 +304,25 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
+int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
+{
+	if (num < st->size - 1)
+		close(st->pip[num][0]);
+	if (cmds->outfiles == NULL)
+	{
+		if (num == st->size - 1)
+			return (0);
+		if (dup2(st->pip[num][1], 1) == -1)
+		{
+			mini_err(st, ERR_SUB_PRCCESS);
+		}
+		close(st->pip[num][1]);
+		return (0);
+	}
+	get_outfile_fd2(st, cmds);
+	return (0);
+}
+
 int	find_file_by_dir(t_store *st, char **com, int e)
 {
 	int 	i;
@@ -247,12 +331,12 @@ int	find_file_by_dir(t_store *st, char **com, int e)
 	i = -1;
 	while (++i < st->path_size)
 	{
-		str = strjoin_char(st->path[i], *st->com, '/');
+		str = strjoin_char(st->path[i], st->com[e], '/');
 		if (!str)
 			mini_err(st, 0);
 		if (access(str, F_OK) == 0)
 		{
-			*com = str;
+			com[e] = str;
 			return (1);
 		}
 		free(str);
@@ -269,7 +353,7 @@ int	is_command_ok(t_store *st)
 	{
 		if (built_in_check(st->par[i][0]))
 			continue ;
-		if (find_file_by_dir(st, st->com + i, i) == 0)
+		if (find_file_by_dir(st, st->com, i) == 0)
 		{
 			printf("minishell: %s: command not found\n", st->par[i][0]);
 			return (0);
@@ -296,13 +380,13 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 void test_func(t_store *st, t_cmd *cmds, int num)
 {
 	printf("fork start :%d\n", num);
-	printf("%d) command: %s\n", num, st->par[num][0]);
-	int i = 1;
-	while (st->par[num][i])
-	{
-		printf("%d) arg[%d]: %s\n", num, i, st->par[num][i]);
-		i++;
-	}
+	// printf("%d) command: %s\n", num, st->par[num][0]);
+	// int i = 1;
+	// while (st->par[num][i])
+	// {
+	// 	printf("%d) arg[%d]: %s\n", num, i, st->par[num][i]);
+	// 	i++;
+	// }
 }
 
 int	pipe_exec(t_store *st, t_cmd *cmds, int num)
@@ -310,7 +394,7 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 	int	pid;
 	int	status;
 
-	// test_func(st, cmds, num);
+	test_func(st, cmds, num);
 	pid = fork();
 	if (pid < 0)
 		mini_err(st, ERR_FORK_INIT);
