@@ -43,21 +43,14 @@ int	is_eof(char *line, char *eof)
 void	heredoc(char *eof, int fd, int append)
 {
 	char	*line;
-	char	*out;
 
 	line = readline("> ");
-	out = NULL;
 	while (line && !is_eof(line, eof))
 	{
 		line = expand_heredoc(line, append);
-		// printf("imhere!\n");
-		if (strcat_add(&out, line))
-			mini_err(g_var.store, ERR_MALLOC0);
+		ft_putstr_fd(line, fd);
 		free(line);
 		line = readline("> ");
 	}
-	if (strcat_add(&out, "\n"))
-		mini_err(g_var.store, ERR_MALLOC0);
-	ft_putstr_fd(out, fd);
 	free(line);
 }
