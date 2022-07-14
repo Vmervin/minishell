@@ -1,14 +1,22 @@
 # minishell
 
 Feature request for Patchking:
-	Возвращаемые значения для $? по образцу
-  // wait(&status);
-  // if (WIFSIGNALED(status))
-  //	return(WTERMSIG(status) + 128);
-	// if ("command not found")
-	// 	return (127);
-	// if ("command is not executable")
-	// 	return (126);
+
+Возвращаемые значения для $? по образцу
+
+// wait(&status);
+
+// if (WIFSIGNALED(status))
+
+//	return(WTERMSIG(status) + 128);
+
+// if ("command not found")
+
+// 	return (127);
+
+// if ("command is not executable")
+
+// 	return (126);
   
   Для очистки памяти воспользуйся: command_memfree(t_cmd*) и memfree(t_list*)
   для обработки Heredoc - функцией heredoc.
