@@ -58,7 +58,7 @@ char	*rl_gets(void)
 	free(prompt);
 	if (!line)
 	{
-		printf("exit\n", line);
+		printf("exit\n");
 		mini_err(g_var.store, 123);
 	}
 	if (*line != '\0')

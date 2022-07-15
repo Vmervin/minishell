@@ -124,7 +124,7 @@ int		strcat_add(char **s1, char *s2);
 size_t	strlen_protected(const char *s);
 void	create_appropriate_struct(t_store *st, t_cmd *cmds);
 void	malloc_appropriate_struct(t_store *st, t_cmd *cmds);
-int		startup(t_store *st, char **env);
+int		startup(t_store *st, char **env, int args, char **argv);
 char	*get_path_str(char **env);
 int		get_void_size(void **arr);
 int		get_list_size(t_list *list);

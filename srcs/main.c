@@ -12,10 +12,9 @@ int	get_void_size(void **arr)
 	return (i);
 }
 
-int	free_appropriate_struct(t_store *st, int err)
+void	free_appropriate_struct(t_store *st)
 {
 	int	i;
-	int	e;
 
 	free(st->com);
 	i = -1;
@@ -28,7 +27,7 @@ int	free_appropriate_struct(t_store *st, int err)
 
 int	mini_err(t_store *st, int err)
 {
-	free_appropriate_struct(st, 0);
+	free_appropriate_struct(st);
 	command_memfree(g_var.store->list);
 	if (err == ERR_SUB_PRCCESS)
 		exit(102);
@@ -85,11 +84,12 @@ char	*get_path_str(char **env)
 	return (*env + 5);
 }
 
-int	startup(t_store *st, char **env)
+int	startup(t_store *st, char **env, int args, char **argv)
 {
-	int	i;
-
+	if (!args || !argv)
+		exit(0);
 	env_to_list(env);
+	g_var.store = st;
 	g_var.last_exec = 0;
 	st->env = env;
 	st->par = NULL;
@@ -413,34 +413,12 @@ int	is_command_ok(t_store *st)
 	return (1);
 }
 
-int	close_exceed_fd(t_store *st, int num)
-{
-	if (num > 0)
-	{
-		close(st->pip[num - 1][0]);
-		close(st->pip[num - 1][1]);
-	}
-	if (num < st->size - 1)
-	{
-		close(st->pip[num][0]);
-		close(st->pip[num][1]);
-	}
-}
-
 int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 {
-	int	status;
-
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
-	// close(st->pip[num][0]);
-	// close(st->pip[num][1]);
-	// close(st->pip[num - 1][0]);
-	// close(st->pip[num - 1][1]);
-	// close_exceed_fd(st, num);
 	if (!is_built_in(cmds->command)) // built-in in progress
 		exit(0);
-	// printf("%s st->com[num]\n", st->com[num]);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
@@ -448,24 +426,11 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
-void	test_func(t_store *st, t_cmd *cmds, int num)
-{
-	printf("%d fork start\n", num);
-	// printf("%d) command: %s\n", num, st->par[num][0]);
-	// int i = 1;
-	// while (st->par[num][i])
-	// {
-	// 	printf("%d) arg[%d]: %s\n", num, i, st->par[num][i]);
-	// 	i++;
-	// }
-}
-
 int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 {
 	int	pid;
 	int	status;
 
-	// test_func(st, cmds, num);
 	pid = fork();
 	if (pid < 0)
 		mini_err(st, ERR_FORK_INIT);
@@ -494,7 +459,6 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 int	main_loop(t_store *st, t_cmd *cmds)
 {
 	int	i;
-	int	e;
 	int	pid;
 	int	status;
 
@@ -534,9 +498,8 @@ int	main(int args, char **argv, char **env)
 	t_cmd	*cmds;
 	char	*str;
 
-	if (startup(&st, env))
+	if (startup(&st, env, args, argv))
 		return (0);
-	g_var.store = &st;
 	while (1)
 	{
 		// printf("	imhere\n");
@@ -548,7 +511,7 @@ int	main(int args, char **argv, char **env)
 		if (err)
 			continue;
 		st.env = list_to_env();
-		// test_print_env(st.env;)
+		// test_print_env(st.env)
 		st.path = ft_split(get_var("PATH"), ':');
 		if (!st.path || !st.env)
 			mini_err(&st, 0);
