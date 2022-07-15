@@ -2,6 +2,16 @@
 
 t_global g_var;
 
+int	get_void_size(void **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+		i++;
+	return (i);
+}
+
 void	test_print_env(char **temp)
 {
 	int i = -1;
@@ -12,14 +22,24 @@ void	test_print_env(char **temp)
 	}
 }
 
+int	free_appropriate_struct(t_store *st, int err)
+{
+	int	i;
+	int	e;
+
+	free(st->com);
+	i = -1;
+	while (++i < st->size)
+		free(st->par[i]);
+	i = -1;
+	while (++i < st->size - 1)
+		free(st->pip[i]);
+}
+
 int	mini_err(t_store *st, int err)
 {
-	printf("errno: %d\n", errno);
-	printf("Err occured: %d\n", err);
-	if (err == 0)
-	{
-		free(st->par);
-	}
+	free_appropriate_struct(st, 0);
+	command_memfree(g_var.store->list);
 	if (err == ERR_SUB_PRCCESS)
 		exit(102);
 	exit(1);
@@ -30,10 +50,10 @@ void	*mini_calloc(size_t nmemb, size_t size, t_store *st)
 	char	*v;
 
 	if (size && nmemb > (__SIZE_MAX__ / size))
-		mini_err(st, ERR_MALLOC0);
-	v = malloc(nmemb * size);
+		mini_err(st, ERR_CALLOC);
+	v = malloc(nmemb * size); //malloc1
 	if (!v)
-		mini_err(st, ERR_MALLOC0);
+		mini_err(st, ERR_CALLOC);
 	else
 		return (ft_memset(v, '\0', (nmemb * size)));
 	return (NULL);
@@ -59,16 +79,6 @@ int	get_list_size(t_list *list)
 		list = list->next;
 		i++;
 	}
-	return (i);
-}
-
-int	get_void_size(void **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i] != NULL)
-		i++;
 	return (i);
 }
 
@@ -509,10 +519,11 @@ int	main(int args, char **argv, char **env)
 		if (!str || !*str)
 			continue;
 		cmds = parser(str, &err);
+		st.list = cmds;
 		if (err)
 			continue;
 		st.env = list_to_env();
-		// test_print_env(st.env);
+		// test_print_env(st.env;)
 		st.path = ft_split(get_var("PATH"), ':');
 		if (!st.path || !st.env)
 			mini_err(&st, 0);

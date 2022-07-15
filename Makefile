@@ -28,7 +28,7 @@ OBJECTS		= ${addprefix ${OBJ_DIR}, ${patsubst %.c,%.o,${notdir ${SRCS}}}}
 OBJ_DIR		= ./obj/
 D_FILES		= ${patsubst %.o,%.d,${OBJECTS}}
 CC 			= cc
-DEBUG		= -g #-fsanitize=address
+DEBUG		= -g -fsanitize=address
 CFLAGS		= -Wall -Wextra -I${INCLUDES} -MD ${DEBUG} -lreadline
 CFLAGS2		= -L${LIBFTPATH} -lft -L${MACBOOK_READLINE}lib/ -I${MACBOOK_READLINE}include/
 # CFLAGS2		= -L${LIBFTPATH} -lft -L${READLINE}lib -I${READLINE}include -lreadline # flags for macOS with homebrew

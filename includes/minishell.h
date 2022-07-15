@@ -31,12 +31,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-# define ERR_MALLOC0 0
-# define ERR_PIPE_INIT 1
-# define ERR_FORK_INIT 2
-# define ERR_SUB_PRCCESS 3
-# define ERR_FOR_SUBFUNC 4
-# define ERR_FILE_OPEN 5
+# define ERR_MALLOC0		0
+# define ERR_PIPE_INIT		1
+# define ERR_FORK_INIT		2
+# define ERR_SUB_PRCCESS	3
+# define ERR_FOR_SUBFUNC	4
+# define ERR_FILE_OPEN		5
+# define ERR_CALLOC			6
 
 // append == 1 => ">>" 0 нормальный файл, 1 хердок без кавычек, 
 // 2 хердок с кавычками
@@ -87,6 +88,7 @@ typedef struct s_store
 	int		tempfile_fd;
 	int		fd_in;
 	int		fd_out;
+	t_cmd	*list;
 }	t_store;
 
 typedef struct s_global
