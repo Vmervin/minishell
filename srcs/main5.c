@@ -77,6 +77,22 @@ int	main_loop(t_store *st, t_cmd *cmds, int status, int i)
 	return (0);
 }
 
+int	is_command_ok(t_store *st)
+{
+	int	i;
+
+	i = -1;
+	while (++i < st->size)
+	{
+		if (find_file_by_dir(st, st->com, i) == 0)
+		{
+			printf("minishell: %s: command not found\n", st->par[i][0]);
+			return (0);
+		}
+	}
+	return (1);
+}
+
 int	main(int args, char **argv, char **env)
 {
 	t_store	st;

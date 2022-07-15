@@ -13,7 +13,7 @@
 NAME 		= minishell
 SRC_DIR		= ./srcs/
 SRCS		= ${addprefix ${SRC_DIR}, built-ins.c environ.c	errors.c \
-ft_lst_sort2.c	main.c	command_memfree.c ft_lst_sort.c	heredoc_proc.c \
+ft_lst_sort2.c	main1.c	main2.c main3.c main4.c main5.c command_memfree.c ft_lst_sort.c	heredoc_proc.c \
 prompt.c var_process.c built-ins2.c ${PARSER}}
 
 PARSER_DIR	= parser/

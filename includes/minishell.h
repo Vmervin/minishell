@@ -118,6 +118,7 @@ int		find_file_by_dir(t_store *st, char **com, int e);
 int		get_outfile_fd(t_store *st, t_cmd *cmds, int num);
 int		get_outfile_fd2(t_store *st, t_cmd *cmds);
 int		get_infile_fd(t_store *st, t_cmd *cmds, int num);
+int		get_infile_fd_cycle(t_store *st, t_list *lst);
 int		get_infile_fd2(t_store *st, t_cmd *cmds);
 char	*strjoin_char(char *s1, char *s2, char delim);
 int		strcat_add(char **s1, char *s2);
