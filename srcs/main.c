@@ -293,27 +293,28 @@ int	get_outfile_fd2(t_store *st, t_cmd *cmds)
 	return (0);
 }
 
-int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
-{
-	if (num < st->size - 1)
-		close(st->pip[num][0]);
-	if (cmds->outfiles == NULL)
-	{
-		if (num == st->size - 1)
-		{
-			// printf("its a finish, Mariio!\n");
-			return (0);
-		}
-		if (dup2(st->pip[num][1], 1) == -1)
-		{
-			mini_err(st, ERR_SUB_PRCCESS);
-		close(st->pip[num - 1][0]);
-		return (0);
-	}
-	else
-		get_outfile_fd2(st, cmds);
-	return (0);
-}
+// int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
+// {
+// 	if (num < st->size - 1)
+// 		close(st->pip[num][0]);
+// 	if (cmds->outfiles == NULL)
+// 	{
+// 		if (num == st->size - 1)
+// 		{
+// 			// printf("its a finish, Mariio!\n");
+// 			return (0);
+// 		}
+// 		if (dup2(st->pip[num][1], 1) == -1)
+// 		{
+// 			mini_err(st, ERR_SUB_PRCCESS);
+// 		}
+// 		close(st->pip[num - 1][0]);
+// 		return (0);
+// 	}
+// 	else
+// 		get_outfile_fd2(st, cmds);
+// 	return (0);
+// }
 
 int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 {
