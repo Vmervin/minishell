@@ -84,6 +84,7 @@ typedef struct s_store
 	char	**com;
 	char	***par;
 	char	*tempfile_dir;
+	int		tempfile_fd;
 }	t_store;
 
 typedef struct s_global

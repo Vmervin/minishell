@@ -59,7 +59,7 @@ char	*rl_gets(void)
 	if (!line)
 	{
 		printf("exit(%s)", line);
-		mini_err(g_var.store, 888);
+		mini_err(g_var.store, 123);
 	}
 	if (*line != '\0')
 		add_history(line);

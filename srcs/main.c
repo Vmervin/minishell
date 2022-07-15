@@ -20,6 +20,8 @@ int	mini_err(t_store *st, int err)
 	{
 		free(st->par);
 	}
+	if (err == ERR_SUB_PRCCESS)
+		exit(102);
 	exit(1);
 }
 
@@ -172,7 +174,8 @@ int	strcat_add(char **s1, char *s2)
 	size1 = strlen_protected((*s1));
 	size2 = strlen_protected(s2);
 	out = malloc((size1 + size2 + 1) * sizeof(char));
-	// printf("size: %d\n", size1 + size2 + 1);
+	if (!out)
+		mini_err(g_var.store, ERR_MALLOC0);
 	if (!out)
 		return (1);
 	i = -1;
@@ -208,45 +211,39 @@ char	*strjoin_char(char *s1, char *s2, char delim)
 	return (out);
 }
 
-int	herdoc_init(t_store *st, t_file *f)
-{
-	
-	return (0);
-}
-
 int	 get_infile_fd2(t_store *st, t_cmd *cmds)
 {
 	t_list	*lst;
 	int		temp_fd;
 
 	lst = cmds->infiles;
-	while (lst->next)
+	temp_fd = -1;
+	while (lst)
 	{
 		if (((t_file *)lst->content)->append == 0)
 		{
 			temp_fd = open(((t_file *)lst->content)->name, O_RDONLY | O_CREAT, 0664);
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
+			close(temp_fd);
 		}
 		else
 		{
-			temp_fd = open(((t_file *)lst->content)->name, O_RDWR | O_CREAT | O_TRUNC, 0664);
+			temp_fd = open(st->tempfile_dir, O_RDWR | O_CREAT | O_TRUNC, 0664);
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
-			
+			heredoc(((t_file *)lst->content)->name, temp_fd, ((t_file *)lst->content)->append);
+			close(temp_fd);
 		}
 		lst = lst->next;
 	}
-	if (((t_file *)lst->content)->append == 0)
-	{
-		temp_fd = open(((t_file *)lst->content)->name, O_RDONLY);
-		if (temp_fd == -1)
-			mini_err(st, ERR_SUB_PRCCESS);
-		if (dup2(temp_fd, 0) == -1)
-			mini_err(st, ERR_SUB_PRCCESS);
-	}
-	else
-		herdoc_init(st, (t_file *)lst->content);
+					// in progress //
+	close(temp_fd);
+	temp_fd = open(st->tempfile_dir, O_RDONLY, 0664);
+	if (dup2(temp_fd, 0) == -1)
+		mini_err(st, ERR_SUB_PRCCESS);
+	if (temp_fd != -1)
+		close(temp_fd);
 	return (0);
 }
 
@@ -258,12 +255,15 @@ int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
 	{
 		if (num == 0)
 			return (0);
+		// printf("%d start listening\n", num);
 		if (dup2(st->pip[num - 1][0], 0) == -1)
 			mini_err(st, ERR_SUB_PRCCESS);
+		// printf("%d stop listening\n", num);
 		close(st->pip[num - 1][0]);
 		return (0);
 	}
-	get_infile_fd2(st, cmds);
+	else
+		get_infile_fd2(st, cmds);
 	return (0);
 }
 
@@ -273,25 +273,23 @@ int	get_outfile_fd2(t_store *st, t_cmd *cmds)
 	int		temp_fd;
 
 	lst = cmds->outfiles;
-	while (lst->next)
+	temp_fd = -1;
+	while (lst)
 	{
-		if (((t_file *)lst->content)->append == 0)
-		{
-			temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_TRUNC | O_CREAT, 0664);
-			if (temp_fd == -1)
-				mini_err(st, ERR_SUB_PRCCESS);
+		if (temp_fd != -1)
 			close(temp_fd);
-		}
+		if (((t_file *)lst->content)->append == 0)
+			temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_TRUNC | O_CREAT, 0664);
+		else
+			temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_APPEND | O_CREAT, 0664);
+		if (temp_fd == -1)
+			mini_err(st, ERR_SUB_PRCCESS);
 		lst = lst->next;
 	}
-	if (((t_file *)lst->content)->append == 1)
-		temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_CREAT | O_APPEND, 0664);
-	else
-		temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-	if (temp_fd == -1)
-		mini_err(st, ERR_SUB_PRCCESS);
 	if (dup2(temp_fd, 1) == -1)
 		mini_err(st, ERR_SUB_PRCCESS);
+	if (temp_fd != -1)
+		close(temp_fd);
 	return (0);
 }
 
@@ -302,7 +300,10 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 	if (cmds->outfiles == NULL)
 	{
 		if (num == st->size - 1)
+		{
+			// printf("its a finish, Mariio!\n");
 			return (0);
+		}
 		if (dup2(st->pip[num][1], 1) == -1)
 		{
 			mini_err(st, ERR_SUB_PRCCESS);
@@ -310,7 +311,8 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 		close(st->pip[num][1]);
 		return (0);
 	}
-	get_outfile_fd2(st, cmds);
+	else
+		get_outfile_fd2(st, cmds);
 	return (0);
 }
 
@@ -323,6 +325,7 @@ int	find_file_by_dir(t_store *st, char **com, int e)
 	while (++i < st->path_size)
 	{
 		str = strjoin_char(st->path[i], st->com[e], '/');
+		// printf(")))%s\n", str);
 		if (!str)
 			mini_err(st, 0);
 		if (access(str, F_OK) == 0)
@@ -349,8 +352,23 @@ int	is_command_ok(t_store *st)
 			printf("minishell: %s: command not found\n", st->par[i][0]);
 			return (0);
 		}
+		// printf("%d) %s\n", i, st->com[i]);
 	}
 	return (1);
+}
+
+int	close_exceed_fd(t_store *st, int num)
+{
+	if (num > 0)
+	{
+		close(st->pip[num - 1][0]);
+		close(st->pip[num - 1][1]);
+	}
+	if (num < st->size - 1)
+	{
+		close(st->pip[num][0]);
+		close(st->pip[num][1]);
+	}
 }
 
 int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
@@ -359,8 +377,14 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 
 	get_infile_fd(st, cmds, num);
 	get_outfile_fd(st, cmds, num);
-	if(!is_built_in(cmds[num].command)) // built-in in progress
+	// close(st->pip[num][0]);
+	// close(st->pip[num][1]);
+	// close(st->pip[num - 1][0]);
+	// close(st->pip[num - 1][1]);
+	// close_exceed_fd(st, num);
+	if(!is_built_in(cmds->command)) // built-in in progress
 		exit(0);
+	// printf("%s st->com[num]\n", st->com[num]);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
 	if (st->last_result == -1)
 		mini_err(st, ERR_FOR_SUBFUNC);
@@ -370,7 +394,7 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 
 void test_func(t_store *st, t_cmd *cmds, int num)
 {
-	printf("fork start :%d\n", num);
+	printf("%d fork start\n", num);
 	// printf("%d) command: %s\n", num, st->par[num][0]);
 	// int i = 1;
 	// while (st->par[num][i])
@@ -393,6 +417,19 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 	{
 		pipe_exec_subfunc(st, cmds, num);
 	}
+	else
+	{
+		// printf("%d philo thinking\n", num);
+		// close(st->pip[num][0]);
+		close(st->pip[num][1]);
+		waitpid(pid, &status, 0);
+		printf("%d wifexited = %d\n", num, WIFEXITED(status));
+		if (!WIFEXITED(status))
+			mini_err(st, 102);
+		if (WEXITSTATUS(status) == 103)
+			mini_err(st, 102);
+		// printf("%d philo eating\n", num);
+	}
 	return (pid);
 }
 
@@ -405,21 +442,26 @@ int	main_loop(t_store *st, t_cmd *cmds)
 
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
-	// if (!st->tempfile_dir)
-	// 	if (!strcat_add(&st->tempfile_dir, get_var(""))
+	if (!st->tempfile_dir)
+		st->tempfile_dir = strjoin_char(get_var("HOME"), ".minishell_tempfile", '/');
 	i = -1;
 	if (!is_command_ok(st))
 		return (0);
 	while (++i < st->size)
-		pid = pipe_exec(st, cmds, i);
-	i = -1;
-	while (++i < st->size - 1)
 	{
-		e = -1;
-		while (++e < 2)
-			close(st->pip[i][e]);
+		pid = pipe_exec(st, cmds + i, i);
+		if (pid == -1)
+			break ;
 	}
-	waitpid(pid, &status, 0);
+	i = -1;
+	// while (++i < st->size - 1)
+	// {
+	// 	e = -1;
+	// 	while (++e < 0)
+	// 		close(st->pip[i][e]);
+	// }
+	// waitpid(pid, &status, 0);
+	// unlink(st->tempfile_dir);
 	g_var.last_exec = WEXITSTATUS(status);
 	return (0);
 }
@@ -436,6 +478,7 @@ int	main(int args, char **argv, char **env)
 	g_var.store = &st;
 	while (1)
 	{
+		printf("	imhere\n");
 		str = rl_gets();
 		if (!str || !*str)
 			continue;
@@ -443,6 +486,7 @@ int	main(int args, char **argv, char **env)
 		if (err)
 			continue;
 		st.env = list_to_env();
+		// test_print_env(st.env);
 		st.path = ft_split(get_var("PATH"), ':');
 		if (!st.path || !st.env)
 			mini_err(&st, 0);

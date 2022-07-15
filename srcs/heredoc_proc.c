@@ -49,8 +49,10 @@ void	heredoc(char *eof, int fd, int append)
 	{
 		line = expand_heredoc(line, append);
 		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
 		free(line);
 		line = readline("> ");
 	}
+	ft_putchar_fd('\0', fd);
 	free(line);
 }
