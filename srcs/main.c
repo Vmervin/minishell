@@ -146,7 +146,7 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 	}
 }
 
-unsigned long	strlen_protected(const char *s)
+size_t	strlen_protected(const char *s)
 {
 	unsigned long	size;
 

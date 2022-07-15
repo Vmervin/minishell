@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 05:41:06 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/15 14:51:01 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,28 @@ char	*strjoin_char(char *s1, char *s2, char delim);
 int		strcat_add(char **s1, char *s2);
 int		built_in_check(char *str);
 int		is_built_in(t_list *lst);
+int		main_loop(t_store *st, t_cmd *cmds);
+int		pipe_exec(t_store *st, t_cmd *cmds, int num);
+int		pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num);
+int		close_exceed_fd(t_store *st, int num);
+int		is_command_ok(t_store *st);
+int		find_file_by_dir(t_store *st, char **com, int e);
+int		get_outfile_fd(t_store *st, t_cmd *cmds, int num);
+int		get_outfile_fd2(t_store *st, t_cmd *cmds);
+int		get_infile_fd(t_store *st, t_cmd *cmds, int num);
+int		get_infile_fd2(t_store *st, t_cmd *cmds);
+char	*strjoin_char(char *s1, char *s2, char delim);
+int		strcat_add(char **s1, char *s2);
+size_t	strlen_protected(const char *s);
+void	create_appropriate_struct(t_store *st, t_cmd *cmds);
+void	malloc_appropriate_struct(t_store *st, t_cmd *cmds);
+int		startup(t_store *st, char **env);
+char	*get_path_str(char **env);
+int		get_void_size(void **arr);
+int		get_list_size(t_list *list);
+int		get_cmd_size(t_cmd *cmds);
+void	*mini_calloc(size_t nmemb, size_t size, t_store *st);
+int		mini_err(t_store *st, int err);
 
 // parser
 t_cmd	*parser(char *string, int *error);
