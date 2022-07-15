@@ -396,26 +396,27 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 			mini_err(st, 102);
 		if (WEXITSTATUS(status) == 103)
 			mini_err(st, 102);
+		g_var.last_exec = WEXITSTATUS(status);
 	}
 	return (pid);
 }
 
-int	main_loop(t_store *st, t_cmd *cmds)
+int	main_loop(t_store *st, t_cmd *cmds, int status, int i)
 {
-	int	i;
 	int	pid;
-	int	status;
 
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
 	if (!st->tempfile_dir)
 		st->tempfile_dir = strjoin_char(get_var("HOME"),
 				".minishell_tempfile", '/');
-	i = -1;
 	if (!is_command_ok(st))
 		return (0);
-	if (st->size == 1 && !is_built_in(cmds->command))
-		return (0);
+	if (st->size == 1 && built_in_check(st->par[0][0]))
+	{
+		g_var.last_exec = is_built_in(cmds->command);
+			return (0);
+	}
 	while (++i < st->size)
 	{
 		pid = pipe_exec(st, cmds + i, i);
@@ -451,6 +452,6 @@ int	main(int args, char **argv, char **env)
 			mini_err(&st, 0);
 		st.path_size = get_void_size((void *)st.path);
 		st.size = get_cmd_size(cmds);
-		err = main_loop(&st, cmds);
+		err = main_loop(&st, cmds, 0, -1);
 	}
 }

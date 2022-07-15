@@ -109,7 +109,7 @@ char	*strjoin_char(char *s1, char *s2, char delim);
 int		strcat_add(char **s1, char *s2);
 int		built_in_check(char *str);
 int		is_built_in(t_list *lst);
-int		main_loop(t_store *st, t_cmd *cmds);
+int		main_loop(t_store *st, t_cmd *cmds, int status, int i);
 int		pipe_exec(t_store *st, t_cmd *cmds, int num);
 int		pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num);
 int		close_exceed_fd(t_store *st, int num);
