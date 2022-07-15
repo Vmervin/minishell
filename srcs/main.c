@@ -293,7 +293,7 @@ int	get_outfile_fd2(t_store *st, t_cmd *cmds)
 	return (0);
 }
 
-int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
+int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
 {
 	if (num < st->size - 1)
 		close(st->pip[num][0]);
@@ -307,12 +307,30 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 		if (dup2(st->pip[num][1], 1) == -1)
 		{
 			mini_err(st, ERR_SUB_PRCCESS);
-		}
-		close(st->pip[num][1]);
+		close(st->pip[num - 1][0]);
 		return (0);
 	}
 	else
 		get_outfile_fd2(st, cmds);
+	return (0);
+}
+
+int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
+{
+	if (num < st->size - 1)
+		close(st->pip[num][0]);
+	if (cmds->outfiles == NULL)
+	{
+		if (num == st->size - 1)
+			return (0);
+		if (dup2(st->pip[num][1], 1) == -1)
+		{
+			mini_err(st, ERR_SUB_PRCCESS);
+		}
+		close(st->pip[num][1]);
+		return (0);
+	}
+	get_outfile_fd2(st, cmds);
 	return (0);
 }
 
@@ -325,7 +343,6 @@ int	find_file_by_dir(t_store *st, char **com, int e)
 	while (++i < st->path_size)
 	{
 		str = strjoin_char(st->path[i], st->com[e], '/');
-		// printf(")))%s\n", str);
 		if (!str)
 			mini_err(st, 0);
 		if (access(str, F_OK) == 0)

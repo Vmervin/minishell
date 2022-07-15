@@ -43,8 +43,10 @@ int	is_eof(char *line, char *eof)
 void	heredoc(char *eof, int fd, int append)
 {
 	char	*line;
+	char	*out;
 
 	line = readline("> ");
+	out = NULL;
 	while (line && !is_eof(line, eof))
 	{
 		line = expand_heredoc(line, append);
