@@ -117,7 +117,7 @@ void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 	{
 		st->pip[i] = mini_calloc(2, sizeof(int), st);
 		st->par[i] = mini_calloc(get_list_size(cmds->command) + 1,
-			sizeof(void *), st);
+				sizeof(void *), st);
 		cmds++;
 	}
 	i = -1;
@@ -216,7 +216,7 @@ char	*strjoin_char(char *s1, char *s2, char delim)
 	return (out);
 }
 
-int get_infile_fd_cycle(t_store *st, t_list *lst)
+int	get_infile_fd_cycle(t_store *st, t_list *lst)
 {
 	int	temp_fd;
 
@@ -226,7 +226,7 @@ int get_infile_fd_cycle(t_store *st, t_list *lst)
 		if (((t_file *)lst->content)->append == 0)
 		{
 			temp_fd = open(((t_file *)lst->content)->name,
-						O_RDONLY | O_CREAT, 0664);
+					O_RDONLY | O_CREAT, 0664);
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
 			close(temp_fd);
@@ -237,7 +237,7 @@ int get_infile_fd_cycle(t_store *st, t_list *lst)
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
 			heredoc(((t_file *)lst->content)->name, temp_fd,
-					((t_file *)lst->content)->append);
+				((t_file *)lst->content)->append);
 			close(temp_fd);
 		}
 		lst = lst->next;
@@ -290,10 +290,10 @@ int	get_outfile_fd2(t_store *st, t_cmd *cmds)
 			close(temp_fd);
 		if (((t_file *)lst->content)->append == 0)
 			temp_fd = open(((t_file *)lst->content)->name,
-						O_WRONLY | O_TRUNC | O_CREAT, 0664);
+					O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		else
 			temp_fd = open(((t_file *)lst->content)->name,
-						O_WRONLY | O_APPEND | O_CREAT, 0664);
+					O_WRONLY | O_APPEND | O_CREAT, 0664);
 		if (temp_fd == -1)
 			mini_err(st, ERR_SUB_PRCCESS);
 		lst = lst->next;
@@ -410,15 +410,12 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	create_appropriate_struct(st, cmds);
 	if (!st->tempfile_dir)
 		st->tempfile_dir = strjoin_char(get_var("HOME"),
-							".minishell_tempfile", '/');
+				".minishell_tempfile", '/');
 	i = -1;
 	if (!is_command_ok(st))
 		return (0);
-	if (st->size == 1)
-	{
-		is_built_in(cmds->command);
+	if (st->size == 1 && !is_built_in(cmds->command))
 		return (0);
-	}
 	while (++i < st->size)
 	{
 		pid = pipe_exec(st, cmds + i, i);
@@ -443,11 +440,11 @@ int	main(int args, char **argv, char **env)
 	{
 		str = rl_gets();
 		if (!str || !*str)
-			continue;
+			continue ;
 		cmds = parser(str, &err);
 		st.list = cmds;
 		if (err)
-			continue;
+			continue ;
 		st.env = list_to_env();
 		st.path = ft_split(get_var("PATH"), ':');
 		if (!st.path || !st.env)
