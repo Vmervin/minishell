@@ -95,6 +95,10 @@ int	startup(t_store *st, char **env)
 	st->par = NULL;
 	st->com = NULL;
 	st->tempfile_dir = NULL;
+	st->fd_in = dup(0);
+	st->fd_out = dup(1);
+	if (st->fd_in == -1 || st->fd_out == -1)
+		mini_err(st, ERR_FORK_INIT);
 	return (0);
 }
 
@@ -427,7 +431,7 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 	int	pid;
 	int	status;
 
-	test_func(st, cmds, num);
+	// test_func(st, cmds, num);
 	pid = fork();
 	if (pid < 0)
 		mini_err(st, ERR_FORK_INIT);
@@ -437,11 +441,13 @@ int	pipe_exec(t_store *st, t_cmd *cmds, int num)
 	}
 	else
 	{
-		// printf("%d philo thinking\n", num);
-		// close(st->pip[num][0]);
-		close(st->pip[num][1]);
+		// // printf("%d philo thinking\n", num);
+		// // close(st->pip[num][0]);
+		// printf("fd: %d\n", st->pip[num][1]);
+		if (num < st->size - 1)
+			close(st->pip[num][1]);
 		waitpid(pid, &status, 0);
-		printf("%d wifexited = %d\n", num, WIFEXITED(status));
+		// printf("%d wifexited = %d\n", num, WIFEXITED(status));
 		if (!WIFEXITED(status))
 			mini_err(st, 102);
 		if (WEXITSTATUS(status) == 103)
@@ -472,6 +478,8 @@ int	main_loop(t_store *st, t_cmd *cmds)
 			break ;
 	}
 	i = -1;
+	// dup2(0, st->fd_in);
+	// dup2(1, st->fd_out);
 	// while (++i < st->size - 1)
 	// {
 	// 	e = -1;
@@ -496,7 +504,7 @@ int	main(int args, char **argv, char **env)
 	g_var.store = &st;
 	while (1)
 	{
-		printf("	imhere\n");
+		// printf("	imhere\n");
 		str = rl_gets();
 		if (!str || !*str)
 			continue;
