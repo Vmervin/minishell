@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-t_global g_var;
+t_global	g_var;
 
 int	get_void_size(void **arr)
 {
@@ -10,16 +10,6 @@ int	get_void_size(void **arr)
 	while (arr[i] != NULL)
 		i++;
 	return (i);
-}
-
-void	test_print_env(char **temp)
-{
-	int i = -1;
-	while (*temp)
-	{
-		printf("%d) %s\n", ++i, *temp);
-		temp++;
-	}
 }
 
 int	free_appropriate_struct(t_store *st, int err)
@@ -61,7 +51,7 @@ void	*mini_calloc(size_t nmemb, size_t size, t_store *st)
 
 int	get_cmd_size(t_cmd *cmds)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmds[i].empty == 0)
@@ -124,7 +114,8 @@ void	malloc_appropriate_struct(t_store *st, t_cmd *cmds)
 	while (++i < st->size)
 	{
 		st->pip[i] = mini_calloc(2, sizeof(int), st);
-		st->par[i] = mini_calloc(get_list_size(cmds->command) + 1, sizeof(void *), st);
+		st->par[i] = mini_calloc(get_list_size(cmds->command) + 1,
+								sizeof(void *), st);
 		cmds++;
 	}
 	i = -1;
@@ -160,7 +151,7 @@ void	create_appropriate_struct(t_store *st, t_cmd *cmds)
 	}
 }
 
-unsigned long	strlen_protected(const char *s)
+size_t	strlen_protected(const char *s)
 {
 	unsigned long	size;
 
@@ -174,7 +165,6 @@ unsigned long	strlen_protected(const char *s)
 	}
 	return (size);
 }
-
 
 int	strcat_add(char **s1, char *s2)
 {
@@ -225,18 +215,17 @@ char	*strjoin_char(char *s1, char *s2, char delim)
 	return (out);
 }
 
-int	 get_infile_fd2(t_store *st, t_cmd *cmds)
+int get_infile_fd_cycle(t_store *st, t_list *lst)
 {
-	t_list	*lst;
 	int		temp_fd;
 
-	lst = cmds->infiles;
 	temp_fd = -1;
 	while (lst)
 	{
 		if (((t_file *)lst->content)->append == 0)
 		{
-			temp_fd = open(((t_file *)lst->content)->name, O_RDONLY | O_CREAT, 0664);
+			temp_fd = open(((t_file *)lst->content)->name,
+							O_RDONLY | O_CREAT, 0664);
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
 			close(temp_fd);
@@ -246,11 +235,44 @@ int	 get_infile_fd2(t_store *st, t_cmd *cmds)
 			temp_fd = open(st->tempfile_dir, O_RDWR | O_CREAT | O_TRUNC, 0664);
 			if (temp_fd == -1)
 				mini_err(st, ERR_SUB_PRCCESS);
-			heredoc(((t_file *)lst->content)->name, temp_fd, ((t_file *)lst->content)->append);
+			heredoc(((t_file *)lst->content)->name, temp_fd,
+					((t_file *)lst->content)->append);
 			close(temp_fd);
 		}
 		lst = lst->next;
 	}
+	return (temp_fd);
+}
+
+int	get_infile_fd2(t_store *st, t_cmd *cmds)
+{
+	// t_list	*lst;
+	int		temp_fd;
+
+	// lst = cmds->infiles;
+	temp_fd = -1;
+	// while (lst)
+	// {
+	// 	if (((t_file *)lst->content)->append == 0)
+	// 	{
+	// 		temp_fd = open(((t_file *)lst->content)->name,
+	// 						O_RDONLY | O_CREAT, 0664);
+	// 		if (temp_fd == -1)
+	// 			mini_err(st, ERR_SUB_PRCCESS);
+	// 		close(temp_fd);
+	// 	}
+	// 	else
+	// 	{
+	// 		temp_fd = open(st->tempfile_dir, O_RDWR | O_CREAT | O_TRUNC, 0664);
+	// 		if (temp_fd == -1)
+	// 			mini_err(st, ERR_SUB_PRCCESS);
+	// 		heredoc(((t_file *)lst->content)->name, temp_fd,
+	// 				((t_file *)lst->content)->append);
+	// 		close(temp_fd);
+	// 	}
+	// 	lst = lst->next;
+	// }
+	temp_fd = get_infile_fd_cycle(st, cmds->infiles);
 					// in progress //
 	close(temp_fd);
 	temp_fd = open(st->tempfile_dir, O_RDONLY, 0664);
@@ -261,7 +283,7 @@ int	 get_infile_fd2(t_store *st, t_cmd *cmds)
 	return (0);
 }
 
-int	 get_infile_fd(t_store *st, t_cmd *cmds, int num)
+int	get_infile_fd(t_store *st, t_cmd *cmds, int num)
 {
 	if (num > 0)
 		close(st->pip[num - 1][1]);
@@ -293,9 +315,11 @@ int	get_outfile_fd2(t_store *st, t_cmd *cmds)
 		if (temp_fd != -1)
 			close(temp_fd);
 		if (((t_file *)lst->content)->append == 0)
-			temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_TRUNC | O_CREAT, 0664);
+			temp_fd = open(((t_file *)lst->content)->name,
+						O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		else
-			temp_fd = open(((t_file *)lst->content)->name, O_WRONLY | O_APPEND | O_CREAT, 0664);
+			temp_fd = open(((t_file *)lst->content)->name,
+						O_WRONLY | O_APPEND | O_CREAT, 0664);
 		if (temp_fd == -1)
 			mini_err(st, ERR_SUB_PRCCESS);
 		lst = lst->next;
@@ -351,7 +375,7 @@ int	get_outfile_fd(t_store *st, t_cmd *cmds, int num)
 
 int	find_file_by_dir(t_store *st, char **com, int e)
 {
-	int 	i;
+	int		i;
 	char	*str;
 
 	i = -1;
@@ -414,7 +438,7 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 	// close(st->pip[num - 1][0]);
 	// close(st->pip[num - 1][1]);
 	// close_exceed_fd(st, num);
-	if(!is_built_in(cmds->command)) // built-in in progress
+	if (!is_built_in(cmds->command)) // built-in in progress
 		exit(0);
 	// printf("%s st->com[num]\n", st->com[num]);
 	st->last_result = execve(st->com[num], st->par[num], st->env);
@@ -424,7 +448,7 @@ int	pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num)
 	return (0);
 }
 
-void test_func(t_store *st, t_cmd *cmds, int num)
+void	test_func(t_store *st, t_cmd *cmds, int num)
 {
 	printf("%d fork start\n", num);
 	// printf("%d) command: %s\n", num, st->par[num][0]);
@@ -477,7 +501,8 @@ int	main_loop(t_store *st, t_cmd *cmds)
 	malloc_appropriate_struct(st, cmds);
 	create_appropriate_struct(st, cmds);
 	if (!st->tempfile_dir)
-		st->tempfile_dir = strjoin_char(get_var("HOME"), ".minishell_tempfile", '/');
+		st->tempfile_dir = strjoin_char(get_var("HOME"),
+							".minishell_tempfile", '/');
 	i = -1;
 	if (!is_command_ok(st))
 		return (0);
