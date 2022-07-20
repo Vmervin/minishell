@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 07:58:15 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/18 04:24:38 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ t_cmd	*parser(char *string, int *error)
 		var_process(simplcmds);
 	ft_lstclear(&service.tokens, free);
 	*error = service.error;
-	// lstprint2(cmds[0].command);
-	// lstprint2(cmds[0].vars);
+	// lstprint2(simplcmds[0].command);
+	// lstprint2(simplcmds[0].vars);
 	return (simplcmds);
 }
 
