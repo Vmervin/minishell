@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 05:41:06 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/20 23:29:03 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,24 @@ typedef struct s_store
 	char	***par;
 }	t_store;
 
+typedef struct s_info
+{
+	int		res;
+	int		len;
+	int 	tmpin;
+	int 	tmpout;
+	int		fdin;
+	int		fdout;
+	int		herdoc;
+	char	*hd;
+	int 	(*fdpipe)[2];
+	int 	*pid;
+	char 	*path;
+	char 	**env;
+	char 	**args;
+	t_cmd	*cmds;
+}	t_info;
+
 typedef struct s_global
 {
 	t_list	*env;
@@ -102,7 +120,7 @@ int		get_list_size(t_list *list);
 char	*strjoin_char(char *s1, char *s2, char delim);
 int		strcat_add(char **s1, char *s2);
 int		built_in_check(char *str);
-int		is_built_in(t_list *lst);
+int		is_built_in(t_list *lst, int i, t_info *info);
 
 // parser
 t_cmd	*parser(char *string, int *error);
@@ -181,10 +199,11 @@ char	*rl_gets(void);
 
 // executor
 int		mini_err(t_store *st, int err);
+int		pipe_memfree(t_info info);
 
 // built-ins
 int		echo(t_list *lst, int fd);
 int		cd(t_list *lst);
-int		exit_b(void);
+int		exit_b(t_info *info);
 
 #endif
