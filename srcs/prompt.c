@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 06:16:59 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/20 22:42:04 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*prompt_invitation(void)
 	prompt = ft_strjoin("Mini[", getenv("USER"));
 	prompt = ft_strjoin_free(prompt, ft_strdup("@"));
 	prompt = ft_strjoin_free(prompt, ft_strdup(getenv("HOSTNAME")));
-	prompt = ft_strjoin_free(prompt, ft_strdup("	"));
+	prompt = ft_strjoin_free(prompt, ft_strdup(" "));
 	prompt = ft_strjoin_free(prompt, ft_strdup(ft_strrchr(path, '/') + 1));
 	prompt = ft_strjoin_free(prompt, ft_strdup("]$ "));
 	free(path);
@@ -58,10 +58,18 @@ char	*rl_gets(void)
 	free(prompt);
 	if (!line)
 	{
-		printf("exit(%s)", line);
-		mini_err(g_var.store, 888);
+		ft_putstr_fd("exit: ", 2);
+		memfree(g_var.env);
+		clear_history();
+		exit(0);
+		// mini_err(g_var.store, 888);
 	}
-	if (*line != '\0')
+	if (line && *line != '\0')
 		add_history(line);
+	else
+	{
+		free(line);
+		return (NULL);
+	}
 	return (line);
 }

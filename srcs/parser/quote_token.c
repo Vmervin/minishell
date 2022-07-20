@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 00:25:13 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/20 22:23:59 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ size_t	quote_search(t_parser *service, int i, char type, char *str)
 	if (str[i] && str[i] == type && tmp_begin >= 0)
 		add_list(&service->tokens, tmp_begin, i, type);
 	if (tmp_begin > 0 && !str[i])
+	{
 		service->error = syntax_error(1);
+		return (i);
+	}
 	return (++i);
 }

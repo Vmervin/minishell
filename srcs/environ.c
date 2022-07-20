@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 18:24:10 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/18 03:21:15 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,26 +57,49 @@ char	*get_var(char *name)
 	return (NULL);
 }
 
+// char	**list_to_env(void)
+// {
+// 	t_list	*tmp;
+// 	int		i;
+// 	char	**env;
+// 	int		j;
+	
+// 	i = get_list_size(g_var.env);
+// 	j = 0;
+// 	tmp = g_var.env;
+// 	env = malloc(sizeof(void *) * (i + 1));
+// 	while (j < i)
+// 	{
+// 		env[j] = strjoin_char(((t_file *)tmp->content)->name,
+// 				((t_file *)tmp->content)->value, '=');
+// 		if (!env[j])
+// 			mini_err(g_var.store, ERR_MALLOC0);
+// 		j++;
+// 		tmp = tmp->next;
+// 	}
+// 	env[j] = NULL;
+// 	return (env);
+// }
+
 char	**list_to_env(void)
 {
 	t_list	*tmp;
 	int		i;
 	char	**env;
-	int		j;
-	
-	i = get_list_size(g_var.env);
-	j = 0;
+
+	i = ft_lstsize(g_var.env) + 1;
 	tmp = g_var.env;
-	env = malloc(sizeof(void *) * (i + 1));
-	while (j < i)
+	env = malloc(sizeof(char **) * i);
+	i = 0;
+	while (env && tmp)
 	{
-		env[j] = strjoin_char(((t_file *)tmp->content)->name,
-				((t_file *)tmp->content)->value, '=');
-		if (!env[j])
-			mini_err(g_var.store, ERR_MALLOC0);
-		j++;
+		env[i] = ft_strjoin(((t_file *)(tmp->content))->name, "=");
+		if (((t_file *)(tmp->content))->value)
+		env[i] = ft_strjoin_free(env[i],
+					ft_strdup(((t_file *)(tmp->content))->value));
 		tmp = tmp->next;
+		i++;
 	}
-	env[j] = NULL;
+	env[i] = NULL;
 	return (env);
 }
