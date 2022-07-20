@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 21:37:14 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/09 22:30:12 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/18 19:07:37 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,26 @@ int	is_eof(char *line, char *eof)
 void	heredoc(char *eof, int fd, int append)
 {
 	char	*line;
-	char	*out;
+	// char	*out;
 
 	line = readline("> ");
-	out = NULL;
+	// out = NULL;
 	while (line && !is_eof(line, eof))
 	{
 		line = expand_heredoc(line, append);
 		// printf("imhere!\n");
-		if (strcat_add(&out, line))
-			mini_err(g_var.store, ERR_MALLOC0);
+		// if (strcat_add(&out, line))
+		// 	mini_err(g_var.store, ERR_MALLOC0);
+		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
 		free(line);
 		line = readline("> ");
 	}
-	if (strcat_add(&out, "\n"))
-		mini_err(g_var.store, ERR_MALLOC0);
-	ft_putstr_fd(out, fd);
+	// if (strcat_add(&out, "\n"))
+	// 	mini_err(g_var.store, ERR_MALLOC0);
+	// ft_putstr_fd(out, fd);
+	// ft_putchar_fd('\0', fd);
+	// rl_replace_line("\0", 0);
+	// ft_putstr_fd(line, 0);
 	free(line);
 }
