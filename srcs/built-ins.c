@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 03:49:26 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 05:37:59 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/20 20:32:34 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,24 @@ int	echo(t_list *lst, int fd)
 	int	n;
 
 	n = 0;
+	if (!lst)
+		return (0);
 	if (is_strs_equal(((t_file *)(lst->content))->name, "-n"))
 	{	
 		lst = lst->next;
 		n = 1;
 	}
-	while (lst->next)
+	while (lst)
 	{
-		ft_putstr_fd(((t_file *)(lst->content))->name, fd);
+		if (!lst->next && !n)
+			ft_putendl_fd(((t_file *)(lst->content))->name, fd);
+		else
+		{
+			ft_putstr_fd(((t_file *)(lst->content))->name, fd);
+			ft_putchar_fd(' ', fd);
+		}
 		lst = lst->next;
 	}
-	if (n)
-		ft_putstr_fd(((t_file *)(lst->content))->name, fd);
-	else
-		ft_putendl_fd(((t_file *)(lst->content))->name, fd);
 	return (0);
 }
 
@@ -62,12 +66,12 @@ int	pwd(void)
 	return (0);
 }
 
-int	is_built_in(t_list *lst)
+int	is_built_in(t_list *lst, int i, t_info *info)
 {
 	if (!lst)
 		return (1);
 	if (is_strs_equal(((t_file *)(lst->content))->name, "echo"))
-		return (echo(lst->next, 0));
+		return (echo(lst->next, 1));
 	if (is_strs_equal(((t_file *)(lst->content))->name, "export"))
 		return (export(lst->next));
 	if (is_strs_equal(((t_file *)(lst->content))->name, "env"))
@@ -76,9 +80,9 @@ int	is_built_in(t_list *lst)
 		return (0);
 	if (is_strs_equal(((t_file *)(lst->content))->name, "pwd"))
 		return (pwd());
-	if (is_strs_equal(((t_file *)(lst->content))->name, "cd"))
+	if (is_strs_equal(((t_file *)(lst->content))->name, "cd") && i)
 		return (cd(lst->next));
-	if (is_strs_equal(((t_file *)(lst->content))->name, "exit"))
-		return (exit_b());
+	if (is_strs_equal(((t_file *)(lst->content))->name, "exit") && i)
+		return (exit_b(info));
 	return (1);
 }

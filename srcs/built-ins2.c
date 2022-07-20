@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 05:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 06:13:14 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/20 21:32:02 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	cd(t_list *lst)
 		path = get_var("HOME");
 	if (lst)
 		path = ft_strdup(((t_file *)lst->content)->name);
-	printf("%s or %s\n", path, getcwd(NULL, 0));
 	if (chdir(path))
 	{
 		ft_putstr_fd(path, 2);
@@ -29,16 +28,21 @@ int	cd(t_list *lst)
 		free(path);
 		return (1);
 	}
+	change_vars("OLDPWD", get_var("PWD"));
+	change_vars("PWD", getcwd(NULL, 0));
 	free(path);
-	printf("%s\n", getcwd(NULL, 0));
-	// com_pwd ("");
 	return (0);
 }
 
-int exit_b(void)
+int exit_b(t_info *info)
 {
 	ft_putstr_fd("exit\n", 2);
-	mini_err(g_var.store, 0);
+	pipe_memfree(*info);
+	command_memfree(info->cmds);
+	memfree(g_var.env);
+	clear_history();
+	// mini_err(g_var.store, 0);
+	exit(0);
 	return (1);
 }
 
