@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 05:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/20 21:32:02 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/21 16:49:44 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	cd(t_list *lst)
 	return (0);
 }
 
-int exit_b(t_info *info)
+int	exit_b(t_info *info)
 {
 	ft_putstr_fd("exit\n", 2);
 	pipe_memfree(*info);

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/18 03:21:15 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/21 16:48:13 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*get_var(char *name)
 // 	int		i;
 // 	char	**env;
 // 	int		j;
-	
+
 // 	i = get_list_size(g_var.env);
 // 	j = 0;
 // 	tmp = g_var.env;

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/20 23:29:03 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/21 16:47:17 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,17 @@ typedef struct s_info
 {
 	int		res;
 	int		len;
-	int 	tmpin;
-	int 	tmpout;
+	int		tmpin;
+	int		tmpout;
 	int		fdin;
 	int		fdout;
 	int		herdoc;
 	char	*hd;
-	int 	(*fdpipe)[2];
-	int 	*pid;
-	char 	*path;
-	char 	**env;
-	char 	**args;
+	int		(*fdpipe)[2];
+	int		*pid;
+	char	*path;
+	char	**env;
+	char	**args;
 	t_cmd	*cmds;
 }	t_info;
 
