@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/07/21 16:47:17 by vmervin          ###   ########.fr       */
+=======
+/*   Updated: 2022/07/15 14:51:01 by vmervin          ###   ########.fr       */
+>>>>>>> 0b5d2d7581821892f1145f29418e222d4b59a3cf
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +35,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-# define ERR_MALLOC0 0
-# define ERR_PIPE_INIT 1
-# define ERR_FORK_INIT 2
-# define ERR_SUB_PRCCESS 3
-# define ERR_FOR_SUBFUNC 4
-# define ERR_FILE_OPEN 5
+# define ERR_MALLOC0		0
+# define ERR_PIPE_INIT		1
+# define ERR_FORK_INIT		2
+# define ERR_SUB_PRCCESS	3
+# define ERR_FOR_SUBFUNC	4
+# define ERR_FILE_OPEN		5
+# define ERR_CALLOC			6
 
 // append == 1 => ">>" 0 нормальный файл, 1 хердок без кавычек, 
 // 2 хердок с кавычками
@@ -83,6 +88,11 @@ typedef struct s_store
 	int		last_result;
 	char	**com;
 	char	***par;
+	char	*tempfile_dir;
+	int		tempfile_fd;
+	int		fd_in;
+	int		fd_out;
+	t_cmd	*list;
 }	t_store;
 
 typedef struct s_info
@@ -120,7 +130,34 @@ int		get_list_size(t_list *list);
 char	*strjoin_char(char *s1, char *s2, char delim);
 int		strcat_add(char **s1, char *s2);
 int		built_in_check(char *str);
+<<<<<<< HEAD
 int		is_built_in(t_list *lst, int i, t_info *info);
+=======
+int		is_built_in(t_list *lst);
+int		main_loop(t_store *st, t_cmd *cmds, int status, int i);
+int		pipe_exec(t_store *st, t_cmd *cmds, int num);
+int		pipe_exec_subfunc(t_store *st, t_cmd *cmds, int num);
+int		close_exceed_fd(t_store *st, int num);
+int		is_command_ok(t_store *st);
+int		find_file_by_dir(t_store *st, char **com, int e);
+int		get_outfile_fd(t_store *st, t_cmd *cmds, int num);
+int		get_outfile_fd2(t_store *st, t_cmd *cmds);
+int		get_infile_fd(t_store *st, t_cmd *cmds, int num);
+int		get_infile_fd_cycle(t_store *st, t_list *lst);
+int		get_infile_fd2(t_store *st, t_cmd *cmds);
+char	*strjoin_char(char *s1, char *s2, char delim);
+int		strcat_add(char **s1, char *s2);
+size_t	strlen_protected(const char *s);
+void	create_appropriate_struct(t_store *st, t_cmd *cmds);
+void	malloc_appropriate_struct(t_store *st, t_cmd *cmds);
+int		startup(t_store *st, char **env, int args, char **argv);
+char	*get_path_str(char **env);
+int		get_void_size(void **arr);
+int		get_list_size(t_list *list);
+int		get_cmd_size(t_cmd *cmds);
+void	*mini_calloc(size_t nmemb, size_t size, t_store *st);
+int		mini_err(t_store *st, int err);
+>>>>>>> 0b5d2d7581821892f1145f29418e222d4b59a3cf
 
 // parser
 t_cmd	*parser(char *string, int *error);
