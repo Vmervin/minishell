@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 03:49:26 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/20 20:32:34 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/22 22:35:34 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int	is_built_in(t_list *lst, int i, t_info *info)
 	if (is_strs_equal(((t_file *)(lst->content))->name, "cd") && i)
 		return (cd(lst->next));
 	if (is_strs_equal(((t_file *)(lst->content))->name, "exit") && i)
-		return (exit_b(info));
+		return (exit_shell(info));
 	return (1);
 }

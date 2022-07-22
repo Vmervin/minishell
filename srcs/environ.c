@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/21 17:02:51 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/22 22:11:23 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,26 @@ char	**list_to_env(void)
 		if (((t_file *)(tmp->content))->value)
 		env[i] = ft_strjoin_free(env[i],
 					ft_strdup(((t_file *)(tmp->content))->value));
+		tmp = tmp->next;
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
+
+char	**list_to_argv(t_list *lst)
+{
+	t_list	*tmp;
+	int		i;
+	char	**env;
+
+	i = ft_lstsize(lst) + 1;
+	tmp = lst;
+	env = malloc(sizeof(char **) * i);
+	i = 0;
+	while (env && tmp)
+	{
+		env[i] = ft_strdup(((t_file *)(tmp->content))->name);
 		tmp = tmp->next;
 		i++;
 	}

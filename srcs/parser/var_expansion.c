@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 00:25:02 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 00:58:10 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*val_search(t_token *token, char *str)
 
 	lst = g_var.env;
 	name = ft_substr(str, token->begin + 1, token->end - token->begin);
-	if (!ft_strncmp("?", name, ft_strlen(name)))
+	if (is_strs_equal("?", name))
 		val = ft_itoa(g_var.last_exec);
 	else
 		val = ft_strdup("");
@@ -66,17 +66,17 @@ char	**extract_value(t_list *lst, char *str)
 	return (val);
 }
 
-char	*ft_strjoin_free(const char *s1, const char *s2)
-{
-	char	*res;
+// char	*ft_strjoin_free(const char *s1, const char *s2)
+// {
+// 	char	*res;
 
-	res = ft_strjoin(s1, s2);
-	if (s1)
-		free((char *)s1);
-	if (s2)
-		free((char *)s2);
-	return (res);
-}
+// 	res = ft_strjoin(s1, s2);
+// 	if (s1)
+// 		free((char *)s1);
+// 	if (s2)
+// 		free((char *)s2);
+// 	return (res);
+// }
 
 void	index_plus(t_token *expansion, t_list *tmp, size_t len)
 {
@@ -129,4 +129,17 @@ char	*expand_for_real(t_list *lst, char *str, char **val)
 	newstr = ft_strjoin_free(newstr, ft_substr(str, begin, ft_strlen(str)));
 	free(str);
 	return (newstr);
+}
+
+char *extractor(char *string, t_parser *service)
+{
+	char **val;
+
+	val = NULL;
+	val = extract_value(service->tokens, string);
+	if (service->tokens && val)
+		string = expand_for_real(service->tokens, string, val);
+	if (val)
+		free(val);
+	return (string);
 }

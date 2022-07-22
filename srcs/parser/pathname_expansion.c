@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 18:11:07 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 01:06:01 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ char	*remove_quotes(t_list *lst, char *str)
 	int		begin;
 
 	begin = 0;
-	if (!str)
+	if (!str || !lst)
 		return (str);
 	newstr = ft_strdup("");
-	if (!lst)
-		return (str);
+	// if (!lst)
+	// 	return (str);
 	while (lst)
 	{
 		if (((t_token *)lst->content)->tokentype != '$')
@@ -56,28 +56,30 @@ char	*remove_quotes(t_list *lst, char *str)
 char	*expand(char *string, int herdoc)
 {
 	t_parser	service;
-	char		**val;
+	// char		**val;
 
 	service.tokens = NULL;
 	service.string = string;
 	service.error = 0;
-	val = NULL;
+	// val = NULL;
 	if (ft_strchr(string, '$') || ft_strchr(string, '\'')
 		|| ft_strchr(string, '\"'))
 	{
 		quote_token_search(&service);
 		dollar_sign_token_search(&service.tokens, '$', string);
 		ft_list_sort(&service.tokens, compare_tokens);
+		// lstprint(service.tokens);
 		if (!herdoc)
 		{
-			val = extract_value(service.tokens, string);
-			if (service.tokens && val)
-				string = expand_for_real(service.tokens, string, val);
+			string = extractor(string, &service);
+			// val = extract_value(service.tokens, string);
+			// if (service.tokens && val)
+			// 	string = expand_for_real(service.tokens, string, val);
 		}
 		string = remove_quotes(service.tokens, string);
 		ft_lstclear(&service.tokens, free);
-		if (val)
-			free(val);
+		// if (val)
+		// 	free(val);
 	}
 	return (string);
 }

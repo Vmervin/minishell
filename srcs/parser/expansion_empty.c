@@ -6,11 +6,22 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 06:39:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 18:30:27 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/22 23:45:20 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	var_free(t_list *lst)
+{
+	if (!lst)
+		return ;
+	if (((t_file *)(lst->content))->name)
+		free(((t_file *)(lst->content))->name);
+	if (((t_file *)(lst->content))->value)
+		free(((t_file *)(lst->content))->value);
+	ft_lstdelone(lst, free);
+}
 
 int	delete_node(t_list **head, char *key)
 {

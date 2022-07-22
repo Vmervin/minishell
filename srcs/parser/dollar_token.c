@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 00:25:40 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 00:35:40 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	dollar_sign_search(t_list **lst, int i, char type, char *str)
 	i++;
 	if (str[i] == '?' && tmp_begin >= 0)
 		add_list(lst, tmp_begin, i, '$');
-	if (str[i] && !(ft_isalpha(str[i]) || str[i] == '_'))
+	if (!str[i] || !(ft_isalpha(str[i]) || str[i] == '_'))
 		return (i);
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 21:37:14 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/21 17:03:46 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/22 23:09:02 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,22 @@
 char	*expand_heredoc(char *string, int append)
 {
 	t_parser	service;
-	char		**val;
+	// char		**val;
 
 	service.tokens = NULL;
 	service.string = string;
 	service.error = 0;
-	val = NULL;
+	// val = NULL;
 	if (append == 1 && ft_strchr(string, '$'))
 	{
 		dollar_sign_token_search(&service.tokens, '$', string);
-		val = extract_value(service.tokens, string);
-		if (service.tokens && val)
-			string = expand_for_real(service.tokens, string, val);
+		string = extractor(string, &service);
+		// val = extract_value(service.tokens, string);
+		// if (service.tokens && val)
+		// 	string = expand_for_real(service.tokens, string, val);
 		ft_lstclear(&service.tokens, free);
-		if (val)
-			free(val);
+		// if (val)
+		// 	free(val);
 	}
 	return (string);
 }
@@ -65,4 +66,21 @@ void	heredoc(char *eof, int fd, int append)
 	// rl_replace_line("\0", 0);
 	// ft_putstr_fd(line, 0);
 	free(line);
+}
+
+int heredoc_proc(t_list *lst, t_info *info)
+{
+	int herdoc;
+
+	info->fdin = dup(0);
+	dup2(info->tmpin, 0);
+	info->hd = ft_strjoin_free(get_var("HOME"), ft_strdup("/"));
+	info->hd = ft_strjoin_free(info->hd, ft_strdup(".HERE_DOCUMENT"));
+	herdoc = open(info->hd, O_WRONLY | O_CREAT | O_TRUNC, 0664);// need to close and then reopen
+	heredoc(((t_file *)(lst->content))->name, herdoc, ((t_file *)(lst->content))->append);
+	dup2(info->fdin, 0);
+	close(info->fdin);
+	close(herdoc);
+	info->fdin = open(info->hd, O_RDONLY, 0664);
+	return (0);
 }

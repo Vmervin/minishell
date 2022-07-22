@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_list_file.c                                    :+:      :+:    :+:   */
+/*   analize_syntax.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 13:36:03 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/14 17:38:51 by vmervin          ###   ########.fr       */
+/*   Created: 2022/07/22 23:17:28 by vmervin           #+#    #+#             */
+/*   Updated: 2022/07/22 23:20:31 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	add_list_file(t_list **lst, int append, char *name, char *value)
-{
-	t_file	*content;
-
-	content = malloc(sizeof(t_file));
-	if (!content)
-	{
-		if (name)
-			free (name);
-		if (value)
-			free (value);
-		return (1000);
-	}
-	content->append = append;
-	content->name = name;
-	content->value = value;
-	ft_lstadd_back(lst, ft_lstnew(content));
-	return (0);
-}
 
 t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type)
 {
@@ -130,4 +110,32 @@ t_list	*add_command(t_cmd *cmd, t_list *lst, t_parser *service)
 	if (tmp)
 		service->error = tmp;
 	return (lst);
+}
+
+void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service)
+{
+	int	x;
+
+	x = 0;
+	if (!service)
+		return ;
+	while (lst && ((t_token *)lst->content)->tokentype != '|'
+		&& !service->error)
+	{
+		if (((t_token *)lst->content)->tokentype == '>')
+			lst = add_iofile(&cmd->outfiles, lst->next, service, '>');
+		else if (((t_token *)lst->content)->tokentype == '<')
+			lst = add_iofile(&cmd->infiles, lst->next, service, '<');
+		else if (!x && ((t_token *)lst->content)->tokentype == '=')
+			lst = add_var_declare(cmd, lst, service, 0);
+		else if (((t_token *)lst->content)->tokentype != ' ')
+		{	
+			if (x && ((t_token *)lst->content)->tokentype == '=')
+				add_var_declare(cmd, lst, service, 1);
+			lst = add_command(cmd, lst, service);
+			x = 1;
+		}
+		else
+			lst = lst->next;
+	}
 }

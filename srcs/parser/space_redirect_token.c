@@ -6,24 +6,11 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:25 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 00:25:08 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/22 23:33:51 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	one_simbol_token_search(t_list **lst, char type, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == type && !is_quoted_word(*lst, i, type))
-			add_list(lst, i, i, type);
-		i++;
-	}
-}
 
 int	is_quoted_word(t_list *lst, int i, char type)
 {
@@ -46,15 +33,17 @@ int	is_quoted_word(t_list *lst, int i, char type)
 	return (0);
 }
 
-void	space_token_search(t_list **lst, char *type, char *str)
+void	one_simbol_token_search(t_list **lst, char type, char *str)
 {
 	int	i;
-	int	len;
 
 	i = 0;
-	len = ft_strlen(str);
-	while (i <= len)
-		i = many_simbol_search(lst, i, type, str);
+	while (str[i])
+	{
+		if (str[i] == type && !is_quoted_word(*lst, i, type))
+			add_list(lst, i, i, type);
+		i++;
+	}
 }
 
 size_t	many_simbol_search(t_list **lst, int i, char *type, char *str)
@@ -77,4 +66,15 @@ size_t	many_simbol_search(t_list **lst, int i, char *type, char *str)
 	if (str[i] && tmp_begin >= 0)
 		add_list(lst, tmp_begin, i, ' ');
 	return (i += 2);
+}
+
+void	space_token_search(t_list **lst, char *type, char *str)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_strlen(str);
+	while (i <= len)
+		i = many_simbol_search(lst, i, type, str);
 }

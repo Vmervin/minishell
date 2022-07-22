@@ -6,23 +6,34 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/20 22:23:59 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/22 23:43:41 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	add_list(t_list **lst, int begin, int end, char type)
+size_t	quote_search(t_parser *service, int i, char type, char *str)
 {
-	t_token	*content;
+	int	tmp_begin;
 
-	content = malloc(sizeof(t_token));
-	if (!content)
-		return ;
-	content->begin = begin;
-	content->end = end;
-	content->tokentype = (int)type;
-	ft_lstadd_back(lst, ft_lstnew(content));
+	tmp_begin = -1;
+	while (str[i] && str[i] != type)
+		i++;
+	if (!str[i])
+		return (i);
+	if (str[i] && str[i] == type)
+		tmp_begin = i;
+	i++;
+	while (str[i] && str[i] != type)
+		i++;
+	if (str[i] && str[i] == type && tmp_begin >= 0)
+		add_list(&service->tokens, tmp_begin, i, type);
+	if (tmp_begin > 0 && !str[i])
+	{
+		service->error = syntax_error(1);
+		return (i);
+	}
+	return (++i);
 }
 
 void	quote_token_search(t_parser *serv)
@@ -51,28 +62,4 @@ void	quote_token_search(t_parser *serv)
 						< ft_strchr(serv->string, '\"'))], serv->string);
 		}
 	}
-}
-
-size_t	quote_search(t_parser *service, int i, char type, char *str)
-{
-	int	tmp_begin;
-
-	tmp_begin = -1;
-	while (str[i] && str[i] != type)
-		i++;
-	if (!str[i])
-		return (i);
-	if (str[i] && str[i] == type)
-		tmp_begin = i;
-	i++;
-	while (str[i] && str[i] != type)
-		i++;
-	if (str[i] && str[i] == type && tmp_begin >= 0)
-		add_list(&service->tokens, tmp_begin, i, type);
-	if (tmp_begin > 0 && !str[i])
-	{
-		service->error = syntax_error(1);
-		return (i);
-	}
-	return (++i);
 }
