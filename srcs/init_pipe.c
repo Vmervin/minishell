@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:53:34 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 21:54:40 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 01:20:49 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int pipe_memfree(t_info info)
 	free(info.path);
 	free(info.pid);
 	free(info.fdpipe);
+	if (info.hd)
+		free(info.hd);
 	return (0);
 }
 
