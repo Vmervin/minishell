@@ -8,6 +8,6 @@ Supported features:
 - variable expansion ($PATH, $USER etc.)
 - setting user variables (e.g. $foo=bar)
 - all features provided by GNU readline
-Features yet to implement:
+* Features yet to implement:
 - "*" expansion
 - AND-OR lists ("||" and "&&")
