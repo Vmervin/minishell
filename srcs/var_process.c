@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:20:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:45:12 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 21:36:42 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	change_vars(char *name, char *val)
 		if (is_strs_equal(((t_file *)lst->content)->name, name))
 		{
 			free(((t_file *)lst->content)->value);
-			// free(name);
 			((t_file *)lst->content)->value = val;
 			return ;
 		}

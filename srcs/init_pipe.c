@@ -6,18 +6,18 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:53:34 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 01:20:49 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 22:15:20 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int pipe_memfree(t_info info)
+int	pipe_memfree(t_info info)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(info.env[i])
+	while (info.env[i])
 	{
 		free(info.env[i]);
 		i++;
@@ -34,7 +34,7 @@ int pipe_memfree(t_info info)
 // close pipes if failed
 int	pipe_error(t_info *info, int i)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	perror("pipe");
@@ -48,9 +48,9 @@ int	pipe_error(t_info *info, int i)
 	return (1);
 }
 
-int init_pid(t_info *info, int len)
+int	init_pid(t_info *info, int len)
 {
-	int i;
+	int	i;
 
 	info->pid = malloc(len * sizeof(int));
 	i = 0;
@@ -59,9 +59,9 @@ int init_pid(t_info *info, int len)
 	return (0);
 }
 
-int init_pipe(t_info *info, int len, t_cmd *cmds)
+int	init_pipe(t_info *info, int len, t_cmd *cmds)
 {
-	int i;
+	int	i;
 
 	info->res = 0;
 	info->len = len;

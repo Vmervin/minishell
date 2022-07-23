@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/21 16:58:07 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 21:58:04 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,26 @@ void	recieve(int signum)
 	}
 }
 
+int	handler_set(struct sigaction *act)
+{
+	act->sa_handler = recieve;
+	act->sa_flags = 0;
+	sigemptyset(&act->sa_mask);
+	sigaddset(&act->sa_mask, SIGINT);
+	sigaddset(&act->sa_mask, SIGQUIT);
+	sigaction(SIGQUIT, act, NULL);
+	sigaction(SIGINT, act, NULL);
+	sigaction(SIGTERM, act, NULL);
+	return (0);
+}
+
 char	*rl_gets(void)
 {
 	char				*line;
 	char				*prompt;
 	struct sigaction	act;
 
-	act.sa_handler = recieve;
-	act.sa_flags = 0;
-	sigemptyset(&act.sa_mask);
-	sigaddset(&act.sa_mask, SIGINT);
-	sigaddset(&act.sa_mask, SIGQUIT);
-	sigaction(SIGQUIT, &act, NULL);
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGTERM, &act, NULL);
+	handler_set(&act);
 	prompt = prompt_invitation();
 	line = readline(prompt);
 	free(prompt);
@@ -62,7 +68,6 @@ char	*rl_gets(void)
 		memfree(g_var.env);
 		clear_history();
 		exit(0);
-		// mini_err(g_var.store, 888);
 	}
 	if (line && *line != '\0')
 		add_history(line);

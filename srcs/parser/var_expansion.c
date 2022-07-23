@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 00:58:10 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 21:56:56 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,6 @@ char	**extract_value(t_list *lst, char *str)
 	return (val);
 }
 
-// char	*ft_strjoin_free(const char *s1, const char *s2)
-// {
-// 	char	*res;
-
-// 	res = ft_strjoin(s1, s2);
-// 	if (s1)
-// 		free((char *)s1);
-// 	if (s2)
-// 		free((char *)s2);
-// 	return (res);
-// }
-
 void	index_plus(t_token *expansion, t_list *tmp, size_t len)
 {
 	int	len2;
@@ -131,9 +119,9 @@ char	*expand_for_real(t_list *lst, char *str, char **val)
 	return (newstr);
 }
 
-char *extractor(char *string, t_parser *service)
+char	*extractor(char *string, t_parser *service)
 {
-	char **val;
+	char	**val;
 
 	val = NULL;
 	val = extract_value(service->tokens, string);

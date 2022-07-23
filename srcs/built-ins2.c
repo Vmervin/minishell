@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 05:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 22:35:26 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 21:35:49 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	exit_shell(t_info *info)
 	command_memfree(info->cmds);
 	memfree(g_var.env);
 	clear_history();
-	// mini_err(g_var.store, 0);
 	exit(0);
 	return (1);
 }

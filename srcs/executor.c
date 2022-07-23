@@ -6,16 +6,16 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:40:52 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 21:47:17 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/23 21:35:07 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// $?
-int waitress(t_info *info,  int i)
+// set value for $? special parameter
+int	waitress(t_info *info, int i)
 {
-	int error;
+	int	error;
 
 	if (info->pid[i] < 0)
 		return (0);
@@ -50,7 +50,7 @@ int	in_outpipe(t_info *info, int i, int in)
 	return (0);
 }
 
-int command_executor(t_cmd *cmds, t_info *info, int i)
+int	command_executor(t_cmd *cmds, t_info *info, int i)
 {
 	info->res = 0;
 	in_outpipe(info, i, 1);
