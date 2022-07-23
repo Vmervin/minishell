@@ -1,27 +1,14 @@
 # minishell
 
-Feature request for Patchking:
-
-Возвращаемые значения для $? по образцу
-
-// wait(&status);
-
-// if (WIFSIGNALED(status))
-
-//// return(WTERMSIG(status) + 128);
-
-// if ("command not found")
-
-//// 	            return (127);
-
-// if ("command is not executable")
-
-////           	  return (126);
-  
-  Для очистки памяти воспользуйся: command_memfree(t_cmd*) и memfree(t_list*)
-  для обработки Heredoc - функцией heredoc.
-
-На даный момент парсер готов на 99% (память освобождается из мэйна);
-Обработка сигналов завершена на 50% (только сигналы получаемые основным процессом);
-Build-in готовы на 80% (Перенеси build-in_check перед форком, чтобы выполнять его в родительском процессе);
-
+##Basic Unix shell. 
+###Recreating 50 years old technology (*almost*) from scratch
+Supported features:
+- redirections of stdin and stdout (including <<heredoc)
+- pipelines
+- few built-ins (echo, cd, pwd, export, unset, exit, env)
+- variable expansion ($PATH, $USER etc.)
+- setting user variables (e.g. $foo=bar)
+- all features provided by GNU readline
+Features yet to implement:
+- "*" expansion
+- AND-OR lists ("||" and "&&")
