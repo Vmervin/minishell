@@ -10,5 +10,5 @@ Supported features:
 - [x] all features provided by GNU readline
 
 Features yet to implement:
-- * expansion
+- \* expansion
 - AND-OR lists ("||" and "&&")
