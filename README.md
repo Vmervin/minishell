@@ -3,7 +3,7 @@
 Attempt to recreate 40 years old technology (*almost*) from scratch
 
 Supported features:
-- redirections of stdin and stdout (including <<heredoc)
+- [x] redirections of stdin and stdout (including <<heredoc)
 - [x] pipelines
 - [x] few built-ins (echo, cd, pwd, export, unset, exit, env)
 - [x] variable expansion ($PATH, $USER etc.)
@@ -11,5 +11,5 @@ Supported features:
 - [x] all features provided by GNU readline
 
 Features yet to implement:
-- \* wildcard expansion
-- AND-OR lists ("||" and "&&")
+- [] \* wildcard expansion
+- [] AND-OR lists ("||" and "&&")
