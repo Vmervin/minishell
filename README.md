@@ -1,6 +1,7 @@
 # minishell
-Basic Unix shell. 
-### Recreating 50 years old technology (*almost*) from scratch
+### Basic Unix shell for everyday use
+Attempt to recreate 40 years old technology (*almost*) from scratch
+
 Supported features:
 - [x] redirections of stdin and stdout (including <<heredoc)
 - [x] pipelines
