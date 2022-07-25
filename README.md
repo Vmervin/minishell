@@ -18,4 +18,5 @@ Features yet to implement:
 ### Building
 To build minishell you will need GNU Readline library installed
 Details on how to do it may be found on [official site] (https://tiswww.cwru.edu/php/chet/readline/rltop.html)
+
 `make` to compile `./minishell` to run
