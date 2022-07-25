@@ -7,6 +7,7 @@ Supported features:
 - [x] pipelines
 - [x] few built-ins (echo, cd, pwd, export, unset, exit, env)
 - [x] variable expansion ($PATH, $USER etc.)
+- [x] special parameters expansion (only $?)
 - [x] setting user variables (e.g. $foo=bar)
 - [x] all features provided by GNU readline
 
