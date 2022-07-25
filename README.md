@@ -16,8 +16,6 @@ Features yet to implement:
 - [ ] AND-OR lists ("||" and "&&")
 
 ### Building
-To build minishell you will need GNU Readline library installed.
-
-Detailed information on how to install GNU Readline provided on [official website](https://tiswww.cwru.edu/php/chet/readline/rltop.html)
+To build minishell you will need GNU Readline library installed. Detailed information on how to install GNU Readline provided on [official website](https://tiswww.cwru.edu/php/chet/readline/rltop.html)
 
 `make` to compile `./minishell` to run
