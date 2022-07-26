@@ -15,5 +15,5 @@ jobs:
           username: Provology
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: Provology/publish-packages/game
+          repository: Provology/minishell
           tag_with_sha: true
