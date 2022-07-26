@@ -15,12 +15,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
-//# include "includes/get_next_line.h"
-//# include "includes/ft_printf.h"
-/*Подобие функций из стандартной библиотеки С, созданное с 
-использованием malloc, free, write, read, va_arg 
-чтобы заменить пути к заголовку в файлах используй что-то 
-типа sed -i 's/"libft.h"/"..\/libft.h"/g'
+/*
+sed -i 's/"libft.h"/"..\/libft.h"/g'
 */
 
 typedef struct s_list
