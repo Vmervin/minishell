@@ -9,6 +9,5 @@ RUN cd minishell && make
 FROM alpine
 COPY --from=build-env /minishell/minishell /minishell/minishell
 RUN apk add readline
-RUN apk add bash
 WORKDIR /minishell
 CMD ["./minishell"]
