@@ -14,30 +14,18 @@
 # define MINISHELL_H
 // # include <editline/readline.h>
 # include <stdio.h>
-// # include <string.h>
 # include <stdlib.h>
-// # include <termios.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
-// # include <dirent.h>
 # include <errno.h>
-// # include <sys/ioctl.h>
-// # include <curses.h>
-// # include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-// # define ERR_MALLOC0		0
-// # define ERR_PIPE_INIT		1
-// # define ERR_FORK_INIT		2
-// # define ERR_SUB_PRCCESS	3
-// # define ERR_FOR_SUBFUNC	4
-// # define ERR_FILE_OPEN		5
-// # define ERR_CALLOC			6
+
 
 // append == 0 (> output, < input)
 // append == 1 (>> output, << heredoc)
