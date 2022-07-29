@@ -31,11 +31,7 @@ D_FILES		= ${patsubst %.o,%.d,${OBJECTS}}
 CC 			= cc
 DEBUG		= -g
 CFLAGS		= -Wall -Wextra -Werror -I${INCLUDES} -MD ${DEBUG}
-# CFLAGS2		= -L${LIBFTPATH} -lft -L${MACBOOK_READLINE}Cellar/readline/8.1.2/lib/ -I${MACBOOK_READLINE}Cellar/readline/8.1.2/include/ -lreadline
-#CFLAGS2		= -L${LIBFTPATH} -lft -L${SCHOOL_MAC_READLINE}Cellar/readline/8.1.2/lib/ -I${SCHOOL_MAC_READLINE}Cellar/readline/8.1.2/include/ -lreadline
 CFLAGS2		= -L${LIBFTPATH} -lft -lncurses -lreadline # flags for linux
-MACBOOK_READLINE	= /opt/homebrew/
-SCHOOL_MAC_READLINE = /Users/vmervin/.brew/
 RM 			= rm -f
 
 all:		$(NAME)
