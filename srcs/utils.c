@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lst_sort.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmervin <vmervin@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:34:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/11 04:01:32 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:50:24 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	compare_tokens(void *content1, void *content2)
 	return (((t_token *)content1)->begin > ((t_token *)content2)->begin);
 }
 
-void	ft_swap_data(t_list *a, t_list *b)
+static void	ft_swap_data(t_list *a, t_list *b)
 {
 	t_list	tmp;
 

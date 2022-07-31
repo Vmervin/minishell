@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 22:03:20 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:43:42 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok)
+static char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok)
 {
 	int	end;
 	int	begin;
@@ -28,7 +28,7 @@ char	*skip_quote(char *newstr, char *str, int *tmp, t_token *tok)
 	return (newstr);
 }
 
-char	*remove_quotes(t_list *lst, char *str)
+static char	*remove_quotes(t_list *lst, char *str)
 {
 	char	*newstr;
 	int		begin;
@@ -51,7 +51,7 @@ char	*remove_quotes(t_list *lst, char *str)
 	return (newstr);
 }
 
-char	*expand(char *string, int herdoc)
+static char	*expand(char *string, int herdoc)
 {
 	t_parser	service;
 

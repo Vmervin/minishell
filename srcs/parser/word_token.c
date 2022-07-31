@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:12 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/12 00:24:56 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:46:17 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_token(t_list *lst, int i, char type)
+static int	is_token(t_list *lst, int i, char type)
 {
 	while (lst)
 	{
@@ -32,7 +32,7 @@ int	is_token(t_list *lst, int i, char type)
 	return (0);
 }
 
-size_t	word_search(t_list **lst, int i, char *str)
+static size_t	word_search(t_list **lst, int i, char *str)
 {
 	int	tmp_begin;
 

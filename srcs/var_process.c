@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:20:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 21:36:42 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:51:33 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	change_vars(char *name, char *val)
 	add_list_file(&g_var.env, 0, name, val);
 }
 
-void	add_vars(t_list *lst, int ex)
+static void	add_vars(t_list *lst, int ex)
 {
 	char	*name;
 	char	*val;
@@ -50,7 +50,7 @@ void	add_vars(t_list *lst, int ex)
 	ft_list_sort(&g_var.env, compare_names);
 }
 
-void	unset_vars(t_list *lst)
+static void	unset_vars(t_list *lst)
 {
 	if (lst && g_var.env)
 	{

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:48:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 22:11:23 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:33:46 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,6 @@ char	*get_var(char *name)
 	}
 	return (NULL);
 }
-
-// char	**list_to_env(void)
-// {
-// 	t_list	*tmp;
-// 	int		i;
-// 	char	**env;
-// 	int		j;
-
-// 	i = get_list_size(g_var.env);
-// 	j = 0;
-// 	tmp = g_var.env;
-// 	env = malloc(sizeof(void *) * (i + 1));
-// 	while (j < i)
-// 	{
-// 		env[j] = strjoin_char(((t_file *)tmp->content)->name,
-// 				((t_file *)tmp->content)->value, '=');
-// 		if (!env[j])
-// 			mini_err(g_var.store, ERR_MALLOC0);
-// 		j++;
-// 		tmp = tmp->next;
-// 	}
-// 	env[j] = NULL;
-// 	return (env);
-// }
 
 char	**list_to_env(void)
 {

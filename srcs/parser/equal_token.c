@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:48 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:28:24 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:41:10 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_name(t_token *token, int i, char *str)
+static int	is_name(t_token *token, int i, char *str)
 {
 	int	j;
 
@@ -28,7 +28,7 @@ int	is_name(t_token *token, int i, char *str)
 	return (1);
 }
 
-void	is_word(t_list *lst, int i, char *str)
+static void	is_word(t_list *lst, int i, char *str)
 {
 	while (lst)
 	{

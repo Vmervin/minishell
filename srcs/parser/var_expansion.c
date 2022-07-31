@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 21:56:56 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:45:50 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*val_search(t_token *token, char *str)
+static char	*val_search(t_token *token, char *str)
 {
 	char	*val;
 	char	*name;
@@ -37,7 +37,7 @@ char	*val_search(t_token *token, char *str)
 	return (val);
 }
 
-char	**extract_value(t_list *lst, char *str)
+static char	**extract_value(t_list *lst, char *str)
 {
 	t_list	*tmp;
 	char	**val;
@@ -66,7 +66,7 @@ char	**extract_value(t_list *lst, char *str)
 	return (val);
 }
 
-void	index_plus(t_token *expansion, t_list *tmp, size_t len)
+static void	index_plus(t_token *expansion, t_list *tmp, size_t len)
 {
 	int	len2;
 	int	diff;
@@ -91,7 +91,7 @@ void	index_plus(t_token *expansion, t_list *tmp, size_t len)
 	}
 }
 
-char	*expand_for_real(t_list *lst, char *str, char **val)
+static char	*expand_for_real(t_list *lst, char *str, char **val)
 {
 	char	*newstr;
 	int		begin;

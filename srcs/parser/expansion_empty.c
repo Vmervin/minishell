@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 06:39:04 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:45:20 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:52:36 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	var_free(t_list *lst)
+static void	var_free(t_list *lst)
 {
 	if (!lst)
 		return ;

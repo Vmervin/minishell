@@ -6,14 +6,14 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:40:52 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 21:35:07 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:32:39 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // set value for $? special parameter
-int	waitress(t_info *info, int i)
+static int	waitress(t_info *info, int i)
 {
 	int	error;
 
@@ -27,7 +27,7 @@ int	waitress(t_info *info, int i)
 	return (0);
 }
 
-int	in_outpipe(t_info *info, int i, int in)
+static int	in_outpipe(t_info *info, int i, int in)
 {
 	if (in)
 	{

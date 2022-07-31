@@ -6,41 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:57 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:38:31 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:40:09 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// void	analize_syntax(t_cmd *cmd, t_list *lst, t_parser *service)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	if (!service)
-// 		return ;
-// 	while (lst && ((t_token *)lst->content)->tokentype != '|'
-// 		&& !service->error)
-// 	{
-// 		if (((t_token *)lst->content)->tokentype == '>')
-// 			lst = add_iofile(&cmd->outfiles, lst->next, service, '>');
-// 		else if (((t_token *)lst->content)->tokentype == '<')
-// 			lst = add_iofile(&cmd->infiles, lst->next, service, '<');
-// 		else if (!x && ((t_token *)lst->content)->tokentype == '=')
-// 			lst = add_var_declare(cmd, lst, service, 0);
-// 		else if (((t_token *)lst->content)->tokentype != ' ')
-// 		{	
-// 			if (x && ((t_token *)lst->content)->tokentype == '=')
-// 				add_var_declare(cmd, lst, service, 1);
-// 			lst = add_command(cmd, lst, service);
-// 			x = 1;
-// 		}
-// 		else
-// 			lst = lst->next;
-// 	}
-// }
-
-int	init_commands(t_cmd *cmd, t_parser *service, int i)
+static int	init_commands(t_cmd *cmd, t_parser *service, int i)
 {
 	t_list	*lst;
 
@@ -65,7 +37,7 @@ int	init_commands(t_cmd *cmd, t_parser *service, int i)
 	return (0);
 }
 
-int	search_pipes(t_list *lst)
+static int	search_pipes(t_list *lst)
 {
 	int	count;
 

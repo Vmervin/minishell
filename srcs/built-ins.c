@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 03:49:26 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 22:35:34 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:35:40 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	echo(t_list *lst, int fd)
+static int	echo(t_list *lst, int fd)
 {
 	int	n;
 
@@ -38,21 +38,21 @@ int	echo(t_list *lst, int fd)
 	return (0);
 }
 
-int	export(t_list *lst)
+static int	export(t_list *lst)
 {
 	if (!lst)
 		lstprint2(g_var.env);
 	return (0);
 }
 
-int	env(t_list *lst)
+static int	env(t_list *lst)
 {
 	if (!lst)
 		lstprint2(g_var.env);
 	return (0);
 }
 
-int	pwd(void)
+static int	pwd(void)
 {
 	char	*s;
 

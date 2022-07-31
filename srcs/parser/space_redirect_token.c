@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:25 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:33:51 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:44:52 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	one_simbol_token_search(t_list **lst, char type, char *str)
 	}
 }
 
-size_t	many_simbol_search(t_list **lst, int i, char *type, char *str)
+static size_t	many_simbol_search(t_list **lst, int i, char *type, char *str)
 {
 	int	tmp_begin;
 

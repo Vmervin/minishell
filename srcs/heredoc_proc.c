@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 21:37:14 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 22:01:31 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:31:48 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*expand_heredoc(char *string, int append)
+static char	*expand_heredoc(char *string, int append)
 {
 	t_parser	service;
 
@@ -28,13 +28,13 @@ char	*expand_heredoc(char *string, int append)
 	return (string);
 }
 
-int	is_eof(char *line, char *eof)
+static int	is_eof(char *line, char *eof)
 {
 	return (ft_strlen(eof) == ft_strlen(line)
 		&& !ft_strncmp(eof, line, ft_strlen(eof)));
 }
 
-void	heredoc(char *eof, int fd, int append)
+static void	heredoc(char *eof, int fd, int append)
 {
 	char	*line;
 

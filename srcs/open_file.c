@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:49:42 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 22:16:31 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:27:59 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	open_in(t_cmd cmd, t_info *info)
+static int	open_in(t_cmd cmd, t_info *info)
 {
 	t_list	*lst;
 
@@ -37,7 +37,7 @@ int	open_in(t_cmd cmd, t_info *info)
 	return (0);
 }
 
-int	open_out(t_cmd cmd, t_info *info)
+static int	open_out(t_cmd cmd, t_info *info)
 {
 	t_list	*lst;
 

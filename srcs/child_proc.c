@@ -6,14 +6,14 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:56:18 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 22:21:25 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:34:57 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // close all fd in child
-int	fd_closer(int num, int (*fdpipe)[2])
+static int	fd_closer(int num, int (*fdpipe)[2])
 {
 	int	i;
 
@@ -27,7 +27,7 @@ int	fd_closer(int num, int (*fdpipe)[2])
 	return (0);
 }
 
-int	free_path(char **path)
+static int	free_path(char **path)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ int	free_path(char **path)
 	return (0);
 }
 
-char	*get_path(char *args, char *path, int *error)
+static char	*get_path(char *args, char *path, int *error)
 {
 	char	*res;
 	int		i;
@@ -70,7 +70,7 @@ char	*get_path(char *args, char *path, int *error)
 	return (NULL);
 }
 
-int	exe_command(t_info *info)
+static int	exe_command(t_info *info)
 {
 	int	error;
 

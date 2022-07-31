@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:41 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:38:24 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:42:58 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	grammatic(t_parser *service)
+static void	grammatic(t_parser *service)
 {
 	quote_token_search(service);
 	one_simbol_token_search(&service->tokens, '|', service->string);
@@ -25,7 +25,7 @@ void	grammatic(t_parser *service)
 	ft_list_sort(&service->tokens, compare_tokens);
 }
 
-void	pathname_expansion(t_cmd *simpcmds, int *error)
+static void	pathname_expansion(t_cmd *simpcmds, int *error)
 {
 	int	i;
 

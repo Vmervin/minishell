@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 19:42:33 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/24 00:29:32 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:27:29 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_global	g_var;
 
-int	cmdlen(t_cmd *cmds)
+static int	cmdlen(t_cmd *cmds)
 {
 	int	i;
 

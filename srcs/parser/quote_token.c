@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/22 23:43:41 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:44:11 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-size_t	quote_search(t_parser *service, int i, char type, char *str)
+static size_t	quote_search(t_parser *service, int i, char type, char *str)
 {
 	int	tmp_begin;
 

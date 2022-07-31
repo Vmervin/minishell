@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:53:34 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 22:15:20 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:30:45 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	pipe_memfree(t_info info)
 }
 
 // close pipes if failed
-int	pipe_error(t_info *info, int i)
+static int	pipe_error(t_info *info, int i)
 {
 	int	j;
 
@@ -48,7 +48,7 @@ int	pipe_error(t_info *info, int i)
 	return (1);
 }
 
-int	init_pid(t_info *info, int len)
+static int	init_pid(t_info *info, int len)
 {
 	int	i;
 

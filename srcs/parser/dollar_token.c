@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:53 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 00:35:40 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:40:23 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	dollar_sign_search(t_list **lst, int i, char type, char *str)
+static int	dollar_sign_search(t_list **lst, int i, char type, char *str)
 {
 	int	tmp_begin;
 

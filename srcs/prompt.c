@@ -6,13 +6,13 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/23 21:58:04 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/07/31 19:28:30 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*prompt_invitation(void)
+static char	*prompt_invitation(void)
 {
 	char	*prompt;
 	char	*path;
@@ -28,7 +28,7 @@ char	*prompt_invitation(void)
 	return (prompt);
 }
 
-void	recieve(int signum)
+static void	recieve(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -39,7 +39,7 @@ void	recieve(int signum)
 	}
 }
 
-int	handler_set(struct sigaction *act)
+static int	handler_set(struct sigaction *act)
 {
 	act->sa_handler = recieve;
 	act->sa_flags = 0;
