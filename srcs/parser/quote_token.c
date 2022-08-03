@@ -28,7 +28,7 @@ static size_t	quote_search(t_parser *service, int i, char type, char *str)
 		i++;
 	if (str[i] && str[i] == type && tmp_begin >= 0)
 		add_list(&service->tokens, tmp_begin, i, type);
-	if (tmp_begin > 0 && !str[i])
+	if (tmp_begin >= 0 && !str[i])
 	{
 		service->error = syntax_error(UNCLOSED);
 		return (i);
