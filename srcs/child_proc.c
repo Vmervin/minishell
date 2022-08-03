@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:56:18 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:34:57 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:16:24 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*get_path(char *args, char *path, int *error)
 		free(res);
 		i++;
 	}
-	*error = error_mess(args, 3, strerror(errno));
+	*error = error_mess(args, NOFILE, strerror(errno));
 	free_path(true_path);
 	free(args);
 	return (NULL);
@@ -79,7 +79,7 @@ static int	exe_command(t_info *info)
 	if (info->args[0])
 	{
 		if (access(info->args[0], X_OK))
-			error = error_mess(info->args[0], 4, strerror(errno));
+			error = error_mess(info->args[0], NOEXEC, strerror(errno));
 		execve(info->args[0], info->args, info->env);
 	}
 	exit(error);

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 21:49:42 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:27:59 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:35:50 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	open_in(t_cmd cmd, t_info *info)
 			info->fdin = open(((t_file *)(lst->content))->name, O_RDONLY);
 		if (info->fdin < 0)
 		{
-			info->res = error_mess(((t_file *)(lst->content))->name, 1,
+			info->res = error_mess(((t_file *)(lst->content))->name, CANTOPEN,
 					strerror(errno));
 			return (1);
 		}
@@ -55,7 +55,7 @@ static int	open_out(t_cmd cmd, t_info *info)
 					O_WRONLY | O_CREAT | O_TRUNC, 0664);
 		if (info->fdout < 0)
 		{
-			info->res = error_mess(((t_file *)(lst->content))->name, 2,
+			info->res = error_mess(((t_file *)(lst->content))->name, CANTOPEN,
 					strerror(errno));
 			return (1);
 		}

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 21:37:14 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:31:48 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:22:24 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*expand_heredoc(char *string, int append)
 	service.tokens = NULL;
 	service.string = string;
 	service.error = 0;
-	if (append == 1 && ft_strchr(string, '$'))
+	if (append == HERDOC_EXPAND && ft_strchr(string, '$'))
 	{
 		dollar_sign_token_search(&service.tokens, '$', string);
 		string = extractor(string, &service);

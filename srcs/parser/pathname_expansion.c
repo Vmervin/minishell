@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 13:35:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:43:42 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:21:02 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ void	parse_word(t_list *lst, int vars)
 {
 	while (lst)
 	{
-		if (vars > 0)
+		if (vars == VARIABLE)
 		{
 			((t_file *)(lst->content))->value
 				= expand(((t_file *)(lst->content))->value, 0);
 		}
-		else if (vars < 0 && ((t_file *)(lst->content))->append)
+		else if (vars == INPUT && ((t_file *)(lst->content))->append)
 		{
 			if (ft_strchr(((t_file *)(lst->content))->name, '\'')
 			|| ft_strchr(((t_file *)(lst->content))->name, '\"'))
-				((t_file *)(lst->content))->append = 2;
+				((t_file *)(lst->content))->append = HERDOC_NOEXPAND;
 			((t_file *)(lst->content))->name
 				= expand(((t_file *)(lst->content))->name, 1);
 		}

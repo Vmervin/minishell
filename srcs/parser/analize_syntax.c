@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 23:17:28 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:39:03 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:46:02 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type)
 {
 	if (!lst)
 	{
-		service->error = syntax_error('\0');
+		service->error = syntax_error(NEW_LINE);
 		return (lst);
 	}
 	if (((t_token *)lst->content)->tokentype == type)
@@ -26,7 +26,7 @@ t_list	*skip_space(t_list *lst, t_parser *service, int *append, int type)
 	}
 	if (!lst)
 	{
-		service->error = syntax_error('\0');
+		service->error = syntax_error(NEW_LINE);
 		return (lst);
 	}
 	while (lst && ((t_token *)lst->content)->tokentype == ' ')
@@ -64,7 +64,7 @@ t_list	*add_iofile(t_list **cmd, t_list *lst, t_parser *service, char type)
 	return (lst);
 }
 
-t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service, int ex)
+t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service, int exprt)
 {
 	int		begin;
 	int		end;
@@ -83,7 +83,7 @@ t_list	*add_var_declare(t_cmd *cmd, t_list *lst, t_parser *service, int ex)
 		lst = lst->next;
 	}
 	tmp = 0;
-	tmp = add_list_file(&cmd->vars, ex, name,
+	tmp = add_list_file(&cmd->vars, exprt, name,
 			ft_substr(service->string, begin, end - begin + 1));
 	if (tmp)
 		service->error = tmp;

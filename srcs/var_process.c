@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:20:37 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:51:33 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 17:10:00 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	change_vars(char *name, char *val)
 	add_list_file(&g_var.env, 0, name, val);
 }
 
-static void	add_vars(t_list *lst, int ex)
+static void	add_vars(t_list *lst, int exprt)
 {
 	char	*name;
 	char	*val;
 
 	while (lst)
 	{
-		if (((t_file *)(lst->content))->append == ex)
+		if (((t_file *)(lst->content))->append == exprt)
 		{
 			name = ft_strdup(((t_file *)(lst->content))->name);
 			val = ft_strdup(((t_file *)(lst->content))->value);

@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 18:13:17 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:49:59 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:50:08 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	add_list_file(t_list **lst, int append, char *name, char *value)
 			free (name);
 		if (value)
 			free (value);
-		return (1000);
+		return (ERR_MALLOC);
 	}
 	content->append = append;
 	content->name = name;

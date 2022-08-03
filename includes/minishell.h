@@ -6,13 +6,12 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/07/31 19:52:31 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/03 16:59:02 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-// # include <editline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -22,9 +21,36 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <errno.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# if __linux__
+#  include <readline/readline.h>
+#  include <readline/history.h>
+# elif _APPLE_
+#  include <editline/readline.h>
+# endif
 # include "../libft/libft.h"
+
+enum e_rrors
+{
+	UNCLOSED = 1,
+	NEW_LINE,
+	NOFILE,
+	NOEXEC,
+	CANTOPEN,
+	ERR_MALLOC = 1000
+};
+
+enum e_type
+{
+	DEFAULT,
+	VARIABLE,
+	INPUT
+};
+
+enum e_input
+{
+	HERDOC_EXPAND = 1,
+	HERDOC_NOEXPAND = 2
+};
 
 // append == 0 (> output, < input)
 // append == 1 (>> output, << heredoc)

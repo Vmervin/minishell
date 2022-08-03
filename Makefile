@@ -6,7 +6,7 @@
 #    By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 17:20:35 by vmervin           #+#    #+#              #
-#    Updated: 2022/07/22 23:46:47 by vmervin          ###   ########.fr        #
+#    Updated: 2022/08/03 17:42:02 by vmervin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,8 @@ OBJECTS		= ${addprefix ${OBJ_DIR}, ${patsubst %.c,%.o,${notdir ${SRCS}}}}
 OBJ_DIR		= ./obj/
 D_FILES		= ${patsubst %.o,%.d,${OBJECTS}}
 CC 			= cc
-DEBUG		= -g
-CFLAGS		= -Wall -Wextra -Werror -I${INCLUDES} -MD ${DEBUG}
+DEBUG		= -g -pedantic
+CFLAGS		= -Wall -Wextra  -Wshadow -Werror -I${INCLUDES} -MD
 CFLAGS2		= -L${LIBFTPATH} -lft -lncurses -lreadline # flags for linux
 RM 			= rm -f
 
@@ -38,6 +38,9 @@ all:		$(NAME)
 
 ${NAME}:	${OBJECTS} ${LIBFT}
 			${CC} ${CFLAGS} ${OBJECTS} ${CFLAGS2} -o $@
+
+debug:		${OBJECTS} ${LIBFT}
+			${CC} ${CFLAGS} ${DEBUG} ${OBJECTS} ${CFLAGS2} -o ${NAME}
 
 ${LIBFT}::
 			${MAKE} -C ${LIBFTPATH}
@@ -61,4 +64,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY: clean fclean all re bonus
+.PHONY: clean fclean all re bonus debug
