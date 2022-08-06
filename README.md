@@ -8,7 +8,7 @@ Supported features:
 - [x] few built-ins (echo, cd, pwd, export, unset, exit, env)
 - [x] variable expansion ($PATH, $USER etc.)
 - [x] special parameters expansion (only $?)
-- [x] setting user variables (e.g. $foo=bar)
+- [x] setting user variables (e.g. $var=val)
 - [x] all features provided by GNU readline
 
 Features yet to implement:
