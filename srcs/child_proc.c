@@ -93,10 +93,12 @@ int	child_birth(t_cmd *cmds, t_info *info, int i)
 	info->args = list_to_argv(cmds[i].command);
 	if (!ft_strchr(info->args[0], '/') && info->path)
 		info->args[0] = get_path(info->args[0], info->path, &error);
+	signal(SIGINT, SIG_IGN);
 	if (!error)
 		info->pid[i] = fork();
 	if (!info->pid[i])
 	{
+		signal(SIGINT, SIG_DFL);
 		exe_command(info);
 	}
 	free_path(info->args);
