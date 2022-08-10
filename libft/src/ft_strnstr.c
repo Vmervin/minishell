@@ -28,8 +28,8 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	while (len && lenbig >= lenlittle)
 	{
 		v = ft_strchr(b, *little);
-		if ((v && (unsigned long)(v - big) <= len - lenlittle && \
-		!ft_strncmp(v, little, lenlittle)) || !v)
+		if ((v && (unsigned long)(v - big) <= len - lenlittle
+			&& !ft_strncmp(v, little, lenlittle)) || !v)
 			return (v);
 		lenbig = lenbig - (v - b) - 1;
 		b = v + 1;
