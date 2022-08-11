@@ -39,8 +39,8 @@ all:		$(NAME)
 ${NAME}:	${OBJECTS} ${LIBFT}
 			${CC} ${CFLAGS} ${OBJECTS} ${CFLAGS2} -o $@
 
-debug:		${OBJECTS} ${LIBFT}
-			${CC} ${CFLAGS} ${DEBUG} ${OBJECTS} ${CFLAGS2} -o ${NAME}
+debug:		CFLAGS += ${DEBUG}
+debug:		all
 
 ${LIBFT}::
 			${MAKE} -C ${LIBFTPATH}
