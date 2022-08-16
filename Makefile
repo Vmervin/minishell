@@ -6,7 +6,7 @@
 #    By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 17:20:35 by vmervin           #+#    #+#              #
-#    Updated: 2022/08/11 02:58:08 by vmervin          ###   ########.fr        #
+#    Updated: 2022/08/16 16:10:41 by vmervin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,8 +48,11 @@ all:		$(NAME)
 ${NAME}:	${OBJECTS} ${LIBFT}
 			${CC} ${CFLAGS} ${OBJECTS} ${CFLAGS2} -o $@
 
-debug:		${OBJECTS} ${LIBFT}
-			${CC} ${CFLAGS} ${DEBUG} ${OBJECTS} ${CFLAGS2} -o ${NAME}
+debug:		CFLAGS += ${DEBUG}
+debug:		all
+
+test:		CFLAGS += -DTEST
+test:		all
 
 ${LIBFT}::
 			${MAKE} -C ${LIBFTPATH}
