@@ -1,7 +1,1 @@
-Mini[USER@HOSTNAME minishell_test]$ ""
-Mini[USER@HOSTNAME minishell_test]$ "
-Error: Unclosed quotes
-Mini[USER@HOSTNAME minishell_test]$ ''
-Mini[USER@HOSTNAME minishell_test]$ '
-Error: Unclosed quotes
-Mini[USER@HOSTNAME minishell_test]$ exit: 
+8912992330c3f5d5c32d334494f35713cca3c875  -
