@@ -15,4 +15,5 @@ jobs:
         run: |
           ls ${{ github.workspace }}
           make debug
+          ./test_script
       - run: echo "🍏 This job's status is ${{ job.status }}."
