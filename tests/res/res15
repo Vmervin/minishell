@@ -1,4 +1,1 @@
-Mini[USER@HOSTNAME minishell_test]$ cat <<EOF > tmp | cat tmp | wc -l
-3
-Mini[USER@HOSTNAME minishell_test]$ rm -f tmp
-Mini[USER@HOSTNAME minishell_test]$ exit: 
+5d52cc9e4bb6deda0c7a75d6247374bc5bb521dd  -
