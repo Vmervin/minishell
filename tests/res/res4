@@ -1,1 +1,3 @@
-139
+Mini[USER@HOSTNAME minishell_test]$ frf   >> $iiii  $USER |
+Error, undefined redirection output
+Mini[USER@HOSTNAME minishell_test]$ exit: 
