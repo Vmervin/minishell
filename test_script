@@ -2,7 +2,7 @@
 #			minishell_test.sh
 
 set -e
-export LANG=ru_RU.utf8
+env
 mkdir -p minishell_test
 cd minishell_test
 for n in {0..16}; do
