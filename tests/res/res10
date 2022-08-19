@@ -1,12 +1,12 @@
-Mini[USER@HOSTNAME minishell_test]$ mkdir -p new_test
-Mini[USER@HOSTNAME minishell_test]$ cd new_test
-Mini[USER@HOSTNAME new_test]$ env > env
-Mini[USER@HOSTNAME new_test]$ env > env0
-Mini[USER@HOSTNAME new_test]$ diff -q env env0
-Mini[USER@HOSTNAME new_test]$ ls
+Mini[rutkin@fedora minishell_test]$ mkdir -p new_test
+Mini[rutkin@fedora minishell_test]$ cd new_test
+Mini[rutkin@fedora new_test]$ env > env
+Mini[rutkin@fedora new_test]$ env > env0
+Mini[rutkin@fedora new_test]$ diff -q env env0
+Mini[rutkin@fedora new_test]$ ls
 env
 env0
-Mini[USER@HOSTNAME new_test]$ cat <<EOF
+Mini[rutkin@fedora new_test]$ cat <<EOF
 > 1
 > 2
 > 3
@@ -14,30 +14,30 @@ Mini[USER@HOSTNAME new_test]$ cat <<EOF
 1
 2
 3
-Mini[USER@HOSTNAME new_test]$ echo Hello World!
+Mini[rutkin@fedora new_test]$ echo Hello World!
 Hello World!
-Mini[USER@HOSTNAME new_test]$ export QWERTY=12345
-Mini[USER@HOSTNAME new_test]$ env > env1
-Mini[USER@HOSTNAME new_test]$ diff -q env env1
-Файлы env и env1 различаются
-Mini[USER@HOSTNAME new_test]$ echo $QWERTY
+Mini[rutkin@fedora new_test]$ export QWERTY=12345
+Mini[rutkin@fedora new_test]$ env > env1
+Mini[rutkin@fedora new_test]$ diff -q env env1
+Files env and env1 differ
+Mini[rutkin@fedora new_test]$ echo $QWERTY
 12345
-Mini[USER@HOSTNAME new_test]$ QWERTY=54321
-Mini[USER@HOSTNAME new_test]$ env > env2
-Mini[USER@HOSTNAME new_test]$ diff -q env1 env2
-Файлы env1 и env2 различаются
-Mini[USER@HOSTNAME new_test]$ echo $QWERTY
+Mini[rutkin@fedora new_test]$ QWERTY=54321
+Mini[rutkin@fedora new_test]$ env > env2
+Mini[rutkin@fedora new_test]$ diff -q env1 env2
+Files env1 and env2 differ
+Mini[rutkin@fedora new_test]$ echo $QWERTY
 54321
-Mini[USER@HOSTNAME new_test]$ unset QWERTY
-Mini[USER@HOSTNAME new_test]$ env > env3
-Mini[USER@HOSTNAME new_test]$ diff -q env env3
-Файлы env и env3 различаются
-Mini[USER@HOSTNAME new_test]$ ls
+Mini[rutkin@fedora new_test]$ unset QWERTY
+Mini[rutkin@fedora new_test]$ env > env3
+Mini[rutkin@fedora new_test]$ diff -q env env3
+Files env and env3 differ
+Mini[rutkin@fedora new_test]$ ls
 env
 env0
 env1
 env2
 env3
-Mini[USER@HOSTNAME new_test]$ cd ..
-Mini[USER@HOSTNAME minishell_test]$ rm -rf new_test
-Mini[USER@HOSTNAME minishell_test]$ exit: 
+Mini[rutkin@fedora new_test]$ cd ..
+Mini[rutkin@fedora minishell_test]$ rm -rf new_test
+Mini[rutkin@fedora minishell_test]$ exit: 

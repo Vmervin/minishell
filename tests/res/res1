@@ -1,2 +1,2 @@
-Mini[USER@HOSTNAME minishell_test]$ echo "$ $eskeetit 7" | grep '"|kek"'
-Mini[USER@HOSTNAME minishell_test]$ exit: 
+Mini[rutkin@fedora minishell_test]$ echo "$ $eskeetit 7" | grep '"|kek"'
+Mini[rutkin@fedora minishell_test]$ exit: 
