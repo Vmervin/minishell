@@ -1,4 +1,4 @@
-Mini[rutkin@fedora minishell_test]$ cat <<EOF > tmp | cat tmp | wc -l
+Mini[USER@HOSTNAME minishell_test]$ cat <<EOF > tmp | cat tmp | wc -l
 3
-Mini[rutkin@fedora minishell_test]$ rm -f tmp
-Mini[rutkin@fedora minishell_test]$ exit: 
+Mini[USER@HOSTNAME minishell_test]$ rm -f tmp
+Mini[USER@HOSTNAME minishell_test]$ exit: 

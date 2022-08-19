@@ -1,3 +1,3 @@
-Mini[rutkin@fedora minishell_test]$ dj$? djdjdjd < dkdk
+Mini[USER@HOSTNAME minishell_test]$ dj$? djdjdjd < dkdk
 minishell: dkdk No such file or directory
-Mini[rutkin@fedora minishell_test]$ exit: 
+Mini[USER@HOSTNAME minishell_test]$ exit: 

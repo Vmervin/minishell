@@ -1,52 +1,52 @@
-Mini[rutkin@fedora minishell_test]$ "
+Mini[USER@HOSTNAME minishell_test]$ "
 Error: Unclosed quotes
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 1
-Mini[rutkin@fedora minishell_test]$ '
+Mini[USER@HOSTNAME minishell_test]$ '
 Error: Unclosed quotes
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 1
-Mini[rutkin@fedora minishell_test]$ ||
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ ||
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 0
-Mini[rutkin@fedora minishell_test]$ echo >>>file
+Mini[USER@HOSTNAME minishell_test]$ echo >>>file
 Syntax error near unexpected token '>'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 62
-Mini[rutkin@fedora minishell_test]$ >
+Mini[USER@HOSTNAME minishell_test]$ >
 Syntax error near unexpected token 'newline'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 2
-Mini[rutkin@fedora minishell_test]$ <
+Mini[USER@HOSTNAME minishell_test]$ <
 Syntax error near unexpected token 'newline'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 2
-Mini[rutkin@fedora minishell_test]$ >>
+Mini[USER@HOSTNAME minishell_test]$ >>
 Syntax error near unexpected token 'newline'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 2
-Mini[rutkin@fedora minishell_test]$ <<
+Mini[USER@HOSTNAME minishell_test]$ <<
 Syntax error near unexpected token 'newline'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 2
-Mini[rutkin@fedora minishell_test]$ echo >> >>file
+Mini[USER@HOSTNAME minishell_test]$ echo >> >>file
 Syntax error near unexpected token '>'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 62
-Mini[rutkin@fedora minishell_test]$ echo > >> file
+Mini[USER@HOSTNAME minishell_test]$ echo > >> file
 Syntax error near unexpected token '>'
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 62
-Mini[rutkin@fedora minishell_test]$ '''
+Mini[USER@HOSTNAME minishell_test]$ '''
 Error: Unclosed quotes
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 1
-Mini[rutkin@fedora minishell_test]$ echo > $____DUMMY
+Mini[USER@HOSTNAME minishell_test]$ echo > $____DUMMY
 Error, undefined redirection output
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 1
-Mini[rutkin@fedora minishell_test]$ echoechoecho $?
+Mini[USER@HOSTNAME minishell_test]$ echoechoecho $?
 minishell: echoechoecho : command not found
-Mini[rutkin@fedora minishell_test]$ echo $?
+Mini[USER@HOSTNAME minishell_test]$ echo $?
 127
-Mini[rutkin@fedora minishell_test]$ exit: 
+Mini[USER@HOSTNAME minishell_test]$ exit: 
