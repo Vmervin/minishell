@@ -21,12 +21,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <errno.h>
-// # if __linux__
 #  include <readline/readline.h>
 #  include <readline/history.h>
-// # elif _APPLE_
-// #  include <editline/readline.h>
-// # endif
 # include "../libft/libft.h"
 
 enum e_rrors
