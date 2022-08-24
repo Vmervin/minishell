@@ -6,7 +6,7 @@
 #    By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/23 17:20:35 by vmervin           #+#    #+#              #
-#    Updated: 2022/08/16 16:10:41 by vmervin          ###   ########.fr        #
+#    Updated: 2022/08/24 13:57:26 by vmervin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,12 +34,8 @@ CFLAGS		= -Wall -Wextra  -Wshadow -Werror -I${INCLUDES} -MD
 ifeq ($(shell uname -s), Linux)
 CFLAGS2		= -L${LIBFTPATH} -lft -lncurses -lreadline # flags for linux
 else
-# CFLAGS2		= -L${LIBFTPATH} -lft -L${MACBOOK_READLINE}Cellar/readline/8.1.2/lib/ -I${MACBOOK_READLINE}Cellar/readline/8.1.2/include/ -lreadline
-CFLAGS2		= -L${LIBFTPATH} -lft -L${SCHOOL_MAC_READLINE}Cellar/readline/8.1.2/lib/ -I${SCHOOL_MAC_READLINE}Cellar/readline/8.1.2/include/ -lreadline
-MACBOOK_READLINE	= /opt/homebrew/
-SCHOOL_MAC_READLINE = /Users/vmervin/.brew/
-INC_FLAGS += -I$(HOME)/.brew/opt/readline/include
-LIBS += -L$(HOME)/.brew/opt/readline/lib
+CFLAGS2		= -L${LIBFTPATH} -lft -L${BREW_READLINE}/lib -I${BREW_READLINE}/include -lreadline
+BREW_READLINE = $(brew --prefix readline)
 endif
 RM 			= rm -f
 

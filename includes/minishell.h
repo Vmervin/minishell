@@ -6,7 +6,7 @@
 /*   By: vmervin <vmervin@student-21.school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 04:47:31 by vmervin           #+#    #+#             */
-/*   Updated: 2022/08/03 16:59:02 by vmervin          ###   ########.fr       */
+/*   Updated: 2022/08/24 13:55:41 by vmervin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <errno.h>
-# if __linux__
+// # if __linux__
 #  include <readline/readline.h>
 #  include <readline/history.h>
-# elif _APPLE_
-#  include <editline/readline.h>
-# endif
+// # elif _APPLE_
+// #  include <editline/readline.h>
+// # endif
 # include "../libft/libft.h"
 
 enum e_rrors
